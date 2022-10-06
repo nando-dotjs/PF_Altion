@@ -81,7 +81,7 @@ const updateUser = asyncHandler (async (req, res) => {
     user.roles = roles
     user.active = active
 
-    if (password) { // Si desea actualizar la contraseña, la encripta nuevamente
+    if (password) { // Si desea actualizar la contraseña, la encripta nuevamente!
         // Hash password
         user.password = await bcrypt.hash(password, 10)
     }
