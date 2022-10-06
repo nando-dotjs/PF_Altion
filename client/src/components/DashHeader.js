@@ -6,7 +6,7 @@ const DashHeader = () => {
         <header className="dashHeader">
             <div className="dashHeaderContainer">
                 <Link to="/dash">
-                    <h1 className="dashHeaderTitle">techNotes</h1>
+                    <h1 className="dashHeaderTitle">Unidos por la Recolección</h1>
                 </Link>
                 <nav className="dashHeaderNav">
                     {/* add nav buttons later */}
