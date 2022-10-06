@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+    web:
+        container_name: app_nodejs
+        command: npm run dev
+        restart: always
+        build: ./
+        ports:
+          - "5000:5000"
+        links:
+          - mongo
+        volumes:
+          - .:/usr/src/app
+    mongo:
+        container_name: app_mongodb
+        image: mongo
+        ports: 
+            - "27017:27017"
+        logging:
+            driver: none
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: altion
+            MONGO_INITDB_ROOT_PASSWORD: altion2022
+    react:
+        container_name: app_react
+        build: ./client
+        ports: 
+           - "3000:3000"
+        depends_on:
+           - web
