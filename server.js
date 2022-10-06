@@ -6,8 +6,9 @@ const connectDB = require('./src/config/dbConn')
 const mongoose = require('mongoose')
 
 
-
+app.use(express.json());
 app.use(require('./src/routes/index.routes'))
+app.use('/users', require('./src/routes/userRoutes'))
 connectDB()
 
 mongoose.connection.once('open', () => {
