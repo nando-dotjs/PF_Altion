@@ -12,7 +12,7 @@ const Public = () => {
                 <p>Ciudad de Paysandú</p>
             </main>
             <footer>
-                <Link to="/login">Ingresar como Empleado</Link>
+                <Link to="/login">Ingresar a la aplicación</Link>
             </footer>
         </section>
 

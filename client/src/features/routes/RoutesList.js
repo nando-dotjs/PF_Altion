@@ -2,7 +2,7 @@ import React from 'react'
 
 const RoutesList = () => {
     return (
-        <h1>RoutesList</h1>
+        <h1>Lista de recorridos</h1>
     )
 }
 
