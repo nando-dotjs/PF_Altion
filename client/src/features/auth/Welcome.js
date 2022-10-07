@@ -15,7 +15,7 @@ const Welcome = () => {
 
             <p><Link to="/dash/routes">Recorridos</Link></p>
 
-            <p><Link to="/dash/users">Ajustes de Usuario</Link></p>
+            <p><Link to="/dash/users">Lista de Usuarios</Link></p>
 
         </section>
     )
