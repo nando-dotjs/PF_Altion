@@ -9,6 +9,8 @@ const mongoose = require('mongoose')
 app.use(express.json());
 app.use(require('./src/routes/index.routes'))
 app.use('/users', require('./src/routes/userRoutes'))
+app.use('/auth', require('./src/routes/authRoutes'))
+
 connectDB()
 
 mongoose.connection.once('open', () => {
