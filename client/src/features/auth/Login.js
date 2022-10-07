@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
+import usePersist from '../../hooks/usePersist'
 
 const Login = () => {
     const userRef = useRef()
@@ -11,6 +12,7 @@ const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
+    const [persist, setPersist] = usePersist()
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -50,6 +52,7 @@ const Login = () => {
 
     const handleUserInput = (e) => setUsername(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
+    const handleToggle = () => setPersist(prev => !prev)
 
     const errClass = errMsg ? "errmsg" : "offscreen"
 
@@ -86,6 +89,20 @@ const Login = () => {
                         required
                     />
                     <button className="form__submit-button">Ingresar</button>
+
+                    <label htmlFor="persist" className="form__persist">
+                    <input
+                        type="checkbox"
+                        className="form__checkbox"
+                        id="persist"
+                        hidden
+                        onChange={handleToggle}
+                        checked={persist}
+                    />
+                        
+                    </label>
+
+                
                 </form>
             </main>
             <footer>

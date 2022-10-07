@@ -9,6 +9,7 @@ import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
 import NewUserForm from './features/users/NewUserForm'
 import Prefetch from './features/auth/Prefetch'
+import PersistLogin from './features/auth/PersistLogin';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
 
+        <Route element={<PersistLogin />}>
         <Route element={<Prefetch />}>
           <Route path="dash" element={<DashLayout />}>
 
@@ -30,6 +32,7 @@ function App() {
 
             <Route path="routes">
               <Route index element={<RoutesList />} />
+            </Route>
             </Route>
 
           </Route>{/* End Dash */}
