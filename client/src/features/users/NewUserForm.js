@@ -119,7 +119,7 @@ const NewUserForm = () => {
                 />
 
                 <label className="form__label" htmlFor="roles">
-                    ASSIGNED ROLES:</label>
+                    ROLES:</label>
                 <select
                     id="roles"
                     name="roles"

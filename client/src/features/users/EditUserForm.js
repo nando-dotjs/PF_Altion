@@ -162,7 +162,7 @@ const EditUserForm = ({ user }) => {
                 </label>
 
                 <label className="form__label" htmlFor="roles">
-                    ROLES ASIGNADOS:</label>
+                    ROLES:</label>
                 <select
                     id="roles"
                     name="roles"
