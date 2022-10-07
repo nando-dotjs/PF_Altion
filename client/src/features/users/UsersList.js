@@ -31,9 +31,9 @@ const UsersList = () => {
             <table className="table tableUsers">
                 <thead className="tableThead">
                     <tr>
-                        <th scope="col" className="tableTh userUsername">Username</th>
+                        <th scope="col" className="tableTh userUsername">Usuario</th>
                         <th scope="col" className="tableTh userRoles">Roles</th>
-                        <th scope="col" className="tableTh userEdit">Edit</th>
+                        <th scope="col" className="tableTh userEdit">Editar</th>
                     </tr>
                 </thead>
                 <tbody>

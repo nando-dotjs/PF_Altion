@@ -25,7 +25,7 @@ const DashHeader = () => {
         if (isSuccess) navigate('/')
     }, [isSuccess, navigate])
 
-    if (isLoading) return <p>Logging Out...</p>
+    if (isLoading) return <p>Saliendo...</p>
 
     if (isError) return <p>Error: {error.data?.message}</p>
 
@@ -48,7 +48,7 @@ const DashHeader = () => {
         <header className="dash-header">
             <div className={`dash-header__container ${dashClass}`}>
                 <Link to="/dash">
-                    <h1 className="dash-header__title">techNotes</h1>
+                    <h1 className="dash-header__title">Unidos por la clasificación</h1>
                 </Link>
                 <nav className="dash-header__nav">
                     {/* add more buttons later */}

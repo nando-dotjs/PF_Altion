@@ -127,7 +127,7 @@ const EditUserForm = ({ user }) => {
                     </div>
                 </div>
                 <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
+                    Nombre de usuario: <span className="nowrap">[3-20 letras]</span></label>
                 <input
                     className={`form__input ${validUserClass}`}
                     id="username"
@@ -139,7 +139,7 @@ const EditUserForm = ({ user }) => {
                 />
 
                 <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[empty = no change]</span> <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
+                    Contraseña: <span className="nowrap">[vacío = no se modifica]</span> <span className="nowrap">[4-12 carácteres incl. !@#$%]</span></label>
                 <input
                     className={`form__input ${validPwdClass}`}
                     id="password"
@@ -150,7 +150,7 @@ const EditUserForm = ({ user }) => {
                 />
 
                 <label className="form__label form__checkbox-container" htmlFor="user-active">
-                    ACTIVE:
+                    ACTIVO:
                     <input
                         className="form__checkbox"
                         id="user-active"
@@ -162,7 +162,7 @@ const EditUserForm = ({ user }) => {
                 </label>
 
                 <label className="form__label" htmlFor="roles">
-                    ASSIGNED ROLES:</label>
+                    ROLES ASIGNADOS:</label>
                 <select
                     id="roles"
                     name="roles"
