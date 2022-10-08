@@ -1,15 +1,24 @@
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
+import { 
+    faUserGear,
+    faUserPlus,
+    faRightFromBracket
+
+} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
+
+import useAuth from '../hooks/useAuth'
 
 const DASH_REGEX = /^\/dash(\/)?$/
 const NOTES_REGEX = /^\/dash\/notes(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
 
 const DashHeader = () => {
+
+    const { isAdmin } = useAuth()
 
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -25,13 +34,40 @@ const DashHeader = () => {
         if (isSuccess) navigate('/')
     }, [isSuccess, navigate])
 
-    if (isLoading) return <p>Saliendo...</p>
-
-    if (isError) return <p>Error: {error.data?.message}</p>
+    const onNewUserClicked = () => navigate('/dash/users/new')
+    const onUsersClicked = () => navigate('/dash/users')
 
     let dashClass = null
     if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
+    }
+
+    let newUserButton = null
+    if (USERS_REGEX.test(pathname)) {
+        newUserButton = (
+            <button
+                className="icon-button"
+                title="New User"
+                onClick={onNewUserClicked}
+            >
+                <FontAwesomeIcon icon={faUserPlus} />
+            </button>
+        )
+    }
+
+    let userButton = null
+    if (isAdmin) {
+        if (!USERS_REGEX.test(pathname) && pathname.includes('/dash')) {
+            userButton = (
+                <button
+                    className="icon-button"
+                    title="Users"
+                    onClick={onUsersClicked}
+                >
+                    <FontAwesomeIcon icon={faUserGear} />
+                </button>
+            )
+        }
     }
 
     const logoutButton = (
@@ -44,18 +80,36 @@ const DashHeader = () => {
         </button>
     )
 
+    const errClass = isError ? "errmsg" : "offscreen"
+
+    let buttonContent
+    if (isLoading) {
+        buttonContent = <p>Saliendo...</p>
+    } else {
+        buttonContent = (
+            <>
+                {newUserButton}
+                {userButton}
+                {logoutButton}
+            </>
+        )
+    }
+
     const content = (
-        <header className="dashHeader">
-            <div className={`dashHeaderContainer ${dashClass}`}>
-                <Link to="/dash">
-                    <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
-                </Link>
-                <nav className="dashHeaderNav">
-                    {/* add more buttons later */}
-                    {logoutButton}
-                </nav>
-            </div>
-        </header>
+        <>
+            <p className={errClass}>{error?.data?.message}</p>
+
+            <header className="dashHeader">
+                <div className={`dashHeaderContainer ${dashClass}`}>
+                    <Link to="/dash">
+                        <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
+                    </Link>
+                    <nav className="dashHeaderNav">
+                        {buttonContent}
+                    </nav>
+                </div>
+            </header>
+        </>
     )
 
     return content
