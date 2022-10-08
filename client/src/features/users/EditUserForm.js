@@ -106,11 +106,11 @@ const EditUserForm = ({ user }) => {
             <p className={errClass}>{errContent}</p>
 
             <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="form__title-row">
+                <div className="formTitleRow">
                     <h2>Edit User</h2>
-                    <div className="form__action-buttons">
+                    <div className="formActionButtons">
                         <button
-                            className="icon-button"
+                            className="iconButton"
                             title="Save"
                             onClick={onSaveUserClicked}
                             disabled={!canSave}
@@ -126,10 +126,10 @@ const EditUserForm = ({ user }) => {
                         </button>
                     </div>
                 </div>
-                <label className="form__label" htmlFor="username">
+                <label className="formLabel" htmlFor="username">
                     Nombre de usuario: <span className="nowrap">[3-20 letras]</span></label>
                 <input
-                    className={`form__input ${validUserClass}`}
+                    className={`formInput ${validUserClass}`}
                     id="username"
                     name="username"
                     type="text"
@@ -138,10 +138,10 @@ const EditUserForm = ({ user }) => {
                     onChange={onUsernameChanged}
                 />
 
-                <label className="form__label" htmlFor="password">
+                <label className="formLabel" htmlFor="password">
                     Contraseña: <span className="nowrap">[vacío = no se modifica]</span> <span className="nowrap">[4-12 carácteres incl. !@#$%]</span></label>
                 <input
-                    className={`form__input ${validPwdClass}`}
+                    className={`formInput ${validPwdClass}`}
                     id="password"
                     name="password"
                     type="password"
@@ -149,10 +149,10 @@ const EditUserForm = ({ user }) => {
                     onChange={onPasswordChanged}
                 />
 
-                <label className="form__label form__checkbox-container" htmlFor="user-active">
+                <label className="formLabel formCheckboxContainer" htmlFor="user-active">
                     ACTIVO:
                     <input
-                        className="form__checkbox"
+                        className="formCheckbox"
                         id="user-active"
                         name="user-active"
                         type="checkbox"
@@ -161,12 +161,12 @@ const EditUserForm = ({ user }) => {
                     />
                 </label>
 
-                <label className="form__label" htmlFor="roles">
+                <label className="formLabel" htmlFor="roles">
                     ROLES:</label>
                 <select
                     id="roles"
                     name="roles"
-                    className={`form__select ${validRolesClass}`}
+                    className={`formSelect ${validRolesClass}`}
                     multiple={true}
                     size="3"
                     value={roles}

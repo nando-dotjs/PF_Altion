@@ -31,12 +31,12 @@ const DashHeader = () => {
 
     let dashClass = null
     if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
-        dashClass = "dash-header__container--small"
+        dashClass = "dashHeaderContainer--small"
     }
 
     const logoutButton = (
         <button
-            className="icon-button"
+            className="iconButton"
             title="Logout"
             onClick={sendLogout}
         >
@@ -45,12 +45,12 @@ const DashHeader = () => {
     )
 
     const content = (
-        <header className="dash-header">
-            <div className={`dash-header__container ${dashClass}`}>
+        <header className="dashHeader">
+            <div className={`dashHeaderContainer ${dashClass}`}>
                 <Link to="/dash">
-                    <h1 className="dash-header__title">Unidos por la clasificación</h1>
+                    <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
                 </Link>
-                <nav className="dash-header__nav">
+                <nav className="dashHeaderNav">
                     {/* add more buttons later */}
                     {logoutButton}
                 </nav>
