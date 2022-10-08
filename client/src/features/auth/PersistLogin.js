@@ -54,7 +54,7 @@ const PersistLogin = () => {
         content = <Outlet />
     } else if (isLoading) { //persist: yes, token: no
         console.log('loading')
-        content = <p>Loading...</p>
+        content = <p>Cargando...</p>
     } else if (isError) { //persist: yes, token: no
         console.log('error')
         content = (
