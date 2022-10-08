@@ -7,6 +7,7 @@ import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
+const EMAIL_REGEX = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
 
 const NewUserForm = () => {
 
@@ -19,29 +20,53 @@ const NewUserForm = () => {
 
     const navigate = useNavigate()
 
+    const [name, setName] = useState('')
+    const [validName, setValidName] = useState(false)
+    const [surname, setSurname] = useState('')
+    const [validSurname, setValidSurname] = useState(false)
+    const [mail, setMail] = useState('')
+    const [validMail, setValidMail] = useState(false)
     const [username, setUsername] = useState('')
     const [validUsername, setValidUsername] = useState(false)
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
-    const [roles, setRoles] = useState(["Employee"])
+    const [roles, setRoles] = useState(["Normal"])
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
     }, [username])
 
     useEffect(() => {
+        setValidName(USER_REGEX.test(name))
+    }, [name])
+
+    useEffect(() => {
+        setValidSurname(USER_REGEX.test(surname))
+    }, [surname])
+
+    useEffect(() => {
         setValidPassword(PWD_REGEX.test(password))
     }, [password])
 
     useEffect(() => {
+        setValidMail(EMAIL_REGEX.test(mail))
+    }, [mail])
+
+    useEffect(() => {
         if (isSuccess) {
+            setName('')
+            setSurname('')
             setUsername('')
             setPassword('')
+            setMail('')
             setRoles([])
             navigate('/dash/users')
         }
     }, [isSuccess, navigate])
 
+    const onNameChanged = e => setName(e.target.value)
+    const onSurnameChanged = e => setSurname(e.target.value)
+    const onMailChanged = e => setMail(e.target.value)
     const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
@@ -53,12 +78,12 @@ const NewUserForm = () => {
         setRoles(values)
     }
 
-    const canSave = [roles.length, validUsername, validPassword].every(Boolean) && !isLoading
+    const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ username, password, roles })
+            await addNewUser({ name, surname, mail, username, password, roles })
         }
     }
 
@@ -73,6 +98,9 @@ const NewUserForm = () => {
     })
 
     const errClass = isError ? "errmsg" : "offscreen"
+    const validNameClass = !validName ? 'form__input--incomplete' : ''
+    const validSurnameClass = !validSurname ? 'form__input--incomplete' : ''
+    const validMailClass = !validMail ? 'form__input--incomplete' : ''
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
     const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
@@ -84,7 +112,7 @@ const NewUserForm = () => {
 
             <form className="form" onSubmit={onSaveUserClicked}>
                 <div className="form__title-row">
-                    <h2>New User</h2>
+                    <h2>Registro</h2>
                     <div className="form__action-buttons">
                         <button
                             className="icon-button"
@@ -95,8 +123,44 @@ const NewUserForm = () => {
                         </button>
                     </div>
                 </div>
+
+                <label className="form__label" htmlFor="name">
+                    Nombre: <span className="nowrap">[3-20 letters]</span></label>
+                <input
+                    className={`form__input ${validNameClass}`}
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="off"
+                    value={name}
+                    onChange={onNameChanged}
+                />
+
+                <label className="form__label" htmlFor="surname">
+                    Apellido: <span className="nowrap">[3-20 letters]</span></label>
+                <input
+                    className={`form__input ${validSurnameClass}`}
+                    id="surname"
+                    name="surname"
+                    type="text"
+                    autoComplete="off"
+                    value={surname}
+                    onChange={onSurnameChanged}
+                />
+
+                <label className="form__label" htmlFor="mail">
+                    Correo electrónico: <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
+                <input
+                    className={`form__input ${validMailClass}`}
+                    id="mail"
+                    name="mail"
+                    type="text"
+                    value={mail}
+                    onChange={onMailChanged}
+                />
+
                 <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
+                    Nombre de usuario: <span className="nowrap">[3-20 letters]</span></label>
                 <input
                     className={`form__input ${validUserClass}`}
                     id="username"
@@ -108,7 +172,7 @@ const NewUserForm = () => {
                 />
 
                 <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
+                    Contraseña: <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
                 <input
                     className={`form__input ${validPwdClass}`}
                     id="password"
@@ -118,8 +182,10 @@ const NewUserForm = () => {
                     onChange={onPasswordChanged}
                 />
 
+                
+
                 <label className="form__label" htmlFor="roles">
-                    ROLES:</label>
+                    Rol:</label>
                 <select
                     id="roles"
                     name="roles"

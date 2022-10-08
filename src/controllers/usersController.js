@@ -20,10 +20,10 @@ const getAllUsers = asyncHandler (async (req, res) => {
 // @access Privada
 
 const createNewUser = asyncHandler (async (req, res) => {
-    const { username, password, roles } = req.body
+    const { name, surname, mail, username, password, roles } = req.body
 
     // Confirm values
-    if (!username || !password ||!Array.isArray(roles) || !roles.length) {
+    if (!name || !surname || !mail || !username || !password ||!Array.isArray(roles) || !roles.length) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -37,7 +37,7 @@ const createNewUser = asyncHandler (async (req, res) => {
     // Hash password
     const hashedPwd = await bcrypt.hash(password, 10) 
 
-    const userObject = { username, "password": hashedPwd, roles}
+    const userObject = { name, surname, mail, username, "password": hashedPwd, roles}
 
     const user = await (User.create(userObject))
 
