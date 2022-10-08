@@ -1,33 +1,47 @@
 version: "3"
 
 services:
-    web:
-        container_name: app_nodejs
+    react-app:
+        container_name: react-app
+        build: ./client
+        environment:
+          WATCHPACK_POLLING: "true"
+        stdin_open: true
+        ports: 
+          - "3000:3000"
+        networks:
+          - mern-app  
+        volumes:
+          - ./client/:/usr/src/app
+          - /usr/src/app/node_modules
+    api-server:
+        container_name: api-server
         command: npm run dev
-        restart: always
         build: ./
         ports:
           - "5000:5000"
-        links:
-          - mongo
+        networks:
+          - mern-app
         volumes:
-          - .:/usr/src/app
+          - ./:/usr/src/app
+          - /usr/src/app/node_modules
+        depends_on:
+          - mongo
     mongo:
-        container_name: app_mongodb
+        container_name: mongo
         image: mongo
-        ports: 
-            - "27017:27017"
-        logging:
-            driver: none
+        ports:
+          - "27017:27017"
+        networks:
+          - mern-app
         environment:
             MONGO_INITDB_ROOT_USERNAME: altion
             MONGO_INITDB_ROOT_PASSWORD: altion2022
-    react:
-        container_name: app_react
-        build: ./client
-        ports: 
-           - "3000:3000"
-        depends_on:
-           - web
-        environment:
-           - WATCHPACK_POLLING=true
+        volumes:
+          - mongo-data:/data/db
+networks:
+  mern-app:
+    driver: bridge
+volumes:
+  mongo-data: 
+    driver: local
