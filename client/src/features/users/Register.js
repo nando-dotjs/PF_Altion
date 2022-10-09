@@ -81,7 +81,7 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [username, password, matchPwd])
+    }, [name, surname, mail, username, password, matchPwd])
 
     useEffect(() => {
         if (isSuccess) {
@@ -94,7 +94,7 @@ const Register = () => {
             setRoles([])
             navigate('/login')
         }
-    }, [isSuccess])
+    }, [isSuccess, navigate])
 
     const onRolesChanged = e => {
         const values = Array.from(
@@ -104,13 +104,25 @@ const Register = () => {
         setRoles(values)
     }
 
-    const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
-            await addNewUser({ name, surname, mail, username, password, roles })
+        const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
+        try{ 
+            if (canSave) {
+                await addNewUser({ name, surname, mail, username, password, roles })
+            }
+        } catch(err) {
+            if (!err.status) {
+                setErrMsg('No Server Response');
+            } else if (err.status === 409) {
+                setErrMsg('Mail asociado');
+            } else {
+                setErrMsg('Failed');
+            }
+            errRef.current.focus();
         }
+        
     }
 
     const options = Object.values(ROLES).map(role => {
@@ -125,13 +137,13 @@ const Register = () => {
 
     const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
-   
+    const errClass = isError ? "errmsg" : "offscreen"
+
 
     return (
         <>
-            
                 <section>
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                    <p className={errClass}>{error?.data?.message}</p>
                     <h1>Registro</h1>
                     <form onSubmit={onSaveUserClicked}>
 
@@ -301,7 +313,6 @@ const Register = () => {
                         </span>
                     </p>
                 </section>
-            
         </>
     )
 }
