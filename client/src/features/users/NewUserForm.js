@@ -22,14 +22,19 @@ const NewUserForm = () => {
 
     const [name, setName] = useState('')
     const [validName, setValidName] = useState(false)
+
     const [surname, setSurname] = useState('')
     const [validSurname, setValidSurname] = useState(false)
+
     const [mail, setMail] = useState('')
     const [validMail, setValidMail] = useState(false)
+
     const [username, setUsername] = useState('')
     const [validUsername, setValidUsername] = useState(false)
+
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
+    
     const [roles, setRoles] = useState(["Normal"])
 
     useEffect(() => {

@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser')
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions))
+app.use('/register', require('./src/routes/registerRoutes'))
 app.use('/users', require('./src/routes/userRoutes'))
 app.use('/auth', require('./src/routes/authRoutes'))
 

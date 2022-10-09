@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth'
 
 const Welcome = () => {
     
-    const { username, isAdmin } = useAuth()
+    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const date = new Date()
     const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
@@ -16,9 +16,15 @@ const Welcome = () => {
 
             <h1>Bienvenido {username}</h1>
 
-            <p><Link to="/dash/routes">Recorridos</Link></p>
+            {(isAdmin) && <p><Link to="/dash/users">Administración de Usuarios</Link></p>}
 
-            {(isAdmin) && <p><Link to="/dash/users">Lista de Usuarios</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/routes">Gestión de recorridos</Link></p>}
+
+            {(isAdmin) && <p><Link to="/dash/users">Gestión de puntos</Link></p>}
+
+            {(isCEV) && <p><Link to="/dash/recolectCEV">Alta de punto de recolección para CEV</Link></p>}
+
+            {(isEmpresa) && <p><Link to="/dash/recolectEmp">Alta de punto de recolección para Empresas</Link></p>}
 
         </section>
     )

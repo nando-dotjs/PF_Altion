@@ -12,6 +12,7 @@ import Prefetch from './features/auth/Prefetch'
 import PersistLogin from './features/auth/PersistLogin';
 import RequireAuth from './features/auth/RequireAuth';
 import { ROLES } from './config/roles';
+import Register from './features/users/Register';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         {/* public routes */ }
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
         {/* Protected Routes */ }
         <Route element={<PersistLogin />}>
