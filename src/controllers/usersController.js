@@ -29,9 +29,9 @@ const createNewUser = asyncHandler (async (req, res) => {
 
     // Check for duplicate
 
-    const duplicate = await User.findOne({ username }).lean().exec()
+    const duplicate = await User.findOne({ mail }).lean().exec()
     if (duplicate) {
-        return res.status(409).json({ message: 'Nombre de usuario duplicado'})
+        return res.status(409).json({ message: 'Ya existe una cuenta asociada al correo electrónico ingresado'})
     }
 
     // Hash password
