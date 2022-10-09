@@ -3,3 +3,8 @@ export const ROLES = {
     CEV: 'CEV',
     Empresa: 'Empresa'
 }
+
+export const ROLES_PUBLICOS = {
+    CEV: 'CEV',
+    Empresa: 'Empresa'
+}

@@ -1,22 +1,23 @@
 import { useRef, useState, useEffect } from "react";
-import { useAddNewUserMutation } from "./usersApiSlice"
+import { useCreateNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ROLES } from "../../config/roles"
+import { ROLES_PUBLICOS } from "../../config/roles"
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const EMAIL_REGEX = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/
+const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const Register = () => {
 
-    const [addNewUser, {
+    const [createNewUser, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewUserMutation()
+    }] = useCreateNewUserMutation()
 
     const navigate = useNavigate()
 
@@ -59,11 +60,11 @@ const Register = () => {
     }, [])
 
     useEffect(() => {
-        setValidName(USER_REGEX.test(name));
+        setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
     useEffect(() => {
-        setValidSurname(USER_REGEX.test(surname));
+        setValidSurname(NAME_SURNAME_REGEX.test(surname));
     }, [surname])
 
     useEffect(() => {
@@ -104,13 +105,23 @@ const Register = () => {
         setRoles(values)
     }
 
+    const options = Object.values(ROLES_PUBLICOS).map(role => {
+        return (
+            <option
+                key={role}
+                value={role}
+            > {role}</option >
+        )
+    })
+
+    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
         try{ 
             if (canSave) {
-                await addNewUser({ name, surname, mail, username, password, roles })
+                await createNewUser({ name, surname, mail, username, password, roles })
             }
         } catch(err) {
             if (!err.status) {
@@ -120,25 +131,11 @@ const Register = () => {
             } else {
                 setErrMsg('Failed');
             }
-            errRef.current.focus();
+            //errRef.current.focus();
         }
         
     }
-
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
-
-            > {role}</option >
-        )
-    })
-
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
-
     const errClass = isError ? "errmsg" : "offscreen"
-
 
     return (
         <>
@@ -166,8 +163,8 @@ const Register = () => {
                         />
                         <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            4 a 24 caracteres.<br />
-                            Debe empezar con una letra.<br />
+                            2 a 15 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
                         </p>
 
                         <label htmlFor="surname">
@@ -189,8 +186,8 @@ const Register = () => {
                         />
                         <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            4 a 24 caracteres.<br />
-                            Debe empezar con una letra.<br />
+                            2 a 15 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
                         </p>
 
                         <label htmlFor="mail">
@@ -288,13 +285,13 @@ const Register = () => {
                         </p>
 
                         <label htmlFor="roles">
-                            Rol:</label>
+                            Voy a registrar:</label>
                         <select
                             id="roles"
                             name="roles"
                             className={`formSelect ${validRolesClass}`}
                             multiple={true}
-                            size="3"
+                            size="2"
                             value={roles}
                             onChange={onRolesChanged}
                         >
