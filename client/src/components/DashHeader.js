@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faUserGear,
     faUserPlus,
-    faRightFromBracket
+    faRightFromBracket,
+    faPlus
 
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
@@ -15,6 +16,7 @@ import useAuth from '../hooks/useAuth'
 const DASH_REGEX = /^\/dash(\/)?$/
 const NOTES_REGEX = /^\/dash\/notes(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
+const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 
 const DashHeader = () => {
 
@@ -36,6 +38,7 @@ const DashHeader = () => {
 
     const onNewUserClicked = () => navigate('/dash/users/new')
     const onUsersClicked = () => navigate('/dash/users')
+    const onNewDriverClicked = () => navigate('/dash/drivers/new')
 
     let dashClass = null
     if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
@@ -51,6 +54,19 @@ const DashHeader = () => {
                 onClick={onNewUserClicked}
             >
                 <FontAwesomeIcon icon={faUserPlus} />
+            </button>
+        )
+    }
+
+    let newDriverButton = null
+    if (DRIVERS_REGEX.test(pathname)) {
+        newDriverButton = (
+            <button
+                className="icon-button"
+                title="New Driver"
+                onClick={onNewDriverClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
             </button>
         )
     }
@@ -91,6 +107,7 @@ const DashHeader = () => {
                 {newUserButton}
                 {userButton}
                 {logoutButton}
+                {newDriverButton}
             </>
         )
     }

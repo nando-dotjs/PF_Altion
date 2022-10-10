@@ -1,0 +1,97 @@
+const Driver = require('../models/Driver')
+const asyncHandler = require('express-async-handler')
+const bcrypt = require('bcrypt')
+const { restart } = require('nodemon')
+
+// @desc Obtener todos los choferes
+// @route GET /drivers
+// @access Privada
+
+const getAllDrivers = asyncHandler (async (req, res) => {
+    const drivers = await Driver.find().select().lean()
+    if (!drivers?.length) {
+        return res.status(400).json({message: 'No se encontraron choferes'})
+    } 
+    res.json(drivers)
+})
+
+// @desc Crear nuevo chofer
+// @route POST /drivers
+// @access Privada
+
+const createNewDriver = asyncHandler (async (req, res) => {
+    const { name, surname } = req.body
+
+    // Confirm values
+    if (!name || !surname) {
+        return res.status(400).json({ message: 'Debe completar todos los campos' })
+    }
+
+    const driverObject = { name, surname }
+
+    const driver = await (Driver.create(driverObject))
+
+    if (driver) { // Si el usuario se creó
+        res.status(201).json({ message: `El chofer ${name} ${surname} ha sido creado`})
+    } else {
+        res.status(400).json({ message: 'Datos del chofer inválidos'})
+    }
+
+})
+
+// @desc Actualizar un chofer
+// @route PATCH /drivers
+// @access Privada
+
+const updateDriver = asyncHandler (async (req, res) => {
+    const { id, name, surname, active} = req.body
+
+    // Confirmamos los valores
+    if (!id || !name || !surname || typeof active !== 'boolean'){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+
+    const driver = await Driver.findById(id).exec()
+
+    if (!driver) {
+        return res.status(400).json({ message: 'Chofer no encontrado'})
+    }
+
+    driver.name = name
+    driver.surname = surname
+    driver.active = active
+
+    const updatedDriver = await driver.save()
+    res.json({ message: `Chofer ${updatedDriver.name} ${updatedDriver.surname} actualizado`})
+})
+
+// @desc Eliminar un chofer
+// @route DELETE /drivers
+// @access Privada
+
+const deleteDriver = asyncHandler (async (req, res) => {
+    const { id } = req.body
+    
+    if (!id) {
+        return res.status(400).json({ message: 'Se requiere un ID de chofer'})
+    }
+
+    const driver = await Driver.findById(id).exec()
+
+    if (!driver) {
+        return res.status(400).json({ message: 'Chofer no encontrado'})
+    }
+
+    const result = await driver.deleteOne()
+
+    const reply = `El chofer ${result.name} ${result.surname} con ID ${result._id} ha sido eliminado`
+
+    res.json(reply)
+})
+
+module.exports = {
+    getAllDrivers,
+    createNewDriver,
+    updateDriver,
+    deleteDriver
+}
