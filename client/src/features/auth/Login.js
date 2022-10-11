@@ -63,7 +63,7 @@ const Login = () => {
     const content = (
         <section className="public">
             <header>
-                <h1>Login</h1>
+                <h1>Ingreso a la aplicación</h1>
             </header>
             <main className="login">
                 <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
