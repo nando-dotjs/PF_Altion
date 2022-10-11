@@ -13,8 +13,6 @@ const useAuth = () => {
     if (token) {
         const decoded = jwtDecode(token)
         const { username, role } = decoded.UserInfo
-        console.log(username)
-        console.log(role)
 
         isAdmin = role === 'Admin'
         isCEV = role === 'CEV'

@@ -26,7 +26,6 @@ const EditDriverForm = ({ driver }) => {
     const [active, setActive] = useState(driver.active)
 
     useEffect(() => {
-        console.log(isSuccess)
         if (isSuccess || isDelSuccess) {
             setName('')
             setSurname('')
@@ -45,7 +44,7 @@ const EditDriverForm = ({ driver }) => {
         await deleteDriver({ id: driver.id })
     }
 
-    let canSave = true
+    let canSave = [name, surname].every(Boolean) && !isLoading
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
 
@@ -55,63 +54,67 @@ const EditDriverForm = ({ driver }) => {
     const content = (
         <>
             <p className={errClass}>{errContent}</p>
+            <main className='editDriver'>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="formTitleRow">
-                    <h2>Edit Driver</h2>
-                    <div className="formActionButtons">
-                        <button
-                            className="iconButton"
-                            title="Save"
-                            onClick={onSaveDriverClicked}
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteDriverClicked}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
+                <form className="form" onSubmit={e => e.preventDefault()}>
+                    <div className="formTitleRow">
+                        <h2>Edit Driver</h2>
+                        <div className="formActionButtons">
+                            <button
+                                className="iconButton"
+                                title="Save"
+                                onClick={onSaveDriverClicked}
+                                disabled={!canSave}
+                            >
+                                <FontAwesomeIcon icon={faSave} />
+                            </button>
+                            <button
+                                className="icon-button"
+                                title="Delete"
+                                onClick={onDeleteDriverClicked}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <label className="formLabel" htmlFor="name">
-                    Nombre: <span className="nowrap"></span></label>
-                <input
-                    className={`formInput name`}
-                    id="name"
-                    name="name"
-                    type="text"
-                    autoComplete="off"
-                    value={name}
-                />
-
-                <label className="formLabel" htmlFor="surname">
-                    Apellido: <span className="nowrap"></span> <span className="nowrap"></span></label>
-                <input
-                    className={`formInput surname`}
-                    id="surname"
-                    name="surname"
-                    type="text"
-                    autoComplete="off"
-                    value={surname}
-                />
-
-                <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
-                    ACTIVO:
+                    <label className="formLabel" htmlFor="name">
+                        Nombre: <span className="nowrap"></span></label>
                     <input
-                        className="formCheckbox"
-                        id="driver-active"
-                        name="driver-active"
-                        type="checkbox"
-                        checked={active}
-                        onChange={onActiveChanged}
+                        className={`formInput name`}
+                        id="name"
+                        name="name"
+                        type="text"
+                        autoComplete="off"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                     />
-                </label>
 
-            </form>
+                    <label className="formLabel" htmlFor="surname">
+                        Apellido: <span className="nowrap"></span> <span className="nowrap"></span></label>
+                    <input
+                        className={`formInput surname`}
+                        id="surname"
+                        name="surname"
+                        type="text"
+                        autoComplete="off"
+                        value={surname}
+                        onChange={e => setSurname(e.target.value)}
+                    />
+
+                    <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
+                        ACTIVO:
+                        <input
+                            className="formCheckbox"
+                            id="driver-active"
+                            name="driver-active"
+                            type="checkbox"
+                            checked={active}
+                            onChange={onActiveChanged}
+                        />
+                    </label>
+
+                </form>
+            </main>
         </>
     )
 

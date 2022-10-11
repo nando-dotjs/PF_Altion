@@ -14,6 +14,7 @@ import { ROLES } from './config/roles';
 import Register from './features/users/Register';
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
+import EditDriver from './features/drivers/EditDriver';
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
 
             <Route path="drivers">
               <Route index element={<DriversList />} />
-              <Route path=":id" element={<EditUser />} />
+              <Route path=":id" element={<EditDriver />} />
               <Route path="new" element={<NewDriverForm />} />
             </Route>
 
