@@ -20,11 +20,11 @@ const getAllUsers = asyncHandler (async (req, res) => {
 // @access Privada
 
 const createNewUser = asyncHandler (async (req, res) => {
-    const { name, surname, mail, username, password, roles } = req.body
+    const { name, surname, mail, username, password, role } = req.body
 
     // Confirm values
-    if (!name || !surname || !mail || !username || !password ||!Array.isArray(roles) || !roles.length) {
-        return res.status(400).json({ message: 'Debe completar todos los campos' })
+    if (!name || !surname || !mail || !username || !password || !role ) {
+        return res.status(400).json({ message: 'Debe completar todos los camposssss' })
     }
 
     // Check for duplicate
@@ -37,7 +37,7 @@ const createNewUser = asyncHandler (async (req, res) => {
     // Hash password
     const hashedPwd = await bcrypt.hash(password, 10) 
 
-    const userObject = { name, surname, mail, username, "password": hashedPwd, roles}
+    const userObject = { name, surname, mail, username, "password": hashedPwd, role}
 
     const user = await (User.create(userObject))
 
@@ -54,10 +54,10 @@ const createNewUser = asyncHandler (async (req, res) => {
 // @access Privada
 
 const updateUser = asyncHandler (async (req, res) => {
-    const { id, username, roles, active, password } = req.body
+    const { id, username, role, active, password } = req.body
 
     // Confirmamos los valores
-    if (!id || !username || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean'){
+    if (!id || !username || !role || typeof active !== 'boolean'){
         return res.status(400).json({ message: 'Todos los campos son requeridos'})
     }
 
@@ -78,7 +78,7 @@ const updateUser = asyncHandler (async (req, res) => {
     }
 
     user.username = username
-    user.roles = roles
+    user.role = role
     user.active = active
 
     if (password) { // Si desea actualizar la contraseña, la encripta nuevamente!

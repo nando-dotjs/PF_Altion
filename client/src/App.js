@@ -41,7 +41,7 @@ function App() {
 
             <Route path="drivers">
               <Route index element={<DriversList />} />
-              {/* <Route path=":id" element={<EditUser />} /> */}
+              <Route path=":id" element={<EditUser />} />
               <Route path="new" element={<NewDriverForm />} />
             </Route>
 

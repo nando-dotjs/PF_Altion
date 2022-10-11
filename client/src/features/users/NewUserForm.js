@@ -35,7 +35,7 @@ const NewUserForm = () => {
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
     
-    const [roles, setRoles] = useState(["Normal"])
+    const [role, setRole] = useState('')
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
@@ -64,7 +64,7 @@ const NewUserForm = () => {
             setUsername('')
             setPassword('')
             setMail('')
-            setRoles([])
+            setRole('')
             navigate('/dash/users')
         }
     }, [isSuccess, navigate])
@@ -75,20 +75,12 @@ const NewUserForm = () => {
     const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
-    const onRolesChanged = e => {
-        const values = Array.from(
-            e.target.selectedOptions, //HTMLCollection 
-            (option) => option.value
-        )
-        setRoles(values)
-    }
-
-    const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
+    const canSave = [role, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ name, surname, mail, username, password, roles })
+            await addNewUser({ name, surname, mail, username, password, role })
         }
     }
 
@@ -108,7 +100,6 @@ const NewUserForm = () => {
     const validMailClass = !validMail ? 'form__input--incomplete' : ''
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
 
     const content = (
@@ -192,13 +183,11 @@ const NewUserForm = () => {
                 <label className="form__label" htmlFor="roles">
                     Rol:</label>
                 <select
-                    id="roles"
-                    name="roles"
-                    className={`form__select ${validRolesClass}`}
-                    multiple={true}
-                    size="3"
-                    value={roles}
-                    onChange={onRolesChanged}
+                    id="role"
+                    name="role"
+                    className={`form__select`}
+                    value={role}
+                    onChange={e => setRole(e.target.value)}
                 >
                     {options}
                 </select>

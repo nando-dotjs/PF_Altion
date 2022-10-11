@@ -28,7 +28,7 @@ const DriversList = () => {
         const { ids } = drivers
 
         const tableContent = ids?.length && ids.map(driverId => <Driver key={driverId} driverId={driverId} />)
-        {console.log(tableContent)}    
+          
         content = (
             <table className="table tableDrivers">
                 <thead className="tableThead">

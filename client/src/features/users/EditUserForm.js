@@ -29,7 +29,7 @@ const EditUserForm = ({ user }) => {
     const [validUsername, setValidUsername] = useState(false)
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
-    const [roles, setRoles] = useState(user.roles)
+    const [role, setRole] = useState(user.role)
     const [active, setActive] = useState(user.active)
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const EditUserForm = ({ user }) => {
         if (isSuccess || isDelSuccess) {
             setUsername('')
             setPassword('')
-            setRoles([])
+            setRole('')
             navigate('/dash/users')
         }
 
@@ -54,21 +54,13 @@ const EditUserForm = ({ user }) => {
     const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
-    const onRolesChanged = e => {
-        const values = Array.from(
-            e.target.selectedOptions,
-            (option) => option.value
-        )
-        setRoles(values)
-    }
-
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveUserClicked = async (e) => {
         if (password) {
-            await updateUser({ id: user.id, username, password, roles, active })
+            await updateUser({ id: user.id, username, password, role, active })
         } else {
-            await updateUser({ id: user.id, username, roles, active })
+            await updateUser({ id: user.id, username, role, active })
         }
     }
 
@@ -88,15 +80,14 @@ const EditUserForm = ({ user }) => {
 
     let canSave
     if (password) {
-        canSave = [roles.length, validUsername, validPassword].every(Boolean) && !isLoading
+        canSave = [role, validUsername, validPassword].every(Boolean) && !isLoading
     } else {
-        canSave = [roles.length, validUsername].every(Boolean) && !isLoading
+        canSave = [role, validUsername].every(Boolean) && !isLoading
     }
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
@@ -164,13 +155,11 @@ const EditUserForm = ({ user }) => {
                 <label className="formLabel" htmlFor="roles">
                     ROLES:</label>
                 <select
-                    id="roles"
-                    name="roles"
-                    className={`formSelect ${validRolesClass}`}
-                    multiple={true}
-                    size="3"
-                    value={roles}
-                    onChange={onRolesChanged}
+                    id="role"
+                    name="role"
+                    className={`formSelect`}
+                    value={role}
+                    onChange={e => setRole(e.target.value)}
                 >
                     {options}
                 </select>

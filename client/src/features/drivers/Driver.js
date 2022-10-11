@@ -6,11 +6,13 @@ import { useSelector } from 'react-redux'
 import { selectDriverById } from './driversApiSlice'
 
 const Driver = ({ driverId }) => {
+    
     const driver = useSelector(state => selectDriverById(state, driverId))
 
     const navigate = useNavigate()
 
     if (driver) {
+        
         const handleEdit = () => navigate(`/dash/drivers/${driverId}`)
 
         const cellStatus = driver.active ? '' : 'table__cell--inactive'

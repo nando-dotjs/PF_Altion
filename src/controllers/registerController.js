@@ -8,10 +8,10 @@ const { restart } = require('nodemon')
 // @access Privada
 
 const registerNewUser = asyncHandler (async (req, res) => {
-    const { name, surname, mail, username, password, roles } = req.body
+    const { name, surname, mail, username, password, role } = req.body
 
     // Confirm values
-    if (!name || !surname || !mail || !username || !password ||!Array.isArray(roles) || !roles.length) {
+    if (!name || !surname || !mail || !username || !password ||!role ) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -25,7 +25,7 @@ const registerNewUser = asyncHandler (async (req, res) => {
     // Hash password
     const hashedPwd = await bcrypt.hash(password, 10) 
 
-    const userObject = { name, surname, mail, username, "password": hashedPwd, roles}
+    const userObject = { name, surname, mail, username, "password": hashedPwd, role}
 
     const user = await (User.create(userObject))
 
