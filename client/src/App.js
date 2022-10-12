@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
-import Public from './components/Public'
 import Login from './features/auth/Login';
 import DashLayout from './components/DashLayout'
 import Welcome from './features/auth/Welcome'
@@ -13,14 +12,16 @@ import PersistLogin from './features/auth/PersistLogin';
 import RequireAuth from './features/auth/RequireAuth';
 import { ROLES } from './config/roles';
 import Register from './features/users/Register';
+import DriversList from './features/drivers/DriversList';
+import NewDriverForm from './features/drivers/NewDriverForm';
+import EditDriver from './features/drivers/EditDriver';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         {/* public routes */ }
-        <Route index element={<Public />} />
-        <Route path="login" element={<Login />} />
+        <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
 
         {/* Protected Routes */ }
@@ -37,6 +38,12 @@ function App() {
               <Route path=":id" element={<EditUser />} />
               <Route path="new" element={<NewUserForm />} />
             </Route>
+            </Route>
+
+            <Route path="drivers">
+              <Route index element={<DriversList />} />
+              <Route path=":id" element={<EditDriver />} />
+              <Route path="new" element={<NewDriverForm />} />
             </Route>
 
             <Route path="routes">

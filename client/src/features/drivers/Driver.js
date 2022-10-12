@@ -3,22 +3,24 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
+import { selectDriverById } from './driversApiSlice'
 
-const User = ({ userId }) => {
-    const user = useSelector(state => selectUserById(state, userId))
+const Driver = ({ driverId }) => {
+    
+    const driver = useSelector(state => selectDriverById(state, driverId))
 
     const navigate = useNavigate()
 
-    if (user) {
-        const handleEdit = () => navigate(`/dash/users/${userId}`)
+    if (driver) {
+        
+        const handleEdit = () => navigate(`/dash/drivers/${driverId}`)
 
-        const cellStatus = user.active ? '' : 'table__cell--inactive'
+        const cellStatus = driver.active ? '' : 'table__cell--inactive'
 
         return (
-            <tr className="tableRow user">
-                <td className={`tableCell ${cellStatus}`}>{user.username}</td>
-                <td className={`tableCell ${cellStatus}`}>{user.role}</td>
+            <tr className="tableRow driver">
+                <td className={`tableCell ${cellStatus}`}>{driver.name}</td>
+                <td className={`tableCell ${cellStatus}`}>{driver.surname}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
                         className="iconButton tableButton"
@@ -32,4 +34,4 @@ const User = ({ userId }) => {
 
     } else return null
 }
-export default User
+export default Driver

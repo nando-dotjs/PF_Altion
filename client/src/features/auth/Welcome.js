@@ -22,6 +22,8 @@ const Welcome = () => {
 
             {(isAdmin) && <p><Link to="/dash/users">Gestión de puntos</Link></p>}
 
+            {(isAdmin) && <p><Link to="/dash/drivers">Gestión de choferes</Link></p>}
+
             {(isCEV) && <p><Link to="/dash/recolectCEV">Alta de punto de recolección para CEV</Link></p>}
 
             {(isEmpresa) && <p><Link to="/dash/recolectEmp">Alta de punto de recolección para Empresas</Link></p>}
