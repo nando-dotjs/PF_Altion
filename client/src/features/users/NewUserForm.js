@@ -61,6 +61,10 @@ const NewUserForm = () => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Usuario';
+      });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
@@ -132,15 +136,6 @@ const NewUserForm = () => {
             <form className="form" onSubmit={onSaveUserClicked}>
                 <div className="formTitleRow">
                     <h2>Registro</h2>
-                    <div className="formActionButtons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                    </div>
                 </div>
 
                 <label htmlFor="name">
@@ -301,9 +296,19 @@ const NewUserForm = () => {
                     value={role}
                     onChange={e => setRole(e.target.value)}
                 >
+                    <option disabled={true} value="">
+                    --Seleccione un rol--
+                    </option>
                     {options}
                 </select>
 
+                <br/>
+
+                <button
+                    className="formSubmitButton"
+                    title="Save"
+                    disabled={!canSave}
+                >Crear Usuario</button>
             </form>
         </>
     )
