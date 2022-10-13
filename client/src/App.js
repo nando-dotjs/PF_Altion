@@ -15,10 +15,17 @@ import Register from './features/users/Register';
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
 import EditDriver from './features/drivers/EditDriver';
+import CevsList from './features/cevs/CevsList';
+import EditCev from './features/cevs/EditCev';
+import NewCev from './features/cevs/NewCev';
+import useTitle from './hooks/useTitle';
 
 function App() {
+  useTitle('UPC')
   return (
+    
     <Routes>
+    
       <Route path="/" element={<Layout />}>
         {/* public routes */ }
         <Route index element={<Login />} />
@@ -38,12 +45,18 @@ function App() {
               <Route path=":id" element={<EditUser />} />
               <Route path="new" element={<NewUserForm />} />
             </Route>
-            </Route>
 
             <Route path="drivers">
               <Route index element={<DriversList />} />
               <Route path=":id" element={<EditDriver />} />
               <Route path="new" element={<NewDriverForm />} />
+            </Route>
+            </Route>
+
+            <Route path="cevs">
+              <Route index element={<CevsList />} />
+              <Route path=":id" element={<EditCev />} />
+              <Route path="new" element={<NewCev />} />
             </Route>
 
             <Route path="routes">

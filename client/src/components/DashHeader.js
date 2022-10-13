@@ -14,7 +14,7 @@ import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 import useAuth from '../hooks/useAuth'
 
 const DASH_REGEX = /^\/dash(\/)?$/
-const NOTES_REGEX = /^\/dash\/notes(\/)?$/
+const CEVS_REGEX = /^\/dash\/cevs(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 
@@ -39,9 +39,10 @@ const DashHeader = () => {
     const onNewUserClicked = () => navigate('/dash/users/new')
     const onUsersClicked = () => navigate('/dash/users')
     const onNewDriverClicked = () => navigate('/dash/drivers/new')
+    const onNewCevClicked = () => navigate('/dash/cevs/new')
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
@@ -71,6 +72,19 @@ const DashHeader = () => {
         )
     }
 
+    let newCevButton = null
+    if (CEVS_REGEX.test(pathname)) {
+        newCevButton = (
+            <button
+                className="icon-button"
+                title="New Cev"
+                onClick={onNewCevClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+    }
+
     let userButton = null
     if (isAdmin) {
         if (!USERS_REGEX.test(pathname) && pathname.includes('/dash')) {
@@ -88,7 +102,7 @@ const DashHeader = () => {
 
     const logoutButton = (
         <button
-            className="iconButton"
+            className="icon-button"
             title="Logout"
             onClick={sendLogout}
         >
@@ -108,6 +122,7 @@ const DashHeader = () => {
                 {userButton}
                 {logoutButton}
                 {newDriverButton}
+                {newCevButton}
             </>
         )
     }

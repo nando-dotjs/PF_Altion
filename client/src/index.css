@@ -10,14 +10,14 @@
 
 :root {
   /* COLORS */
-  --BGCOLOR: #0F172A;
+  --BGCOLOR: #1f4835;
   --BORDER-COLOR: #FFF;
   --COLOR: #FFF;
   --ERROR: firebrick;
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --CEV-BGCOLOR: hsla(240, 64%, 27%, 0.65);
   --STATUS-COMPLETE: limegreen;
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #FFF;
@@ -54,12 +54,12 @@
   place-content: center;
 }
 
-.iconButton:hover,
-.iconButton:focus-visible {
+.icon-button:hover,
+.icon-button:focus-visible {
   transform: scale(1.2);
 }
 
-.iconButton[disabled] {
+.icon-button[disabled] {
   visibility: hidden;
 }
 
@@ -70,7 +70,7 @@ body {
   min-height: 100vh;
   background-color: var(--BGCOLOR);
   color: var(--COLOR);
-  /* background-image: url('./img/background.jpg'); */
+  background-image: url('./img/background.jpg'); 
   background-size: cover;
   background-position: top right;
   background-blend-mode: multiply;
@@ -234,23 +234,23 @@ tr {
   background-color: var(--INACTIVE);
 }
 
-/* ||  NOTE */
+/* ||  CEV */
 
-.note__created,
-.note__updated,
-.note__username {
+.cevCreated,
+.cevUpdated,
+.cevUsername {
   display: none;
 }
 
-.note__status {
+.cevStatus {
   font-weight: bold;
 }
 
-.note__status--open {
+.cevStatusOpen {
   color: var(--STATUS-OPEN);
 }
 
-.note__status--completed {
+.cevStatusCompleted {
   color: var(--STATUS-COMPLETE);
 }
 
@@ -286,8 +286,9 @@ tr {
 
 .formInput,
 .formSubmitButton {
-  padding: 0.5em;
+  padding: 0.3em;
   border-radius: 15px;
+  max-width: 80%;
 }
 
 .formInput--text {
@@ -305,8 +306,9 @@ tr {
 }
 
 .formSelect {
-  padding: 0.5em;
+  padding: 0.3em;
   border-radius: 15px;
+  max-width: 80%;
 }
 
 .formActionButtons {
@@ -384,7 +386,7 @@ tr {
     gap: 0;
   }
 
-  .iconButton {
+  .icon-button {
     font-size: 1.5rem;
   }
 }
@@ -408,17 +410,17 @@ tr {
     font-size: 1.5rem;
   }
 
-  .table--notes {
+  .tableCevs {
     grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
   }
 
-  .note__created,
-  .note__updated,
-  .note__username {
+  .cevCreated,
+  .cevUpdated,
+  .cevUsername {
     display: block
   }
 
-  .form__action-buttons {
+  .formActionButtons {
     position: static;
   }
 }

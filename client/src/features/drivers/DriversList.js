@@ -1,7 +1,9 @@
 import { useGetDriversQuery } from "./driversApiSlice"
 import Driver from './Driver'
+import useTitle from "../../hooks/useTitle"
 
 const DriversList = () => {
+    useTitle('Lista de Choferes')
 
     const {
         data: drivers,
