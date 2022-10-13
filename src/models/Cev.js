@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const noteSchema = new mongoose.Schema(
+const cevSchema = new mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
@@ -38,4 +38,4 @@ const noteSchema = new mongoose.Schema(
 
 
 
-module.exports = mongoose.model('Note', noteSchema)
+module.exports = mongoose.model('Cev', cevSchema)

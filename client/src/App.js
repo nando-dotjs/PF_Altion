@@ -15,11 +15,10 @@ import Register from './features/users/Register';
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
 import EditDriver from './features/drivers/EditDriver';
-import NotesList from './features/notes/NotesList';
-import EditNote from './features/notes/EditNote';
-import NewNote from './features/notes/NewNote';
+import CevsList from './features/cevs/CevsList';
+import EditCev from './features/cevs/EditCev';
+import NewCev from './features/cevs/NewCev';
 import useTitle from './hooks/useTitle';
-import background from './img/background.jpg';
 
 function App() {
   useTitle('UPC')
@@ -54,10 +53,10 @@ function App() {
             </Route>
             </Route>
 
-            <Route path="notes">
-              <Route index element={<NotesList />} />
-              <Route path=":id" element={<EditNote />} />
-              <Route path="new" element={<NewNote />} />
+            <Route path="cevs">
+              <Route index element={<CevsList />} />
+              <Route path=":id" element={<EditCev />} />
+              <Route path="new" element={<NewCev />} />
             </Route>
 
             <Route path="routes">

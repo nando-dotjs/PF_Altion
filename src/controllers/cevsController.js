@@ -1,31 +1,31 @@
-const Note = require('../models/Note')
+const Cev = require('../models/Cev')
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
 
-// @desc Get all notes 
-// @route GET /notes
+// @desc Get all cevs 
+// @route GET /cevs
 // @access Private
-const getAllNotes = asyncHandler(async (req, res) => {
-    // Get all notes from MongoDB
-    const notes = await Note.find().lean()
+const getAllCevs = asyncHandler(async (req, res) => {
+    // Get all cevs from MongoDB
+    const cevs = await Cev.find().lean()
 
-    // If no notes 
-    if (!notes?.length) {
+    // If no cevs 
+    if (!cevs?.length) {
         return res.status(400).json({ message: 'No hay CEVs disponibles' })
     }
 
-    const notesWithUser = await Promise.all(notes.map(async (note) => {
-        const user = await User.findById(note.user).lean().exec()
-        return { ...note, username: user.username }
+    const cevsWithUser = await Promise.all(cevs.map(async (cev) => {
+        const user = await User.findById(cev.user).lean().exec()
+        return { ...cev, username: user.username }
     }))
 
-    res.json(notesWithUser)
+    res.json(cevsWithUser)
 })
 
-// @desc Create new note
-// @route POST /notes
+// @desc Create new cev
+// @route POST /cevs
 // @access Private
-const createNewNote = asyncHandler(async (req, res) => {
+const createNewCev = asyncHandler(async (req, res) => {
     const { user, idFamily, cel, details, street, streetNumber } = req.body
 
     // Confirm data
@@ -34,16 +34,16 @@ const createNewNote = asyncHandler(async (req, res) => {
     }
 
     // Check for duplicate title
-    const duplicate = await Note.findOne({ user }).lean().exec()
+    const duplicate = await Cev.findOne({ user }).lean().exec()
 
     if (duplicate) {
         return res.status(409).json({ message: 'Ya existe un CEV asociado a este usuario' })
     }
 
     // Create and store the new user 
-    const note = await Note.create({ user, idFamily, cel, details, street, streetNumber })
+    const cev = await Cev.create({ user, idFamily, cel, details, street, streetNumber })
 
-    if (note) { // Created 
+    if (cev) { // Created 
         return res.status(201).json({ message: 'Nuevo CEV creado' })
     } else {
         return res.status(400).json({ message: 'Datos inválidos' })
@@ -51,10 +51,10 @@ const createNewNote = asyncHandler(async (req, res) => {
 
 })
 
-// @desc Update a note
-// @route PATCH /notes
+// @desc Update a cev
+// @route PATCH /cevs
 // @access Private
-const updateNote = asyncHandler(async (req, res) => {
+const updateCev = asyncHandler(async (req, res) => {
     const { id, user, idFamily, cel, details, street, streetNumber, completed } = req.body
 
     // Confirm data
@@ -62,38 +62,38 @@ const updateNote = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
-    // Confirm note exists to update
-    const note = await Note.findById(id).exec()
+    // Confirm cev exists to update
+    const cev = await Cev.findById(id).exec()
 
-    if (!note) {
+    if (!cev) {
         return res.status(400).json({ message: 'No se ha encontrado CEV' })
     }
 
     // Check for duplicate title
-    const duplicate = await Note.findOne({ user }).lean().exec()
+    const duplicate = await Cev.findOne({ user }).lean().exec()
 
-    // Allow renaming of the original note 
+    // Allow renaming of the original cev 
     if (duplicate && duplicate?._id.toString() !== id) {
         return res.status(409).json({ message: 'CEV duplicado' })
     }
 
-    note.user = user
-    note.idFamily = idFamily
-    note.cel = cel
-    note.details = details
-    note.street = street
-    note.streetNumber = streetNumber
-    note.completed = completed
+    cev.user = user
+    cev.idFamily = idFamily
+    cev.cel = cel
+    cev.details = details
+    cev.street = street
+    cev.streetNumber = streetNumber
+    cev.completed = completed
 
-    const updatedNote = await note.save()
+    const updatedCev = await cev.save()
 
-    res.json(`'${updatedNote.idFamily}' actualizado`)
+    res.json(`'${updatedCev.idFamily}' actualizado`)
 })
 
-// @desc Delete a note
-// @route DELETE /notes
+// @desc Delete a cev
+// @route DELETE /cevs
 // @access Private
-const deleteNote = asyncHandler(async (req, res) => {
+const deleteCev = asyncHandler(async (req, res) => {
     const { id } = req.body
 
     // Confirm data
@@ -101,14 +101,14 @@ const deleteNote = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Se requiere ID de CEV' })
     }
 
-    // Confirm note exists to delete 
-    const note = await Note.findById(id).exec()
+    // Confirm cev exists to delete 
+    const cev = await Cev.findById(id).exec()
 
-    if (!note) {
+    if (!cev) {
         return res.status(400).json({ message: 'CEV no encontrado' })
     }
 
-    const result = await note.deleteOne()
+    const result = await cev.deleteOne()
 
     const reply = `CEV '${result.idFamily}' with ID ${result._id} eliminado`
 
@@ -116,8 +116,8 @@ const deleteNote = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getAllNotes,
-    createNewNote,
-    updateNote,
-    deleteNote
+    getAllCevs,
+    createNewCev,
+    updateCev,
+    deleteCev
 }

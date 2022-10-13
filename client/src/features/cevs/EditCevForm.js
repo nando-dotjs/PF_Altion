@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react"
+import { useUpdateCevMutation, useDeleteCevMutation } from "./cevsApiSlice"
 import { useNavigate } from "react-router-dom"
-import { useAddNewNoteMutation } from "./notesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import useAuth from '../../hooks/useAuth'
 
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
 const CEL_REGEX = /^\d{9}$/;
@@ -11,41 +12,50 @@ const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 
-const NewNoteForm = ({ users }) => {
+const EditCevForm = ({ cev, users }) => {
 
-    const [addNewNote, {
+    const { isAdmin } = useAuth()
+
+    const [updateCev, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewNoteMutation()
+    }] = useUpdateCevMutation()
+
+    const [deleteCev, {
+        isSuccess: isDelSuccess,
+        isError: isDelError,
+        error: delerror
+    }] = useDeleteCevMutation()
 
     const navigate = useNavigate()
 
     const userRef = useRef();
     const [errMsg, setErrMsg] = useState('');
 
-    const [idFamily, setIdFamily] = useState('')
+    const [idFamily, setIdFamily] = useState(cev.idFamily)
     const [validId, setValidID] = useState(false)
     const [IdFocus, setIDFocus] = useState(false);
 
-    const [cel, setCel] = useState('')
+    const [cel, setCel] = useState(cev.cel)
     const [validCel, setValidCel] = useState(false)
     const [celFocus, setCelFocus] = useState(false);
 
-    const [details, setDetails] = useState('')
+    const [details, setDetails] = useState(cev.details)
     const [validDetails, setValidDetails] = useState(false)
     const [detailsFocus, setDetailsFocus] = useState(false);
 
-    const [street, setStreet] = useState('')
+    const [street, setStreet] = useState(cev.street)
     const [validStreet, setValidStreet] = useState(false)
     const [streetFocus, setStreetFocus] = useState(false);
 
-    const [streetNumber, setStreetNumber] = useState('')
+    const [streetNumber, setStreetNumber] = useState(cev.streetNumber)
     const [validStreetNumber, setValidStreetNumber] = useState(false)
     const [streetNumberFocus, setStreetNumberFocus] = useState(false);
 
-    const [userId, setUserId] = useState(users[0].id)
+    const [completed, setCompleted] = useState(cev.completed)
+    const [userId, setUserId] = useState(cev.user)
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -76,16 +86,18 @@ const NewNoteForm = ({ users }) => {
     }, [idFamily, cel, details, street, streetNumber])
 
     useEffect(() => {
-        if (isSuccess) {
+
+        if (isSuccess || isDelSuccess) {
             setIdFamily('')
             setCel('')
             setDetails('')
             setStreet('')
             setStreetNumber('')
             setUserId('')
-            navigate('/dash/notes')
+            navigate('/dash/cevs')
         }
-    }, [isSuccess, navigate])
+
+    }, [isSuccess, isDelSuccess, navigate])
 
     const onIdFamilyChanged = e => setIdFamily(e.target.value)
     const onCelChanged = e => setCel(e.target.value)
@@ -93,52 +105,78 @@ const NewNoteForm = ({ users }) => {
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
 
+    const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
 
     const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
 
-    const onSaveNoteClicked = async (e) => {
-        e.preventDefault()
+    const onSaveCevClicked = async (e) => {
         if (canSave) {
-            await addNewNote({ user: userId, idFamily, cel, details, street, streetNumber, userId })
+            await updateCev({ id: cev.id, user: userId, idFamily, cel, details, street, streetNumber, completed })
         }
     }
+
+    const onDeleteCevClicked = async () => {
+        await deleteCev({ id: cev.id })
+    }
+
+    const created = new Date(cev.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    const updated = new Date(cev.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
     const options = users.map(user => {
         return (
             <option
                 key={user.id}
                 value={user.id}
+
             > {user.username}</option >
         )
     })
 
-    const errClass = isError ? "errmsg" : "offscreen"
-    
+    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+
+
+    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+
+    let deleteButton = null
+    if (isAdmin) {
+        deleteButton = (
+            <button
+                className="icon-button"
+                title="Delete"
+                onClick={onDeleteCevClicked}
+            >
+                <FontAwesomeIcon icon={faTrashCan} />
+            </button>
+        )
+    }
+
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+            <p className={errClass}>{errContent}</p>
 
-            <form className="form" onSubmit={onSaveNoteClicked}>
+            <form className="form" onSubmit={e => e.preventDefault()}>
                 <div className="formTitleRow">
-                    <h2>Nuevo CEV</h2>
+                    <h2>Editar CEV</h2>
                     <div className="formActionButtons">
                         <button
                             className="icon-button"
                             title="Save"
+                            onClick={onSaveCevClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button>
+                        {deleteButton}
                     </div>
                 </div>
                 <label htmlFor="id">
-                    Identificación de Familia:
+                    Identificacion de Familia:
                     <FontAwesomeIcon icon={faCheck} className={validId ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validId || !idFamily ? "hide" : "invalid"} />
                 </label>
                 <input
-                    className={`formInput`}
+                    className={`formInput `}
                     id="id"
                     name="id"
                     type="text"
@@ -147,34 +185,33 @@ const NewNoteForm = ({ users }) => {
                     onChange={onIdFamilyChanged}
                     required
                     aria-invalid={validId ? "false" : "true"}
-                    aria-describedby="uidnote"
+                    aria-describedby="uidcev"
                     onFocus={() => setIDFocus(true)}
                     onBlur={() => setIDFocus(false)}
                 />
-                <p id="uidnote" className={IdFocus && idFamily && !validId? "instructions" : "offscreen"}>
+                <p id="uidcev" className={IdFocus && idFamily && !validId? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     5 a 20 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
                 </p>
-
                 <label htmlFor="cel">
-                    Teléfono/Celular:
-                    <FontAwesomeIcon icon={faCheck} className={validCel ? "valid" : "hide"} />
+                Teléfono/Celular:
+                <FontAwesomeIcon icon={faCheck} className={validCel ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validCel || !cel ? "hide" : "invalid"} />
                 </label>
                 <textarea
-                    className={`formInput`}
+                    className={`formInput `}
                     id="cel"
                     name="cel"
                     value={cel}
                     onChange={onCelChanged}
                     required
                     aria-invalid={validCel ? "false" : "true"}
-                    aria-describedby="uidnote"
+                    aria-describedby="uidcev"
                     onFocus={() => setCelFocus(true)}
                     onBlur={() => setCelFocus(false)}
                 />
-                <p id="uidnote" className={celFocus && cel && !validCel? "instructions" : "offscreen"}>
+                <p id="uidcev" className={celFocus && cel && !validCel? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     0 a 9 números.<br />
                     No puedo contener otro tipo de carácteres.<br />
@@ -186,28 +223,28 @@ const NewNoteForm = ({ users }) => {
                     <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
                 </label>
                 <textarea
-                    className={`formInput`}
+                    className={`formInput `}
                     id="details"
                     name="details"
                     value={details}
                     onChange={onDetailsChanged}
                     required
                     aria-invalid={validDetails ? "false" : "true"}
-                    aria-describedby="uidnote"
+                    aria-describedby="uidcev"
                     onFocus={() => setDetailsFocus(true)}
                     onBlur={() => setDetailsFocus(false)}
                 />
-                <p id="uidnote" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    10 a 50 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
+                <p id="uidcev" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
+                <FontAwesomeIcon icon={faInfoCircle} />
+                10 a 50 caracteres.<br />
+                Debe empezar y contener solo letras.<br />
                 </p>
 
                 <label htmlFor="street">
                     Calle:
                     <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
-                </label>
+                    </label>
                 <textarea
                     className={`formInput`}
                     id="street"
@@ -216,11 +253,11 @@ const NewNoteForm = ({ users }) => {
                     onChange={onStreetChanged}
                     required
                     aria-invalid={validStreet ? "false" : "true"}
-                    aria-describedby="uidnote"
+                    aria-describedby="uidcev"
                     onFocus={() => setStreetFocus(true)}
                     onBlur={() => setStreetFocus(false)}
                 />
-                <p id="uidnote" className={streetFocus && street && !validStreet? "instructions" : "offscreen"}>
+                <p id="uidcev" className={streetFocus && street && !validStreet? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     3 a 20 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
@@ -239,28 +276,47 @@ const NewNoteForm = ({ users }) => {
                     onChange={onStreetNumberChanged}
                     required
                     aria-invalid={validStreetNumber ? "false" : "true"}
-                    aria-describedby="uidnote"
+                    aria-describedby="uidcev"
                     onFocus={() => setStreetNumberFocus(true)}
                     onBlur={() => setStreetNumberFocus(false)}
                 />
-                <p id="uidnote" className={streetNumberFocus && streetNumber && !validStreetNumber? "instructions" : "offscreen"}>
+                <p id="uidcev" className={streetNumberFocus && streetNumber && !validStreetNumber? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
 
-                <label className="formLabel form__checkbox-container" htmlFor="username">
-                    Propietario:</label>
-                <select
-                    id="username"
-                    name="username"
-                    className="formSelect"
-                    value={userId}
-                    onChange={onUserIdChanged}
-                >
-                    {options}
-                </select>
+                <div className="formRow">
+                    <div className="formDivider">
+                        <label className="formLabel formCheckboxContainer" htmlFor="cev-completed">
+                            Registro completado:
+                            <input
+                                className="formCheckbox"
+                                id="cev-completed"
+                                name="completed"
+                                type="checkbox"
+                                checked={completed}
+                                onChange={onCompletedChanged}
+                            />
+                        </label>
 
+                        <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
+                            Propietario:</label>
+                        <select
+                            id="cev-username"
+                            name="username"
+                            className="formSelect"
+                            value={userId}
+                            onChange={onUserIdChanged}
+                        >
+                            {options}
+                        </select>
+                    </div>
+                    <div className="formDivider">
+                        <p className="formCreated">Creado:<br />{created}</p>
+                        <p className="formUpdated">Actualizado:<br />{updated}</p>
+                    </div>
+                </div>
             </form>
         </>
     )
@@ -268,4 +324,4 @@ const NewNoteForm = ({ users }) => {
     return content
 }
 
-export default NewNoteForm
+export default EditCevForm

@@ -1,15 +1,15 @@
 import { useSelector } from 'react-redux'
 import { selectAllUsers } from '../users/usersApiSlice'
-import NewNoteForm from './NewNoteForm'
+import NewCevForm from './NewCevForm'
 
-const NewNote = () => {
+const NewCev = () => {
     
     const users = useSelector(selectAllUsers)
 
     if (!users?.length) return <p>Actualmente esta funcionalidad no se encuentra disponible</p>
 
-    const content = <NewNoteForm users={users} />
+    const content = <NewCevForm users={users} />
 
     return content
 }
-export default NewNote
+export default NewCev

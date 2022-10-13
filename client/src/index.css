@@ -17,7 +17,7 @@
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --CEV-BGCOLOR: hsla(240, 64%, 27%, 0.65);
   --STATUS-COMPLETE: limegreen;
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #FFF;
@@ -234,23 +234,23 @@ tr {
   background-color: var(--INACTIVE);
 }
 
-/* ||  NOTE */
+/* ||  CEV */
 
-.noteCreated,
-.noteUpdated,
-.noteUsername {
+.cevCreated,
+.cevUpdated,
+.cevUsername {
   display: none;
 }
 
-.noteStatus {
+.cevStatus {
   font-weight: bold;
 }
 
-.noteStatusOpen {
+.cevStatusOpen {
   color: var(--STATUS-OPEN);
 }
 
-.noteStatusCompleted {
+.cevStatusCompleted {
   color: var(--STATUS-COMPLETE);
 }
 
@@ -410,13 +410,13 @@ tr {
     font-size: 1.5rem;
   }
 
-  .tableNotes {
+  .tableCevs {
     grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
   }
 
-  .noteCreated,
-  .noteUpdated,
-  .noteUsername {
+  .cevCreated,
+  .cevUpdated,
+  .cevUsername {
     display: block
   }
 
