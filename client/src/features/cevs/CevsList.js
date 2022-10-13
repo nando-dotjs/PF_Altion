@@ -44,7 +44,7 @@ const CevsList = () => {
                         <th scope="col" className="tableTh cevStatus">Estado</th>
                         <th scope="col" className="tableTh cevCreated">Creado</th>
                         <th scope="col" className="tableTh cevUpdated">Actualizado</th>
-                        <th scope="col" className="tableTh cevTitle">Identificador</th>
+                        <th scope="col" className="tableTh cevTitle">Nombre</th>
                         <th scope="col" className="tableTh cevUsername">Propietario:</th>
                         <th scope="col" className="tableTh cevEdit">Editar</th>
                     </tr>
