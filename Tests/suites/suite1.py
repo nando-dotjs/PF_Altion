@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 
 def login(user,password):
     # Ingreso a login
-    AuxiliarFunctions.driver.get("http://localhost:3000/login")
+    AuxiliarFunctions.driver.get("http://localhost:3000/")
     AuxiliarFunctions.waitFiveSeconds()
 
     # Limpio y tipeo campo Usuario.
@@ -21,7 +21,7 @@ def login(user,password):
     AuxiliarFunctions.waitFiveSeconds()
 
     # Presiono Botón Ingresar
-    btnIngresar = AuxiliarFunctions.driver.find_element(By.CLASS_NAME,"form__submit-button")
+    btnIngresar = AuxiliarFunctions.driver.find_element(By.CLASS_NAME,"formSubmitButton")
     btnIngresar.click()
     AuxiliarFunctions.waitFiveSeconds()
 

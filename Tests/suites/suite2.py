@@ -46,7 +46,7 @@ def Register(name,surname,mail,username,password,type):
     AuxiliarFunctions.waitFiveSeconds()
 
     # Limpio y tipeo campo Confirmar Tipo.
-    cpoTipo = AuxiliarFunctions.driver.find_element(By.ID,"roles")
+    cpoTipo = AuxiliarFunctions.driver.find_element(By.ID,"role")
     selected = Select(cpoTipo)
     selected.select_by_value(type)
     AuxiliarFunctions.waitFiveSeconds()
@@ -54,6 +54,6 @@ def Register(name,surname,mail,username,password,type):
 
 
     # Presiono Botón Sign Up
-    btnConfirmar = AuxiliarFunctions.driver.find_element(By.XPATH,"/html/body/div/section/form/button")
+    btnConfirmar = AuxiliarFunctions.driver.find_element(By.XPATH,"/html/body/div/section/main/form/button")
     btnConfirmar.click()
     AuxiliarFunctions.waitFiveSeconds()
