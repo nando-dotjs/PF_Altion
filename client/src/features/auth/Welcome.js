@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth'
 
 const Welcome = () => {
     
-    const { username, isAdmin, isCEV } = useAuth()
+    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const date = new Date()
     const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
@@ -18,7 +18,9 @@ const Welcome = () => {
 
             {(isAdmin) && <p><Link to="/dash/users">Gestion de Usuarios</Link></p>}
             {(isAdmin) && <p><Link to="/dash/drivers">Gestión de Choferes</Link></p>}
-            {(isAdmin || isCEV) && <p><Link to="/dash/cevs">Gestión de CEVs</Link></p>}
+            {(isCEV) && <p><Link to="/dash/cevs">Gestión de Puntos</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/cevs">Gestión de Puntos (CEV)</Link></p>}
+           
 
 
         </section>

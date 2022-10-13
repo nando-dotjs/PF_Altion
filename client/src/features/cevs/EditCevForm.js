@@ -171,7 +171,7 @@ const EditCevForm = ({ cev, users }) => {
                     </div>
                 </div>
                 <label htmlFor="id">
-                    Identificacion de Familia:
+                    Nombre:
                     <FontAwesomeIcon icon={faCheck} className={validId ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validId || !idFamily ? "hide" : "invalid"} />
                 </label>
