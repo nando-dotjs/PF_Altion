@@ -96,7 +96,7 @@ const Login = () => {
                 <Link to="/register">Cree una</Link>
             </main>
             <footer>
-                <Link className="registerLink" to="/">Volver a Inicio</Link>
+            ¡Da vida al planeta: RECICLA!       
             </footer>
         </section>
     )

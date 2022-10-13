@@ -39,9 +39,10 @@ const DashHeader = () => {
     const onNewUserClicked = () => navigate('/dash/users/new')
     const onUsersClicked = () => navigate('/dash/users')
     const onNewDriverClicked = () => navigate('/dash/drivers/new')
+    const onNewNoteClicked = () => navigate('/dash/notes/new')
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
@@ -65,6 +66,19 @@ const DashHeader = () => {
                 className="icon-button"
                 title="New Driver"
                 onClick={onNewDriverClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+    }
+
+    let newNoteButton = null
+    if (NOTES_REGEX.test(pathname)) {
+        newNoteButton = (
+            <button
+                className="icon-button"
+                title="New Note"
+                onClick={onNewNoteClicked}
             >
                 <FontAwesomeIcon icon={faPlus} />
             </button>
@@ -108,6 +122,7 @@ const DashHeader = () => {
                 {userButton}
                 {logoutButton}
                 {newDriverButton}
+                {newNoteButton}
             </>
         )
     }

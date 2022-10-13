@@ -10,7 +10,7 @@
 
 :root {
   /* COLORS */
-  --BGCOLOR: #0F172A;
+  --BGCOLOR: #1f4835;
   --BORDER-COLOR: #FFF;
   --COLOR: #FFF;
   --ERROR: firebrick;
@@ -70,7 +70,7 @@ body {
   min-height: 100vh;
   background-color: var(--BGCOLOR);
   color: var(--COLOR);
-  /* background-image: url('./img/background.jpg'); */
+  background-image: url('./img/background.jpg'); 
   background-size: cover;
   background-position: top right;
   background-blend-mode: multiply;
@@ -286,8 +286,9 @@ tr {
 
 .formInput,
 .formSubmitButton {
-  padding: 0.5em;
+  padding: 0.3em;
   border-radius: 15px;
+  max-width: 80%;
 }
 
 .formInput--text {
@@ -305,8 +306,9 @@ tr {
 }
 
 .formSelect {
-  padding: 0.5em;
+  padding: 0.3em;
   border-radius: 15px;
+  max-width: 80%;
 }
 
 .formActionButtons {

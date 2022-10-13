@@ -19,12 +19,14 @@ import NotesList from './features/notes/NotesList';
 import EditNote from './features/notes/EditNote';
 import NewNote from './features/notes/NewNote';
 import useTitle from './hooks/useTitle';
-
+import background from './img/background.jpg';
 
 function App() {
   useTitle('UPC')
   return (
+    
     <Routes>
+    
       <Route path="/" element={<Layout />}>
         {/* public routes */ }
         <Route index element={<Login />} />
