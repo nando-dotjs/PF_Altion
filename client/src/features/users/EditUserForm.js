@@ -151,10 +151,10 @@ const EditUserForm = ({ user }) => {
 
             <form className="form" onSubmit={e => e.preventDefault()}>
                 <div className="formTitleRow">
-                    <h2>Edit User</h2>
+                    <h2>Editar Usuario</h2>
                     <div className="formActionButtons">
                         <button
-                            className="iconButton"
+                            className="icon-button"
                             title="Save"
                             onClick={onSaveUserClicked}
                             disabled={!canSave}

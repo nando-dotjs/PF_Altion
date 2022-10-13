@@ -15,8 +15,14 @@ import Register from './features/users/Register';
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
 import EditDriver from './features/drivers/EditDriver';
+import NotesList from './features/notes/NotesList';
+import EditNote from './features/notes/EditNote';
+import NewNote from './features/notes/NewNote';
+import useTitle from './hooks/useTitle';
+
 
 function App() {
+  useTitle('UPC')
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -38,12 +44,18 @@ function App() {
               <Route path=":id" element={<EditUser />} />
               <Route path="new" element={<NewUserForm />} />
             </Route>
-            </Route>
 
             <Route path="drivers">
               <Route index element={<DriversList />} />
               <Route path=":id" element={<EditDriver />} />
               <Route path="new" element={<NewDriverForm />} />
+            </Route>
+            </Route>
+
+            <Route path="notes">
+              <Route index element={<NotesList />} />
+              <Route path=":id" element={<EditNote />} />
+              <Route path="new" element={<NewNote />} />
             </Route>
 
             <Route path="routes">

@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useAddNewDriverMutation } from "./driversApiSlice"
 import { useNavigate } from "react-router-dom"
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+
+const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
 const NewDriverForm = () => {
 
@@ -15,9 +18,34 @@ const NewDriverForm = () => {
 
     const navigate = useNavigate()
 
+    const userRef = useRef();
+    const [errMsg, setErrMsg] = useState('');
+
+
     const [name, setName] = useState('')
+    const [validName, setValidName] = useState(false)
+    const [nameFocus, setNameFocus] = useState(false);
+
 
     const [surname, setSurname] = useState('')
+    const [validSurname, setValidSurname] = useState(false)
+    const [surnameFocus, setSurnameFocus] = useState(false);
+
+    useEffect(() => {
+        userRef?.current?.focus();
+    }, [])
+
+    useEffect(() => {
+        setValidName(NAME_SURNAME_REGEX.test(name));
+    }, [name])
+
+    useEffect(() => {
+        setValidSurname(NAME_SURNAME_REGEX.test(surname));
+    }, [surname])
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [name, surname])
 
     useEffect(() => {
         if (isSuccess) {
@@ -30,7 +58,7 @@ const NewDriverForm = () => {
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
 
-    const canSave = [name, surname].every(Boolean) && !isLoading
+    const canSave = [validName, validSurname].every(Boolean) && !isLoading
 
     const onSaveDriverClicked = async (e) => {
         e.preventDefault()
@@ -47,9 +75,9 @@ const NewDriverForm = () => {
             <p className={errClass}>{error?.data?.message}</p>
 
             <form className="form" onSubmit={onSaveDriverClicked}>
-                <div className="form__title-row">
+                <div className="formTitleRow">
                     <h2>Registro de Chofer</h2>
-                    <div className="form__action-buttons">
+                    <div className="formActionButtons">
                         <button
                             className="icon-button"
                             title="Save"
@@ -60,29 +88,55 @@ const NewDriverForm = () => {
                     </div>
                 </div>
 
-                <label className="form__label" htmlFor="name">
-                    Nombre: <span className="nowrap"></span></label>
+                <label htmlFor="name">
+                    Nombre: 
+                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                </label>
                 <input
-                    className={`form__input`}
+                    className={`formInput`}
                     id="name"
                     name="name"
                     type="text"
                     autoComplete="off"
                     value={name}
                     onChange={onNameChanged}
+                    required
+                    aria-invalid={validName ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setNameFocus(true)}
+                    onBlur={() => setNameFocus(false)}
                 />
+                <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    2 a 15 caracteres.<br />
+                    Debe empezar y contener solo letras.<br />
+                </p>
 
-                <label className="form__label" htmlFor="surname">
-                    Apellido: <span className="nowrap"></span></label>
+                <label htmlFor="surname">
+                    Apellido: 
+                    <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                </label>
                 <input
-                    className={`form__input`}
+                    className={`formInput`}
                     id="surname"
                     name="surname"
                     type="text"
                     autoComplete="off"
                     value={surname}
                     onChange={onSurnameChanged}
+                    required
+                    aria-invalid={validSurname ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setSurnameFocus(true)}
+                    onBlur={() => setSurnameFocus(false)}
                 />
+                <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    2 a 15 caracteres.<br />
+                    Debe empezar y contener solo letras.<br />
+                </p>
 
                
 

@@ -88,7 +88,7 @@ const DashHeader = () => {
 
     const logoutButton = (
         <button
-            className="iconButton"
+            className="icon-button"
             title="Logout"
             onClick={sendLogout}
         >

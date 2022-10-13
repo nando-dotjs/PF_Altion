@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useUpdateDriverMutation, useDeleteDriverMutation } from "./driversApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+
+const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
 const EditDriverForm = ({ driver }) => {
 
@@ -21,9 +23,36 @@ const EditDriverForm = ({ driver }) => {
 
     const navigate = useNavigate()
 
+    const userRef = useRef();
+    const [errMsg, setErrMsg] = useState('');
+
+
     const [name, setName] = useState(driver.name)
+    const [validName, setValidName] = useState(false)
+    const [nameFocus, setNameFocus] = useState(false);
+
+
     const [surname, setSurname] = useState(driver.surname)
+    const [validSurname, setValidSurname] = useState(false)
+    const [surnameFocus, setSurnameFocus] = useState(false);
+
     const [active, setActive] = useState(driver.active)
+
+    useEffect(() => {
+        userRef?.current?.focus();
+    }, [])
+
+    useEffect(() => {
+        setValidName(NAME_SURNAME_REGEX.test(name));
+    }, [name])
+
+    useEffect(() => {
+        setValidSurname(NAME_SURNAME_REGEX.test(surname));
+    }, [surname])
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [name, surname])
 
     useEffect(() => {
         if (isSuccess || isDelSuccess) {
@@ -34,6 +63,9 @@ const EditDriverForm = ({ driver }) => {
 
     }, [isSuccess, isDelSuccess, navigate])
 
+    const onNameChanged = e => setName(e.target.value)
+    const onSurnameChanged = e => setSurname(e.target.value)
+    
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveDriverClicked = async (e) => {
@@ -44,7 +76,7 @@ const EditDriverForm = ({ driver }) => {
         await deleteDriver({ id: driver.id })
     }
 
-    let canSave = [name, surname].every(Boolean) && !isLoading
+    let canSave = [validName, validSurname].every(Boolean) && !isLoading
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
 
@@ -58,10 +90,10 @@ const EditDriverForm = ({ driver }) => {
 
                 <form className="form" onSubmit={e => e.preventDefault()}>
                     <div className="formTitleRow">
-                        <h2>Edit Driver</h2>
+                        <h2>Editar chófer</h2>
                         <div className="formActionButtons">
                             <button
-                                className="iconButton"
+                                className="icon-button"
                                 title="Save"
                                 onClick={onSaveDriverClicked}
                                 disabled={!canSave}
@@ -77,30 +109,56 @@ const EditDriverForm = ({ driver }) => {
                             </button>
                         </div>
                     </div>
-                    <label className="formLabel" htmlFor="name">
-                        Nombre: <span className="nowrap"></span></label>
+                    <label htmlFor="name">
+                        Nombre: 
+                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                    </label>
                     <input
-                        className={`formInput name`}
+                    
+                        className={`formInput`}
                         id="name"
                         name="name"
                         type="text"
                         autoComplete="off"
                         value={name}
-                        onChange={e => setName(e.target.value)}
+                        onChange={onNameChanged}
+                        required
+                        aria-invalid={validName ? "false" : "true"}
+                        aria-describedby="uidnote"
+                        onFocus={() => setNameFocus(true)}
+                        onBlur={() => setNameFocus(false)}
                     />
+                    <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    2 a 15 caracteres.<br />
+                    Debe empezar y contener solo letras.<br />
+                    </p>
 
                     <label className="formLabel" htmlFor="surname">
-                        Apellido: <span className="nowrap"></span> <span className="nowrap"></span></label>
+                        Apellido: 
+                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
+                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                    </label>
                     <input
-                        className={`formInput surname`}
+                        className={`formInput`}
                         id="surname"
                         name="surname"
                         type="text"
                         autoComplete="off"
                         value={surname}
-                        onChange={e => setSurname(e.target.value)}
+                        onChange={onSurnameChanged}
+                        required
+                        aria-invalid={validSurname ? "false" : "true"}
+                        aria-describedby="uidnote"
+                        onFocus={() => setSurnameFocus(true)}
+                        onBlur={() => setSurnameFocus(false)}
                     />
-
+                    <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                        2 a 15 caracteres.<br />
+                        Debe empezar y contener solo letras.<br />
+                    </p>
                     <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
                         ACTIVO:
                         <input

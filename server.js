@@ -15,7 +15,13 @@ app.use(cors(corsOptions))
 app.use('/register', require('./src/routes/registerRoutes'))
 app.use('/drivers', require('./src/routes/driverRoutes'))
 app.use('/users', require('./src/routes/userRoutes'))
+app.use('/notes', require('./src/routes/noteRoutes'))
+
+
+
+
 app.use('/auth', require('./src/routes/authRoutes'))
+
 
 connectDB()
 

@@ -54,12 +54,12 @@
   place-content: center;
 }
 
-.iconButton:hover,
-.iconButton:focus-visible {
+.icon-button:hover,
+.icon-button:focus-visible {
   transform: scale(1.2);
 }
 
-.iconButton[disabled] {
+.icon-button[disabled] {
   visibility: hidden;
 }
 
@@ -236,21 +236,21 @@ tr {
 
 /* ||  NOTE */
 
-.note__created,
-.note__updated,
-.note__username {
+.noteCreated,
+.noteUpdated,
+.noteUsername {
   display: none;
 }
 
-.note__status {
+.noteStatus {
   font-weight: bold;
 }
 
-.note__status--open {
+.noteStatusOpen {
   color: var(--STATUS-OPEN);
 }
 
-.note__status--completed {
+.noteStatusCompleted {
   color: var(--STATUS-COMPLETE);
 }
 
@@ -384,7 +384,7 @@ tr {
     gap: 0;
   }
 
-  .iconButton {
+  .icon-button {
     font-size: 1.5rem;
   }
 }
@@ -408,17 +408,17 @@ tr {
     font-size: 1.5rem;
   }
 
-  .table--notes {
+  .tableNotes {
     grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
   }
 
-  .note__created,
-  .note__updated,
-  .note__username {
+  .noteCreated,
+  .noteUpdated,
+  .noteUsername {
     display: block
   }
 
-  .form__action-buttons {
+  .formActionButtons {
     position: static;
   }
 }
