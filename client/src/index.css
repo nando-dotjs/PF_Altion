@@ -236,24 +236,50 @@ tr {
 
 /* ||  CEV */
 
-.cevCreated,
+.cevCreated, 
+.companyCreated,
 .cevUpdated,
-.cevUsername {
+.companyUpdated,
+.cevUsername,
+.companyUsername{
   display: none;
 }
 
-.cevStatus {
+.cevStatus,
+.companyStatus {
   font-weight: bold;
 }
 
-.cevStatusOpen {
+.cevStatusOpen,
+.companyStatusOpen {
   color: var(--STATUS-OPEN);
 }
 
-.cevStatusCompleted {
+.cevStatusCompleted,
+.companyStatusCompleted {
   color: var(--STATUS-COMPLETE);
 }
 
+/* ||  Company 
+
+.companyCreated,
+.companyUpdated,
+.companyUsername {
+  display: none;
+}
+
+.companyStatus {
+  font-weight: bold;
+}
+
+.companyStatusOpen {
+  color: var(--STATUS-OPEN);
+}
+
+.companyStatusCompleted {
+  color: var(--STATUS-COMPLETE);
+}
+*/
 
 /* || FORM - GENERAL */
 
@@ -417,6 +443,16 @@ tr {
   .cevCreated,
   .cevUpdated,
   .cevUsername {
+    display: block
+  }
+
+  .tableCompanys {
+    grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
+  }
+
+  .companyCreated,
+  .companyUpdated,
+  .companyUsername {
     display: block
   }
 

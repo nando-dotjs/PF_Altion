@@ -17,6 +17,7 @@ const DASH_REGEX = /^\/dash(\/)?$/
 const CEVS_REGEX = /^\/dash\/cevs(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
+const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 
 const DashHeader = () => {
 
@@ -40,9 +41,11 @@ const DashHeader = () => {
     const onUsersClicked = () => navigate('/dash/users')
     const onNewDriverClicked = () => navigate('/dash/drivers/new')
     const onNewCevClicked = () => navigate('/dash/cevs/new')
+    const onNewCompanyClicked = () => navigate('/dash/companys/new')
+
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
@@ -79,6 +82,19 @@ const DashHeader = () => {
                 className="icon-button"
                 title="New Cev"
                 onClick={onNewCevClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+    }
+
+    let newCompanyButton = null
+    if (COMPANY_REGEX.test(pathname)) {
+        newCompanyButton = (
+            <button
+                className="icon-button"
+                title="New Company"
+                onClick={onNewCompanyClicked}
             >
                 <FontAwesomeIcon icon={faPlus} />
             </button>
@@ -123,6 +139,7 @@ const DashHeader = () => {
                 {logoutButton}
                 {newDriverButton}
                 {newCevButton}
+                {newCompanyButton}
             </>
         )
     }

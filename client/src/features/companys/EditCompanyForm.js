@@ -1,78 +1,87 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateCevMutation, useDeleteCevMutation } from "./cevsApiSlice"
+import { useUpdateCompanyMutation, useDeleteCompanyMutation } from "./companysApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import useAuth from '../../hooks/useAuth'
 
-const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
+const FANTASY_NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
+const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,10}$/;
+const RUT_REGEX = /^\d{12}$/;
 const CEL_REGEX = /^\d{9}$/;
-const DETAILS_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 
-const EditCevForm = ({ cev, users }) => {
+const EditCompanyForm = ({ company, users }) => {
 
     const {username, isAdmin, isCEV, isEmpresa} = useAuth()
 
-    const [updateCev, {
+    const [updateCompany, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useUpdateCevMutation()
+    }] = useUpdateCompanyMutation()
 
-    const [deleteCev, {
+    const [deleteCompany, {
         isSuccess: isDelSuccess,
         isError: isDelError,
         error: delerror
-    }] = useDeleteCevMutation()
+    }] = useDeleteCompanyMutation()
 
     const navigate = useNavigate()
 
     const userRef = useRef();
     const [errMsg, setErrMsg] = useState('');
 
-    const [idFamily, setIdFamily] = useState(cev.idFamily)
-    const [validId, setValidID] = useState(false)
-    const [IdFocus, setIDFocus] = useState(false);
+    const [fantasyName, setFantasyName] = useState(company.fantasyName)
+    const [validFantasyName, setValidFantasyName] = useState(false)
+    const [FantasyNameFocus, setFantasyNameFocus] = useState(false);
 
-    const [cel, setCel] = useState(cev.cel)
+    const [socialReason, setSocialReason] = useState(company.socialReason)
+    const [validSocialReason, setValidSocialReason] = useState(false)
+    const [SocialReasonFocus, setSocialReasonFocus] = useState(false);
+
+    const [rut, setrut] = useState(company.rut)
+    const [validCompanyRUT, setValidCompanyRUT] = useState(false)
+    const [rutFocus, setrutFocus] = useState(false);
+
+    const [cel, setCel] = useState(company.cel)
     const [validCel, setValidCel] = useState(false)
     const [celFocus, setCelFocus] = useState(false);
 
-    const [details, setDetails] = useState(cev.details)
-    const [validDetails, setValidDetails] = useState(false)
-    const [detailsFocus, setDetailsFocus] = useState(false);
-
-    const [street, setStreet] = useState(cev.street)
+    const [street, setStreet] = useState(company.street)
     const [validStreet, setValidStreet] = useState(false)
     const [streetFocus, setStreetFocus] = useState(false);
 
-    const [streetNumber, setStreetNumber] = useState(cev.streetNumber)
+    const [streetNumber, setStreetNumber] = useState(company.streetNumber)
     const [validStreetNumber, setValidStreetNumber] = useState(false)
     const [streetNumberFocus, setStreetNumberFocus] = useState(false);
 
-    const [completed, setCompleted] = useState(cev.completed)
-    const [userId, setUserId] = useState(cev.user)
+    const [completed, setCompleted] = useState(company.completed)
+    const [userId, setUserId] = useState(company.user)
 
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
 
     useEffect(() => {
-        setValidID(ID_REGEX.test(idFamily));
-    }, [idFamily])
+        setValidFantasyName(FANTASY_NAME_REGEX.test(fantasyName));
+    }, [fantasyName])
+
+    useEffect(() => {
+        setValidSocialReason(SOCIAL_REASON_REGEX.test(socialReason));
+    }, [socialReason])
+
+    useEffect(() => {
+        setValidCompanyRUT(RUT_REGEX.test(rut));
+    }, [rut])
 
     useEffect(() => {
         setValidCel(CEL_REGEX.test(cel));
     }, [cel])
-
-    useEffect(() => {
-        setValidDetails(DETAILS_REGEX.test(details));
-    }, [details])
-
+    
     useEffect(() => {
         setValidStreet(STREET_REGEX.test(street));
     }, [street])
@@ -83,45 +92,46 @@ const EditCevForm = ({ cev, users }) => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [idFamily, cel, details, street, streetNumber])
-
+    }, [fantasyName, socialReason, rut, cel, street, streetNumber])
     useEffect(() => {
 
         if (isSuccess || isDelSuccess) {
-            setIdFamily('')
+            setFantasyName('')
+            setSocialReason('')
+            setrut('')
             setCel('')
-            setDetails('')
             setStreet('')
             setStreetNumber('')
             setUserId('')
-            navigate('/dash/cevs')
+            navigate('/dash/companys')
         }
 
     }, [isSuccess, isDelSuccess, navigate])
 
-    const onIdFamilyChanged = e => setIdFamily(e.target.value)
+    const onFantasyNameChanged = e => setFantasyName(e.target.value)
+    const onSocialReasonChanged = e => setSocialReason(e.target.value)
+    const onCompanyRUTChanged = e => setrut(e.target.value)
     const onCelChanged = e => setCel(e.target.value)
-    const onDetailsChanged = e => setDetails(e.target.value)
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
 
     const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
 
-    const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
+    const canSave = [validFantasyName, validSocialReason, validCompanyRUT,validCel, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
 
-    const onSaveCevClicked = async (e) => {
+    const onSaveCompanyClicked = async (e) => {
         if (canSave) {
-            await updateCev({ id: cev.id, user: userId, idFamily, cel, details, street, streetNumber, completed })
+            await updateCompany({ id: company.id, user: userId, fantasyName, socialReason, rut, cel, street, streetNumber, completed })
         }
     }
 
-    const onDeleteCevClicked = async () => {
-        await deleteCev({ id: cev.id })
+    const onDeleteCompanyClicked = async () => {
+        await deleteCompany({ id: company.id })
     }
 
-    const created = new Date(cev.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
-    const updated = new Date(cev.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    const created = new Date(company.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    const updated = new Date(company.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
     const options = users.map(user => {
         return (
@@ -148,7 +158,7 @@ const EditCevForm = ({ cev, users }) => {
             <button
                 className="icon-button"
                 title="Delete"
-                onClick={onDeleteCevClicked}
+                onClick={onDeleteCompanyClicked}
             >
                 <FontAwesomeIcon icon={faTrashCan} />
             </button>
@@ -200,7 +210,7 @@ const EditCevForm = ({ cev, users }) => {
                         <button
                             className="icon-button"
                             title="Save"
-                            onClick={onSaveCevClicked}
+                            onClick={onSaveCompanyClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
@@ -208,30 +218,81 @@ const EditCevForm = ({ cev, users }) => {
                         {deleteButton}
                     </div>
                 </div>
-                <label htmlFor="id">
-                    Nombre:
-                    <FontAwesomeIcon icon={faCheck} className={validId ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validId || !idFamily ? "hide" : "invalid"} />
+                <label htmlFor="fantasyName">
+                    Nombre Fantasía:
+                    <FontAwesomeIcon icon={faCheck} className={validFantasyName ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validFantasyName || !fantasyName ? "hide" : "invalid"} />
                 </label>
                 <input
-                    className={`formInput `}
-                    id="id"
-                    name="id"
+                    className={`formInput`}
+                    id="fantasyName"
+                    name="fantasyName"
                     type="text"
                     autoComplete="off"
-                    value={idFamily}
-                    onChange={onIdFamilyChanged}
+                    value={fantasyName}
+                    onChange={onFantasyNameChanged}
                     required
-                    aria-invalid={validId ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setIDFocus(true)}
-                    onBlur={() => setIDFocus(false)}
+                    aria-invalid={validFantasyName ? "false" : "true"}
+                    aria-describedby="uidcompany"
+                    onFocus={() => setFantasyNameFocus(true)}
+                    onBlur={() => setFantasyNameFocus(false)}
                 />
-                <p id="uidcev" className={IdFocus && idFamily && !validId? "instructions" : "offscreen"}>
+                <p id="uidcev" className={FantasyNameFocus && fantasyName && !validFantasyName? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     5 a 20 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
                 </p>
+
+                <label htmlFor="socialReason">
+                    Razón Social:
+                    <FontAwesomeIcon icon={faCheck} className={validSocialReason ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validSocialReason || !socialReason ? "hide" : "invalid"} />
+                </label>
+                <input
+                    className={`formInput`}
+                    id="socialReason"
+                    name="socialReason"
+                    type="text"
+                    autoComplete="off"
+                    value={socialReason}
+                    onChange={onSocialReasonChanged}
+                    required
+                    aria-invalid={validSocialReason ? "false" : "true"}
+                    aria-describedby="uidcompany"
+                    onFocus={() => setSocialReasonFocus(true)}
+                    onBlur={() => setSocialReasonFocus(false)}
+                />
+                <p id="uidcev" className={SocialReasonFocus && socialReason && !validSocialReason? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    5 a 20 caracteres.<br />
+                    Debe empezar y contener solo letras.<br />
+                </p>
+
+                <label htmlFor="socialReason">
+                    RUT:
+                    <FontAwesomeIcon icon={faCheck} className={validCompanyRUT ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validCompanyRUT || !socialReason ? "hide" : "invalid"} />
+                </label>
+                <input
+                    className={`formInput`}
+                    id="rut"
+                    name="rut"
+                    type="text"
+                    autoComplete="off"
+                    value={rut}
+                    onChange={onCompanyRUTChanged}
+                    required
+                    aria-invalid={validCompanyRUT ? "false" : "true"}
+                    aria-describedby="uidcompany"
+                    onFocus={() => setrutFocus(true)}
+                    onBlur={() => setrutFocus(false)}
+                />
+                <p id="uidcev" className={rutFocus && rut && !validCompanyRUT? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Hasta 12 caracteres.<br />
+                    No se permiten letras y/o símbolos<br />
+                </p>
+
                 <label htmlFor="cel">
                 Teléfono/Celular:
                 <FontAwesomeIcon icon={faCheck} className={validCel ? "valid" : "hide"} />
@@ -253,29 +314,6 @@ const EditCevForm = ({ cev, users }) => {
                     <FontAwesomeIcon icon={faInfoCircle} />
                     0 a 9 números.<br />
                     No puedo contener otro tipo de carácteres.<br />
-                </p>
-
-                <label htmlFor="details">
-                    Detalles:
-                    <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput `}
-                    id="details"
-                    name="details"
-                    value={details}
-                    onChange={onDetailsChanged}
-                    required
-                    aria-invalid={validDetails ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setDetailsFocus(true)}
-                    onBlur={() => setDetailsFocus(false)}
-                />
-                <p id="uidcev" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                10 a 50 caracteres.<br />
-                Debe empezar y contener solo letras.<br />
                 </p>
 
                 <label htmlFor="street">
@@ -349,4 +387,4 @@ const EditCevForm = ({ cev, users }) => {
     return content
 }
 
-export default EditCevForm
+export default EditCompanyForm
