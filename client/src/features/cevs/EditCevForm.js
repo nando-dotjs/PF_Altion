@@ -14,7 +14,7 @@ const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 const EditCevForm = ({ cev, users }) => {
 
-    const { isAdmin } = useAuth()
+    const {username, isAdmin, isCEV, isEmpresa} = useAuth()
 
     const [updateCev, {
         isLoading,
@@ -139,6 +139,8 @@ const EditCevForm = ({ cev, users }) => {
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
     let deleteButton = null
+    let selector = null 
+    let input = null
     if (isAdmin) {
         deleteButton = (
             <button
@@ -149,6 +151,26 @@ const EditCevForm = ({ cev, users }) => {
                 <FontAwesomeIcon icon={faTrashCan} />
             </button>
         )
+        selector = (
+            <select
+                            id="cev-username"
+                            name="username"
+                            className="formSelect"
+                            value={userId}
+                            onChange={onUserIdChanged}
+                        >
+                            {options}
+                        </select>
+        )
+    } else if (isCEV || isEmpresa) {
+        input = <input readOnly
+                className={`formInput`}
+                id="idUser"
+                name="idUser"
+                type="text"
+                autoComplete="off"
+                value={username}
+            />
     }
 
     const content = (
@@ -302,15 +324,9 @@ const EditCevForm = ({ cev, users }) => {
 
                         <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
                             Propietario:</label>
-                        <select
-                            id="cev-username"
-                            name="username"
-                            className="formSelect"
-                            value={userId}
-                            onChange={onUserIdChanged}
-                        >
-                            {options}
-                        </select>
+                            {selector}
+                            {input}
+                        
                     </div>
                     <div className="formDivider">
                         <p className="formCreated">Creado:<br />{created}</p>

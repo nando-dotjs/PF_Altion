@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewCevMutation } from "./cevsApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import  useAuth  from '../../hooks/useAuth'
+
 
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
 const CEL_REGEX = /^\d{9}$/;
@@ -12,6 +14,8 @@ const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 
 const NewCevForm = ({ users }) => {
+
+    const {username, isAdmin, isCEV, isEmpresa} = useAuth()
 
     const [addNewCev, {
         isLoading,
@@ -47,6 +51,7 @@ const NewCevForm = ({ users }) => {
 
     const [userId, setUserId] = useState(users[0].id)
 
+    
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -96,13 +101,24 @@ const NewCevForm = ({ users }) => {
     const onUserIdChanged = e => setUserId(e.target.value)
 
     const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
-
     const onSaveCevClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
-            await addNewCev({ user: userId, idFamily, cel, details, street, streetNumber, userId })
+        if (isAdmin && canSave) {
+                await addNewCev({ user: userId, idFamily, cel, details, street, streetNumber, userId })
+        } 
+        if((isCEV || isEmpresa)) {
+                let userIdLog = '';
+                users.map(user => {
+                    if (user.username == username) {
+                        userIdLog = user.id
+                    }
+                    return userIdLog
+                })
+                await addNewCev({ user: userIdLog, idFamily, cel, details, street, streetNumber, userIdLog })
         }
+        
     }
+
 
     const options = users.map(user => {
         return (
@@ -112,6 +128,32 @@ const NewCevForm = ({ users }) => {
             > {user.username}</option >
         )
     })
+
+    let labelSelector = null
+    let selectorAdmin = null
+    let input = null
+    if (isAdmin) {
+        labelSelector = (<label>Propietario</label>)
+        selectorAdmin = (<select
+                id="username"
+                name="username"
+                className="formSelect"
+                value={userId}
+                onChange={onUserIdChanged}
+                >
+                {options}
+                </select>)
+    } else if (isCEV || isEmpresa) {
+        labelSelector = (<label>Propietario</label>)
+        input = <input readOnly
+                className={`formInput`}
+                id="idUser"
+                name="idUser"
+                type="text"
+                autoComplete="off"
+                value={username}
+            />
+    }
 
     const errClass = isError ? "errmsg" : "offscreen"
     
@@ -248,19 +290,9 @@ const NewCevForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
-
-                <label className="formLabel form__checkbox-container" htmlFor="username">
-                    Propietario:</label>
-                <select
-                    id="username"
-                    name="username"
-                    className="formSelect"
-                    value={userId}
-                    onChange={onUserIdChanged}
-                >
-                    {options}
-                </select>
-
+                    {labelSelector}
+                    {selectorAdmin}
+                    {input}
             </form>
         </>
     )
