@@ -74,7 +74,7 @@ const updateCev = asyncHandler(async (req, res) => {
 
     // Allow renaming of the original cev 
     if (duplicate && duplicate?._id.toString() !== id) {
-        return res.status(409).json({ message: 'CEV duplicado' })
+        return res.status(409).json({ message: 'Ya existe un CEV asociado a este usuario' })
     }
 
     cev.user = user
