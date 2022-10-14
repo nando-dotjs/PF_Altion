@@ -6,7 +6,7 @@ import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome
 import useAuth from '../../hooks/useAuth'
 
 const FANTASY_NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
-const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,10}$/;
+const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{1,15}$/;
 const RUT_REGEX = /^\d{12}$/;
 const CEL_REGEX = /^\d{9}$/;
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
@@ -264,7 +264,7 @@ const EditCompanyForm = ({ company, users }) => {
                 />
                 <p id="uidcev" className={SocialReasonFocus && socialReason && !validSocialReason? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
-                    5 a 20 caracteres.<br />
+                    1 a 15 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
                 </p>
 
