@@ -10,14 +10,14 @@
 
 :root {
   /* COLORS */
-  --BGCOLOR: #1f4835;
+  --BGCOLOR: #0F172A;
   --BORDER-COLOR: #FFF;
   --COLOR: #FFF;
   --ERROR: firebrick;
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --CEV-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
   --STATUS-COMPLETE: limegreen;
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #FFF;
@@ -54,12 +54,12 @@
   place-content: center;
 }
 
-.icon-button:hover,
-.icon-button:focus-visible {
+.iconButton:hover,
+.iconButton:focus-visible {
   transform: scale(1.2);
 }
 
-.icon-button[disabled] {
+.iconButton[disabled] {
   visibility: hidden;
 }
 
@@ -70,7 +70,7 @@ body {
   min-height: 100vh;
   background-color: var(--BGCOLOR);
   color: var(--COLOR);
-  background-image: url('./img/background.jpg'); 
+  /* background-image: url('./img/background.jpg'); */
   background-size: cover;
   background-position: top right;
   background-blend-mode: multiply;
@@ -118,8 +118,7 @@ a:focus-visible {
 }
 
 .public__main,
-.login,
-.register {
+.login {
   flex-grow: 1;
   border-top: 2px solid var(--BORDER-COLOR);
   border-bottom: 2px solid var(--BORDER-COLOR);
@@ -234,52 +233,26 @@ tr {
   background-color: var(--INACTIVE);
 }
 
-/* ||  CEV */
+/* ||  NOTE */
 
-.cevCreated, 
-.companyCreated,
-.cevUpdated,
-.companyUpdated,
-.cevUsername,
-.companyUsername{
+.note__created,
+.note__updated,
+.note__username {
   display: none;
 }
 
-.cevStatus,
-.companyStatus {
+.note__status {
   font-weight: bold;
 }
 
-.cevStatusOpen,
-.companyStatusOpen {
+.note__status--open {
   color: var(--STATUS-OPEN);
 }
 
-.cevStatusCompleted,
-.companyStatusCompleted {
+.note__status--completed {
   color: var(--STATUS-COMPLETE);
 }
 
-/* ||  Company 
-
-.companyCreated,
-.companyUpdated,
-.companyUsername {
-  display: none;
-}
-
-.companyStatus {
-  font-weight: bold;
-}
-
-.companyStatusOpen {
-  color: var(--STATUS-OPEN);
-}
-
-.companyStatusCompleted {
-  color: var(--STATUS-COMPLETE);
-}
-*/
 
 /* || FORM - GENERAL */
 
@@ -312,9 +285,8 @@ tr {
 
 .formInput,
 .formSubmitButton {
-  padding: 0.3em;
+  padding: 0.5em;
   border-radius: 15px;
-  max-width: 80%;
 }
 
 .formInput--text {
@@ -332,9 +304,8 @@ tr {
 }
 
 .formSelect {
-  padding: 0.3em;
-  border-radius: 15px;
-  max-width: 80%;
+  width: fit-content;
+  padding: 0.25em;
 }
 
 .formActionButtons {
@@ -358,51 +329,6 @@ tr {
   gap: 0.5em;
 }
 
-.instructions {
-  font-size: 0.75rem;
-  border-radius: 0.5rem;
-  background: #000;
-  color: #fff;
-  padding: 0.25rem;
-  position: relative;
-  bottom: -10px;
-}
-
-.instructions > svg {
-  margin-right: 0.25rem;
-}
-
-.offscreen {
-  position: absolute;
-  left: -9999px;
-}
-
-.hide {
-  display: none;
-}
-
-.valid {
-  color: limegreen;
-  margin-left: 0.25rem;
-}
-
-.invalid {
-  color: red;
-  margin-left: 0.25rem;
-}
-
-.errmsg {
-  background-color: lightpink;
-  color: firebrick;
-  font-weight: bold;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.line {
-  display: inline-block;
-}
-
 @media screen and (max-width: 400px) {
   h1 {
     font-size: 2rem;
@@ -412,7 +338,7 @@ tr {
     gap: 0;
   }
 
-  .icon-button {
+  .iconButton {
     font-size: 1.5rem;
   }
 }
@@ -436,27 +362,17 @@ tr {
     font-size: 1.5rem;
   }
 
-  .tableCevs {
+  .table--notes {
     grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
   }
 
-  .cevCreated,
-  .cevUpdated,
-  .cevUsername {
+  .note__created,
+  .note__updated,
+  .note__username {
     display: block
   }
 
-  .tableCompanys {
-    grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
-  }
-
-  .companyCreated,
-  .companyUpdated,
-  .companyUsername {
-    display: block
-  }
-
-  .formActionButtons {
+  .form__action-buttons {
     position: static;
   }
 }

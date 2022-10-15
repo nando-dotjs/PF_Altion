@@ -13,15 +13,17 @@ const User = ({ userId }) => {
     if (user) {
         const handleEdit = () => navigate(`/dash/users/${userId}`)
 
-        const cellStatus = user.active ? '' : 'tableCell--inactive'
+        const userRolesString = user.roles.toString().replaceAll(',', ', ')
+
+        const cellStatus = user.active ? '' : 'table__cell--inactive'
 
         return (
             <tr className="tableRow user">
                 <td className={`tableCell ${cellStatus}`}>{user.username}</td>
-                <td className={`tableCell ${cellStatus}`}>{user.role}</td>
+                <td className={`tableCell ${cellStatus}`}>{userRolesString}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
-                        className="icon-button tableButton"
+                        className="iconButton tableButton"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />

@@ -28,7 +28,7 @@ const login = asyncHandler(async (req, res) => {
         {
             "UserInfo": {
                 "username": foundUser.username,
-                "role": foundUser.role
+                "roles": foundUser.roles
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -49,7 +49,7 @@ const login = asyncHandler(async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
     })
 
-    // Send accessToken containing username and role 
+    // Send accessToken containing username and roles 
     res.json({ accessToken })
     
 })
@@ -79,7 +79,7 @@ const refresh = (req, res) => {
                 {
                     "UserInfo": {
                         "username": foundUser.username,
-                        "role": foundUser.role
+                        "roles": foundUser.roles
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
