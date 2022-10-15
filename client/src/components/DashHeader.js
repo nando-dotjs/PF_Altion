@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faUserGear,
     faUserPlus,
-    faRightFromBracket
+    faRightFromBracket,
+    faPlus
 
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
@@ -13,8 +14,10 @@ import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 import useAuth from '../hooks/useAuth'
 
 const DASH_REGEX = /^\/dash(\/)?$/
-const NOTES_REGEX = /^\/dash\/notes(\/)?$/
+const CEVS_REGEX = /^\/dash\/cevs(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
+const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
+const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 
 const DashHeader = () => {
 
@@ -36,9 +39,13 @@ const DashHeader = () => {
 
     const onNewUserClicked = () => navigate('/dash/users/new')
     const onUsersClicked = () => navigate('/dash/users')
+    const onNewDriverClicked = () => navigate('/dash/drivers/new')
+    const onNewCevClicked = () => navigate('/dash/cevs/new')
+    const onNewCompanyClicked = () => navigate('/dash/companys/new')
+
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
@@ -51,6 +58,45 @@ const DashHeader = () => {
                 onClick={onNewUserClicked}
             >
                 <FontAwesomeIcon icon={faUserPlus} />
+            </button>
+        )
+    }
+
+    let newDriverButton = null
+    if (DRIVERS_REGEX.test(pathname)) {
+        newDriverButton = (
+            <button
+                className="icon-button"
+                title="New Driver"
+                onClick={onNewDriverClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+    }
+
+    let newCevButton = null
+    if (CEVS_REGEX.test(pathname)) {
+        newCevButton = (
+            <button
+                className="icon-button"
+                title="New Cev"
+                onClick={onNewCevClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+    }
+
+    let newCompanyButton = null
+    if (COMPANY_REGEX.test(pathname)) {
+        newCompanyButton = (
+            <button
+                className="icon-button"
+                title="New Company"
+                onClick={onNewCompanyClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
             </button>
         )
     }
@@ -72,7 +118,7 @@ const DashHeader = () => {
 
     const logoutButton = (
         <button
-            className="iconButton"
+            className="icon-button"
             title="Logout"
             onClick={sendLogout}
         >
@@ -91,6 +137,9 @@ const DashHeader = () => {
                 {newUserButton}
                 {userButton}
                 {logoutButton}
+                {newDriverButton}
+                {newCevButton}
+                {newCompanyButton}
             </>
         )
     }

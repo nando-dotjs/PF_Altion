@@ -71,7 +71,7 @@ const Login = () => {
                 <form className="form" onSubmit={handleSubmit}>
                     <label htmlFor="username">Usuario:</label>
                     <input
-                        className="form__input"
+                        className="formInput"
                         type="text"
                         id="username"
                         ref={userRef}
@@ -83,19 +83,20 @@ const Login = () => {
 
                     <label htmlFor="password">Contraseña:</label>
                     <input
-                        className="form__input"
+                        className="formInput"
                         type="password"
                         id="password"
                         onChange={handlePwdInput}
                         value={password}
                         required
                     />
-                    <button className="form__submit-button">Ingresar</button>
-            
+                    <button className="formSubmitButton">Ingresar</button>
                 </form>
+                <label htmlFor="registerLbl">¿No tiene cuenta? </label> 
+                <Link to="/register">Cree una</Link>
             </main>
             <footer>
-                <Link to="/">Volver a Inicio</Link>
+            ¡Da vida al planeta: RECICLA!       
             </footer>
         </section>
     )

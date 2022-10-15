@@ -50,7 +50,7 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
-    const [roles, setRoles] = useState(["Normal"])
+    const [role, setRole] = useState('CEV')
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -92,18 +92,10 @@ const Register = () => {
             setPassword('')
             setMatchPwd('')
             setMail('')
-            setRoles([])
-            navigate('/login')
+            setRole('')
+            navigate('/')
         }
     }, [isSuccess, navigate])
-
-    const onRolesChanged = e => {
-        const values = Array.from(
-            e.target.selectedOptions, //HTMLCollection 
-            (option) => option.value
-        )
-        setRoles(values)
-    }
 
     const options = Object.values(ROLES_PUBLICOS).map(role => {
         return (
@@ -114,14 +106,12 @@ const Register = () => {
         )
     })
 
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
-
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        const canSave = [roles.length, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
+        const canSave = [validUsername, validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
         try{ 
             if (canSave) {
-                await createNewUser({ name, surname, mail, username, password, roles })
+                await createNewUser({ name, surname, mail, username, password, role })
             }
         } catch(err) {
             if (!err.status) {
@@ -139,17 +129,26 @@ const Register = () => {
 
     return (
         <>
-                <section>
-                    <p className={errClass}>{error?.data?.message}</p>
-                    <h1>Registro</h1>
-                    <form onSubmit={onSaveUserClicked}>
+            <section>
 
-                    <label htmlFor="name">
+                <header>
+                    <h1>Registro</h1>
+                </header>
+
+                <main className='register'>
+
+                    <p className={errClass}>{error?.data?.message}</p>
+                    
+                    <form className="form" onSubmit={onSaveUserClicked}>
+
+                        <label htmlFor="name">
                             Nombre:
                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className="formInput"
                             type="text"
                             id="name"
                             autoComplete="off"
@@ -161,18 +160,22 @@ const Register = () => {
                             onFocus={() => setNameFocus(true)}
                             onBlur={() => setNameFocus(false)}
                         />
+
                         <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             2 a 15 caracteres.<br />
                             Debe empezar y contener solo letras.<br />
                         </p>
 
+                        
                         <label htmlFor="surname">
                             Apellido:
                             <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className=  "formInput"
                             type="text"
                             id="surname"
                             autoComplete="off"
@@ -184,18 +187,22 @@ const Register = () => {
                             onFocus={() => setSurnameFocus(true)}
                             onBlur={() => setSurnameFocus(false)}
                         />
+                        
                         <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             2 a 15 caracteres.<br />
                             Debe empezar y contener solo letras.<br />
                         </p>
 
+                        
                         <label htmlFor="mail">
                             Correo electrónico:
                             <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className="formInput"
                             type="text"
                             id="mail"
                             autoComplete="off"
@@ -212,13 +219,15 @@ const Register = () => {
                             Ingrese un correo electrónico válido.<br />
                         </p>
 
-
+                        
                         <label htmlFor="username">
                             Nombre de Usuario:
                             <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className="formInput"
                             type="text"
                             id="username"
                             ref={userRef}
@@ -238,13 +247,15 @@ const Register = () => {
                             Letras, números, guión bajo y guiones permitidos.
                         </p>
 
-
+                        
                         <label htmlFor="password">
                             Contraseña:
                             <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className="formInput"
                             type="password"
                             id="password"
                             onChange={(e) => setPassword(e.target.value)}
@@ -262,13 +273,15 @@ const Register = () => {
                             Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                         </p>
 
-
+                        
                         <label htmlFor="confirm_pwd">
                             Confirmar contraseña:
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
                         </label>
+                        
                         <input
+                            className="formInput"
                             type="password"
                             id="confirm_pwd"
                             onChange={(e) => setMatchPwd(e.target.value)}
@@ -284,9 +297,18 @@ const Register = () => {
                             La contraseña debe coincidir con el primer campo
                         </p>
 
-                        <label htmlFor="roles">
+                        
+                        <label className="form__label" htmlFor="roles">
                             Voy a registrar:</label>
+                        
                         <select
+
+                            id="role"
+                            name="role"
+                            className={`formSelect`}
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+
                             id="roles"
                             name="roles"
                             className={`formSelect ${validRolesClass}`}
@@ -294,22 +316,27 @@ const Register = () => {
                             size="3"
                             value={roles}
                             onChange={onRolesChanged}
+
                         >
                             {options}
                         </select>
 
-                        <button disabled={!validUsername || !validPassword || !validMatch ? true : false}>Sign Up</button>
+                        
+                        
+                        <button className="formSubmitButton" disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</button>
                         
                         
                     </form>
+                    
                     <p>
                         Ya estás registrado?<br />
                         <span className="line">
                             {/*put router link here*/}
-                            <a href="/login">Ingresar</a>
+                            <a href="/">Ingresar</a>
                         </span>
                     </p>
-                </section>
+                </main>    
+            </section>
         </>
     )
 }

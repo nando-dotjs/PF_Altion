@@ -16,15 +16,12 @@ const Welcome = () => {
 
             <h1>Bienvenido {username}</h1>
 
-            {(isAdmin) && <p><Link to="/dash/users">Administración de Usuarios</Link></p>}
-
-            {(isAdmin) && <p><Link to="/dash/routes">Gestión de recorridos</Link></p>}
-
-            {(isAdmin) && <p><Link to="/dash/users">Gestión de puntos</Link></p>}
-
-            {(isCEV) && <p><Link to="/dash/recolectCEV">Alta de punto de recolección para CEV</Link></p>}
-
-            {(isEmpresa) && <p><Link to="/dash/recolectEmp">Alta de punto de recolección para Empresas</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/users">Gestion de Usuarios</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/drivers">Gestión de Choferes</Link></p>}
+            {(isCEV) && <p><Link to="/dash/cevs">Gestión de Puntos</Link></p>}
+            {(isEmpresa) && <p><Link to="/dash/companys">Gestión de Puntos</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/cevs">Gestión de Puntos (CEV)</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/companys">Gestión de Puntos (Empresa)</Link></p>}
 
         </section>
     )
