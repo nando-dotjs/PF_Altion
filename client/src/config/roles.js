@@ -5,6 +5,7 @@ export const ROLES = {
 }
 
 export const ROLES_PUBLICOS = {
+    Admin: 'Admin',
     CEV: 'CEV',
     Empresa: 'Empresa'
 }

@@ -302,11 +302,21 @@ const Register = () => {
                             Voy a registrar:</label>
                         
                         <select
+
                             id="role"
                             name="role"
                             className={`formSelect`}
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
+
+                            id="roles"
+                            name="roles"
+                            className={`formSelect ${validRolesClass}`}
+                            multiple={true}
+                            size="3"
+                            value={roles}
+                            onChange={onRolesChanged}
+
                         >
                             {options}
                         </select>
