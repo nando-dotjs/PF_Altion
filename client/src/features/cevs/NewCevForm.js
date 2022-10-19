@@ -4,6 +4,7 @@ import { useAddNewCevMutation } from "./cevsApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import  useAuth  from '../../hooks/useAuth'
+import MapContainer from '../maps/MapContainer'
 
 
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
@@ -51,6 +52,8 @@ const NewCevForm = ({ users }) => {
 
     const [userId, setUserId] = useState(users[0].id)
 
+    const [lat, setLat] = useState('')
+
     
     useEffect(() => {
         userRef?.current?.focus();
@@ -97,6 +100,8 @@ const NewCevForm = ({ users }) => {
     const onDetailsChanged = e => setDetails(e.target.value)
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
+    
+    const onLatChanged = e => setLat(e.target.value)
 
     const onUserIdChanged = e => setUserId(e.target.value)
 
@@ -290,6 +295,17 @@ const NewCevForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
+                <textarea
+                    className={`formInput`}
+                    id="lat"
+                    name="lat"
+                    value={lat}
+                    onChange={onLatChanged}
+                    required
+                    onFocus={() => setCelFocus(true)}
+                    onBlur={() => setCelFocus(false)}
+                />
+                <MapContainer/>
                     {labelSelector}
                     {selectorAdmin}
                     {input}

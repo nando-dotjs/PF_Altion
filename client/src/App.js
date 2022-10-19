@@ -28,6 +28,8 @@ import CompanysList from './features/companys/CompanysList';
 import EditCompany from './features/companys/EditCompany';
 import NewCompany from './features/companys/NewCompany';
 
+import MapContainer from './features/maps/MapContainer';
+
 function App() {
   useTitle('UPC')
   return (
@@ -76,8 +78,11 @@ function App() {
             <Route path="routes">
               <Route index element={<RoutesList />} />
             </Route>
-            </Route>
 
+            <Route path="maps">
+              <Route index element={<MapContainer />} />
+            </Route>
+            </Route>
           </Route>{/* End Dash */}
         </Route>
         </Route>
