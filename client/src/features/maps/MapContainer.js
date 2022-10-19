@@ -34,7 +34,7 @@ class MyComponents extends Component {
   render() {
     return (
       <LoadScript
-        googleMapsApiKey="AIzaSyBk1Iw0u_f_dr34YQXPHX3d6rbxbpl659M"
+        googleMapsApiKey=""
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
