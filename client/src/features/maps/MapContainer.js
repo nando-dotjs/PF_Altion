@@ -3,16 +3,18 @@ import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 
 let savedPosition
 
-const setSavedPosition = e => {
+const setSavedPosition = (e) => {
     const lat = e.lat()
     const lng = e.lng()
     savedPosition = { "lat":lat, "lng":lng }
     console.log(savedPosition)
 }
 
+
+
 const containerStyle = {
-  width: '40em',
-  height: '40em'
+  width: '30em',
+  height: '30em'
 };
 
 let center = {
@@ -29,9 +31,10 @@ const position = {
   lng: -58.080587
 }
 
-
 class MyComponents extends Component {
+
   render() {
+
     return (
       <LoadScript
         googleMapsApiKey=""
@@ -50,7 +53,9 @@ class MyComponents extends Component {
             onLoad={onLoad}
             position={position}
             draggable={true}
-            onDragEnd={(e) => {setSavedPosition(e.latLng)}}
+            onDragEnd={(e) => {
+              this.props.lat(e.latLng.lat()) 
+              this.props.lng(e.latLng.lng())}}
             />
 
           <></>

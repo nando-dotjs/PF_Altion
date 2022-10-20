@@ -53,6 +53,7 @@ const NewCevForm = ({ users }) => {
     const [userId, setUserId] = useState(users[0].id)
 
     const [lat, setLat] = useState('')
+    const [lng, setLng] = useState('')
 
     
     useEffect(() => {
@@ -102,6 +103,7 @@ const NewCevForm = ({ users }) => {
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
     
     const onLatChanged = e => setLat(e.target.value)
+    const onLngChanged = e => setLng(e.target.value)
 
     const onUserIdChanged = e => setUserId(e.target.value)
 
@@ -295,6 +297,9 @@ const NewCevForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
+                <label htmlFor="latitud">
+                    Latitud:
+                </label>
                 <textarea
                     className={`formInput`}
                     id="lat"
@@ -305,7 +310,20 @@ const NewCevForm = ({ users }) => {
                     onFocus={() => setCelFocus(true)}
                     onBlur={() => setCelFocus(false)}
                 />
-                <MapContainer/>
+                <label htmlFor="longitud">
+                    Longitud:
+                </label>
+                <textarea
+                    className={`formInput`}
+                    id="lng"
+                    name="lng"
+                    value={lng}
+                    onChange={onLngChanged}
+                    required
+                    onFocus={() => setCelFocus(true)}
+                    onBlur={() => setCelFocus(false)}
+                />
+                <MapContainer lat={setLat} lng={setLng} />
                     {labelSelector}
                     {selectorAdmin}
                     {input}
