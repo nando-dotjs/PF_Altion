@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import  useAuth  from '../../hooks/useAuth'
 import MapContainer from '../maps/MapContainer'
+import MapPopup from '../maps/MapPopup'
 
 
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
@@ -52,6 +53,7 @@ const NewCevForm = ({ users }) => {
 
     const [userId, setUserId] = useState(users[0].id)
 
+    const [mapPopup, setMapPopup] = useState(false)
     const [lat, setLat] = useState('')
     const [lng, setLng] = useState('')
 
@@ -323,7 +325,16 @@ const NewCevForm = ({ users }) => {
                     onFocus={() => setCelFocus(true)}
                     onBlur={() => setCelFocus(false)}
                 />
-                <MapContainer lat={setLat} lng={setLng} />
+                <button
+                    className="formSubmitButton"
+                    onClick={(e) => {
+                        e.preventDefault()
+                        setMapPopup(true)}}>
+                    Seleccionar dirección
+                </button>
+                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng}/>
+
+                
                     {labelSelector}
                     {selectorAdmin}
                     {input}

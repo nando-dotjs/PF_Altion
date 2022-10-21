@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
-
-let savedPosition
-
-const setSavedPosition = (e) => {
-    const lat = e.lat()
-    const lng = e.lng()
-    savedPosition = { "lat":lat, "lng":lng }
-    console.log(savedPosition)
-}
-
-
+import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
 
 const containerStyle = {
   width: '30em',
@@ -36,15 +26,15 @@ class MyComponents extends Component {
   render() {
 
     return (
-      <LoadScript
-        googleMapsApiKey=""
+      <LoadScriptOnlyIfNeeded
+        googleMapsApiKey="AIzaSyAcZs-ERY4Vyjpf-tqtirZFpLeu-kKqkEo"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
           zoom={15}
           clickableIcons={false}
-          options= {{streetViewControl:false}}
+          options= {{streetViewControl:false, minZoom:14}}
           
         >
 
@@ -60,7 +50,7 @@ class MyComponents extends Component {
 
           <></>
         </GoogleMap>
-      </LoadScript>
+      </LoadScriptOnlyIfNeeded>
     )
   }
 }
