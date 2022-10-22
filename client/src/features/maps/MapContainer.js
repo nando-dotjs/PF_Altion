@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
 
 const containerStyle = {

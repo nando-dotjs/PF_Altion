@@ -4,13 +4,14 @@ import { useAddNewCevMutation } from "./cevsApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import  useAuth  from '../../hooks/useAuth'
-import MapContainer from '../maps/MapContainer'
 import MapPopup from '../maps/MapPopup'
 
-
+// eslint-disable-next-line
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
 const CEL_REGEX = /^\d{9}$/;
+// eslint-disable-next-line
 const DETAILS_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
+// eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
@@ -29,6 +30,7 @@ const NewCevForm = ({ users }) => {
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
     const [idFamily, setIdFamily] = useState('')
@@ -118,7 +120,7 @@ const NewCevForm = ({ users }) => {
         if((isCEV || isEmpresa)) {
                 let userIdLog = '';
                 users.map(user => {
-                    if (user.username == username) {
+                    if (user.username === username) {
                         userIdLog = user.id
                     }
                     return userIdLog

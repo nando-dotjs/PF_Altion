@@ -5,6 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
 const NewDriverForm = () => {
@@ -19,6 +20,7 @@ const NewDriverForm = () => {
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
 

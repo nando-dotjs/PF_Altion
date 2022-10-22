@@ -1,14 +1,18 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateCompanyMutation, useDeleteCompanyMutation } from "./companysApiSlice"
+import { useUpdateCompanyMutation} from "./companysApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import useAuth from '../../hooks/useAuth'
 
+// eslint-disable-next-line
 const FANTASY_NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
+// eslint-disable-next-line
 const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,10}$/;
+// eslint-disable-next-line
 const RUT_REGEX = /^\d{12}$/;
 const CEL_REGEX = /^\d{9}$/;
+// eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
@@ -24,15 +28,17 @@ const EditCompanyForm = ({ company, users }) => {
         error
     }] = useUpdateCompanyMutation()
 
-    const [deleteCompany, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteCompanyMutation()
+    // const [deleteCompany, {
+    //     isSuccess: isDelSuccess,
+    //     isError: isDelError,
+    //     error: delerror
+    // }] = useDeleteCompanyMutation()
 
+    // eslint-disable-next-line
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
     const [fantasyName, setFantasyName] = useState(company.fantasyName)
@@ -95,7 +101,7 @@ const EditCompanyForm = ({ company, users }) => {
     }, [fantasyName, socialReason, rut, cel, street, streetNumber])
     useEffect(() => {
 
-        if (isSuccess || isDelSuccess) {
+        if (isSuccess) {
             setFantasyName('')
             setSocialReason('')
             setrut('')
@@ -106,7 +112,7 @@ const EditCompanyForm = ({ company, users }) => {
             navigate('/dash/companys')
         }
 
-    }, [isSuccess, isDelSuccess, navigate])
+    }, [isSuccess, navigate])
 
     const onFantasyNameChanged = e => setFantasyName(e.target.value)
     const onSocialReasonChanged = e => setSocialReason(e.target.value)
@@ -126,9 +132,9 @@ const EditCompanyForm = ({ company, users }) => {
         }
     }
 
-    const onDeleteCompanyClicked = async () => {
-        await deleteCompany({ id: company.id })
-    }
+    // const onDeleteCompanyClicked = async () => {
+    //     await deleteCompany({ id: company.id })
+    // }
 
     const created = new Date(company.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(company.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -143,26 +149,26 @@ const EditCompanyForm = ({ company, users }) => {
         )
     })
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+    const errClass = (isError ) ? "errmsg" : "offscreen"
 
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message) ?? ''
 
-    let deleteButton = null
+    // let deleteButton = null
     let selector = null 
     let input = null
     let label = null
     let check = null
     if (isAdmin) {
-        deleteButton = (
-            <button
-                className="icon-button"
-                title="Delete"
-                onClick={onDeleteCompanyClicked}
-            >
-                <FontAwesomeIcon icon={faTrashCan} />
-            </button>
-        )
+        // deleteButton = (
+        //     <button
+        //         className="icon-button"
+        //         title="Delete"
+        //         onClick={onDeleteCompanyClicked}
+        //     >
+        //         <FontAwesomeIcon icon={faTrashCan} />
+        //     </button>
+        // )
         selector = (
             <select
                             id="cev-username"
@@ -215,7 +221,7 @@ const EditCompanyForm = ({ company, users }) => {
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button>
-                        {deleteButton}
+                        {/* {deleteButton} */}
                     </div>
                 </div>
                 <label htmlFor="fantasyName">

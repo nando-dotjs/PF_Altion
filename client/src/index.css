@@ -153,7 +153,11 @@ a:focus-visible {
 }
 
 .dashHeaderContainer--small {
-  max-width: 800px;
+  /* max-width: 800px; */
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashHeaderNav {

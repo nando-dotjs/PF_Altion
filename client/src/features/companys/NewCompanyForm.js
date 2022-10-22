@@ -6,10 +6,14 @@ import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-
 import  useAuth  from '../../hooks/useAuth'
 
 
+// eslint-disable-next-line
 const FANTASY_NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
+// eslint-disable-next-line
 const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,10}$/;
+// eslint-disable-next-line
 const RUT_REGEX = /^\d{12}$/;
 const CEL_REGEX = /^\d{9}$/;
+// eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
@@ -25,9 +29,11 @@ const NewCompanyForm = ({ users }) => {
         error
     }] = useAddNewCompanyMutation()
 
+    // eslint-disable-next-line
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
     const [fantasyName, setFantasyName] = useState('')
@@ -124,7 +130,7 @@ const NewCompanyForm = ({ users }) => {
         if((isCEV || isEmpresa)) {
                 let userIdLog = '';
                 users.map(user => {
-                    if (user.username == username) {
+                    if (user.username === username) {
                         userIdLog = user.id
                     }
                     return userIdLog
@@ -331,6 +337,7 @@ const NewCompanyForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
+                
                     {labelSelector}
                     {selectorAdmin}
                     {input}

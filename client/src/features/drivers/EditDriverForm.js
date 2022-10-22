@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateDriverMutation, useDeleteDriverMutation } from "./driversApiSlice"
+import { useUpdateDriverMutation} from "./driversApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
 const EditDriverForm = ({ driver }) => {
@@ -15,15 +16,15 @@ const EditDriverForm = ({ driver }) => {
         error
     }] = useUpdateDriverMutation()
 
-    const [deleteDriver, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteDriverMutation()
+    // const [deleteDriver, {
+    //     isSuccess: isDelSuccess,
+    //     isError: isDelError,
+    //     error: delerror
+    // }] = useDeleteDriverMutation()
 
     const navigate = useNavigate()
-
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
 
@@ -55,13 +56,13 @@ const EditDriverForm = ({ driver }) => {
     }, [name, surname])
 
     useEffect(() => {
-        if (isSuccess || isDelSuccess) {
+        if (isSuccess) {
             setName('')
             setSurname('')
             navigate('/dash/drivers')
         }
 
-    }, [isSuccess, isDelSuccess, navigate])
+    }, [isSuccess, navigate])
 
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
@@ -72,15 +73,15 @@ const EditDriverForm = ({ driver }) => {
         await updateDriver({ id: driver.id, name, surname, active })
     }
 
-    const onDeleteDriverClicked = async () => {
-        await deleteDriver({ id: driver.id })
-    }
+    // const onDeleteDriverClicked = async () => {
+    //     await deleteDriver({ id: driver.id })
+    // }
 
     let canSave = [validName, validSurname].every(Boolean) && !isLoading
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+    const errClass = (isError) ? "errmsg" : "offscreen"
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message) ?? ''
 
 
     const content = (
@@ -100,13 +101,13 @@ const EditDriverForm = ({ driver }) => {
                             >
                                 <FontAwesomeIcon icon={faSave} />
                             </button>
-                            <button
+                            {/* <button
                                 className="icon-button"
                                 title="Delete"
                                 onClick={onDeleteDriverClicked}
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     <label htmlFor="name">
