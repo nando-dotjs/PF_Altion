@@ -4,6 +4,7 @@ import { useAddNewCompanyMutation } from "./companysApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import  useAuth  from '../../hooks/useAuth'
+import MapPopup from '../maps/MapPopup'
 
 
 // eslint-disable-next-line
@@ -62,7 +63,10 @@ const NewCompanyForm = ({ users }) => {
 
     const [userId, setUserId] = useState(users[0].id)
 
-    
+    const [mapPopup, setMapPopup] = useState(false)
+    const [lat, setLat] = useState('')
+    const [lng, setLng] = useState('')
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -115,6 +119,9 @@ const NewCompanyForm = ({ users }) => {
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
 
+    const onLatChanged = e => setLat(e.target.value)
+    const onLngChanged = e => setLng(e.target.value)
+    
     const onUserIdChanged = e => setUserId(e.target.value)
     
     const canSave = [validFantasyName, validSocialReason, validCompanyRUT, validCel, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
@@ -337,6 +344,42 @@ const NewCompanyForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
+                <label htmlFor="latitud">
+                    Latitud:
+                </label>
+                <textarea
+                    className={`formInput`}
+                    id="lat"
+                    name="lat"
+                    value={lat}
+                    onChange={onLatChanged}
+                    required
+                    onFocus={() => setCelFocus(true)}
+                    onBlur={() => setCelFocus(false)}
+                />
+                <label htmlFor="longitud">
+                    Longitud:
+                </label>
+                <textarea
+                    className={`formInput`}
+                    id="lng"
+                    name="lng"
+                    value={lng}
+                    onChange={onLngChanged}
+                    required
+                    onFocus={() => setCelFocus(true)}
+                    onBlur={() => setCelFocus(false)}
+                />
+                <button
+                    className="formSubmitButton"
+                    onClick={(e) => {
+                        e.preventDefault()
+                        setMapPopup(true)}}>
+                    Seleccionar dirección
+                </button>
+                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng}/>
+
+                
                 
                     {labelSelector}
                     {selectorAdmin}
