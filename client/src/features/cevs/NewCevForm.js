@@ -15,6 +15,8 @@ const DETAILS_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
+const LATITUDE_REGEX = /(.|\s)*\S(.|\s)*/
+const LONGITUDE_REGEX = /(.|\s)*\S(.|\s)*/
 
 const NewCevForm = ({ users }) => {
 
@@ -56,8 +58,16 @@ const NewCevForm = ({ users }) => {
     const [userId, setUserId] = useState(users[0].id)
 
     const [mapPopup, setMapPopup] = useState(false)
+
+
     const [lat, setLat] = useState('')
+    const [validLatitude, setValidLatitude] = useState(false)
+    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
+
+    
     const [lng, setLng] = useState('')
+    const [validLongitude, setValidLongitude] = useState(false)
+    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
     
     useEffect(() => {
@@ -85,8 +95,16 @@ const NewCevForm = ({ users }) => {
     }, [streetNumber])
 
     useEffect(() => {
+        setValidLatitude(LATITUDE_REGEX.test(lat));
+    }, [lat])
+
+    useEffect(() => {
+        setValidLongitude(LONGITUDE_REGEX.test(lng));
+    }, [lng])
+
+    useEffect(() => {
         setErrMsg('');
-    }, [idFamily, cel, details, street, streetNumber])
+    }, [idFamily, cel, details, street, streetNumber, lat, lng])
 
     useEffect(() => {
         if (isSuccess) {
@@ -96,6 +114,8 @@ const NewCevForm = ({ users }) => {
             setStreet('')
             setStreetNumber('')
             setUserId('')
+            setValidLatitude('')
+            setValidLongitude('')
             navigate('/dash/cevs')
         }
     }, [isSuccess, navigate])
@@ -111,11 +131,13 @@ const NewCevForm = ({ users }) => {
 
     const onUserIdChanged = e => setUserId(e.target.value)
 
-    const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
+    const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
+
     const onSaveCevClicked = async (e) => {
         e.preventDefault()
         if (isAdmin && canSave) {
-                await addNewCev({ user: userId, idFamily, cel, details, street, streetNumber, userId })
+                await addNewCev({ user: userId, idFamily, cel, details, street, streetNumber, lat, long: lng, userId })
+                console.log(canSave);
         } 
         if((isCEV || isEmpresa)) {
                 let userIdLog = '';
@@ -125,7 +147,7 @@ const NewCevForm = ({ users }) => {
                     }
                     return userIdLog
                 })
-                await addNewCev({ user: userIdLog, idFamily, cel, details, street, streetNumber, userIdLog })
+                await addNewCev({ user: userIdLog, idFamily, cel, details, street, streetNumber, lat, long: lng, userIdLog })
         }
         
     }
@@ -176,13 +198,13 @@ const NewCevForm = ({ users }) => {
                 <div className="formTitleRow">
                     <h2>Nuevo CEV</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
                 <label htmlFor="id">
@@ -301,32 +323,54 @@ const NewCevForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
-                <label htmlFor="latitud">
-                    Latitud:
-                </label>
-                <textarea
+        
+                {/* <label htmlFor="latitud">
+                  
+                    <FontAwesomeIcon icon={faCheck} className={validLatitude ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validLatitude || !lat ? "hide" : "invalid"} />
+                </label> */}
+                <textarea 
                     className={`formInput`}
                     id="lat"
                     name="lat"
                     value={lat}
                     onChange={onLatChanged}
+                    hidden
                     required
-                    onFocus={() => setCelFocus(true)}
-                    onBlur={() => setCelFocus(false)}
+                    aria-invalid={validLatitude ? "false" : "true"}
+                    aria-describedby="uidlat"
+                    onFocus={() => setLatitudeNumberFocus(true)}
+                    onBlur={() => setLatitudeNumberFocus(false)}
                 />
-                <label htmlFor="longitud">
+                <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    No es una geo correcta<br />
+                </p>
+                {/* <label htmlFor="longitud">
                     Longitud:
-                </label>
-                <textarea
+                    <FontAwesomeIcon icon={faCheck} className={validLongitude ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validLongitude || !lng ? "hide" : "invalid"} />
+                </label> */}
+                <textarea 
                     className={`formInput`}
                     id="lng"
                     name="lng"
                     value={lng}
                     onChange={onLngChanged}
                     required
-                    onFocus={() => setCelFocus(true)}
-                    onBlur={() => setCelFocus(false)}
+                    hidden
+                    aria-invalid={validLongitude? "false" : "true"}
+                    aria-describedby="uidlng"
+                    onFocus={() => setLongitudeNumberFocus(true)}
+                    onBlur={() => setLongitudeNumberFocus(false)}
                 />
+                <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    No es una geo correcta<br />
+                </p>
+                <label>
+                    Ubicación:
+                </label>
                 <button
                     className="formSubmitButton"
                     onClick={(e) => {
@@ -336,10 +380,13 @@ const NewCevForm = ({ users }) => {
                 </button>
                 <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng}/>
 
-                
                     {labelSelector}
                     {selectorAdmin}
                     {input}
+                    <br></br>
+                    <button className="formSubmitButton" disabled={!validCel||  !validDetails||  !validStreet||  !validStreetNumber ||  !validLatitude || !validLongitude ? true : false}>Registrar</button>
+
+
             </form>
         </>
     )

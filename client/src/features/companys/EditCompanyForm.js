@@ -213,14 +213,14 @@ const EditCompanyForm = ({ company, users }) => {
                 <div className="formTitleRow">
                     <h2>Editar CEV</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveCompanyClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                         {/* {deleteButton} */}
                     </div>
                 </div>
@@ -386,6 +386,10 @@ const EditCompanyForm = ({ company, users }) => {
                         <p className="formUpdated">Actualizado:<br />{updated}</p>
                     </div>
                 </div>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveCompanyClicked} disabled={!validFantasyName || !validSocialReason || !validCompanyRUT || !validCel || !validStreet || !validStreetNumber ? true : false}>Guardar cambios</button>
+
             </form>
         </>
     )

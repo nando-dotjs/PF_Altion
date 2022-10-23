@@ -213,14 +213,14 @@ const EditCevForm = ({ cev, users }) => {
                 <div className="formTitleRow">
                     <h2>Editar CEV</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveCevClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                         {/* {deleteButton} */}
                     </div>
                 </div>
@@ -358,6 +358,10 @@ const EditCevForm = ({ cev, users }) => {
                         <p className="formUpdated">Actualizado:<br />{updated}</p>
                     </div>
                 </div>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveCevClicked} disabled={!validId || !validCel || !validDetails || !validStreet || !validStreetNumber ? true : false}>Guardar cambios</button>
+
             </form>
         </>
     )

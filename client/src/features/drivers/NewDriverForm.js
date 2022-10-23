@@ -80,13 +80,13 @@ const NewDriverForm = () => {
                 <div className="formTitleRow">
                     <h2>Registro de Chofer</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
@@ -140,7 +140,9 @@ const NewDriverForm = () => {
                     Debe empezar y contener solo letras.<br />
                 </p>
 
-               
+                <br></br>
+                <button className="formSubmitButton" disabled={!validName || !validSurname ? true : false}>Registrar</button>
+
 
             </form>
         </>

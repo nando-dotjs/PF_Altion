@@ -93,14 +93,14 @@ const EditDriverForm = ({ driver }) => {
                     <div className="formTitleRow">
                         <h2>Editar chófer</h2>
                         <div className="formActionButtons">
-                            <button
+                            {/* <button
                                 className="icon-button"
                                 title="Save"
                                 onClick={onSaveDriverClicked}
                                 disabled={!canSave}
                             >
                                 <FontAwesomeIcon icon={faSave} />
-                            </button>
+                            </button> */}
                             {/* <button
                                 className="icon-button"
                                 title="Delete"
@@ -171,6 +171,8 @@ const EditDriverForm = ({ driver }) => {
                             onChange={onActiveChanged}
                         />
                     </label>
+                    
+                    <button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</button>
 
                 </form>
             </main>

@@ -33,6 +33,12 @@ const companySchema = new mongoose.Schema(
         completed: {
             type: Boolean,
             default: false
+        },
+        lat: {
+            type: String
+        },
+        long: {
+            type: String
         }
     },
     {

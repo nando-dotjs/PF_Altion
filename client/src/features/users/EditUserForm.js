@@ -159,14 +159,14 @@ const EditUserForm = ({ user }) => {
                 <div className="formTitleRow">
                     <h2>Editar Usuario</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveUserClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                         {/* <button
                             className="icon-button"
                             title="Delete"
@@ -337,7 +337,7 @@ const EditUserForm = ({ user }) => {
                 </label>
 
                 <label className="formLabel" htmlFor="roles">
-                    ROLES:</label>
+                    Rol:</label>
                 <select
                     id="role"
                     name="role"
@@ -347,6 +347,9 @@ const EditUserForm = ({ user }) => {
                 >
                     {options}
                 </select>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validUsername || !validMail || !name || !surname ? true : false}>Guardar cambios</button>
 
             </form>
         </>

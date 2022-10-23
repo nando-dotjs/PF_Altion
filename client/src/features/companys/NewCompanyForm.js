@@ -18,6 +18,9 @@ const CEL_REGEX = /^\d{9}$/;
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
+const LATITUDE_REGEX = /(.|\s)*\S(.|\s)*/
+const LONGITUDE_REGEX = /(.|\s)*\S(.|\s)*/
+
 
 const NewCompanyForm = ({ users }) => {
 
@@ -64,8 +67,15 @@ const NewCompanyForm = ({ users }) => {
     const [userId, setUserId] = useState(users[0].id)
 
     const [mapPopup, setMapPopup] = useState(false)
+
     const [lat, setLat] = useState('')
+    const [validLatitude, setValidLatitude] = useState(false)
+    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
+
+    
     const [lng, setLng] = useState('')
+    const [validLongitude, setValidLongitude] = useState(false)
+    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -96,8 +106,16 @@ const NewCompanyForm = ({ users }) => {
     }, [streetNumber])
 
     useEffect(() => {
+        setValidLatitude(LATITUDE_REGEX.test(lat));
+    }, [lat])
+
+    useEffect(() => {
+        setValidLongitude(LONGITUDE_REGEX.test(lng));
+    }, [lng])
+
+    useEffect(() => {
         setErrMsg('');
-    }, [fantasyName, socialReason, rut, cel, street, streetNumber])
+    }, [fantasyName, socialReason, rut, cel, street, streetNumber, lat, lng])
 
     useEffect(() => {
         if (isSuccess) {
@@ -108,6 +126,8 @@ const NewCompanyForm = ({ users }) => {
             setStreet('')
             setStreetNumber('')
             setUserId('')
+            setValidLatitude('')
+            setValidLongitude('')
             navigate('/dash/companys')
         }
     }, [isSuccess, navigate])
@@ -124,13 +144,13 @@ const NewCompanyForm = ({ users }) => {
     
     const onUserIdChanged = e => setUserId(e.target.value)
     
-    const canSave = [validFantasyName, validSocialReason, validCompanyRUT, validCel, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
+    const canSave = [validFantasyName, validSocialReason, validCompanyRUT, validCel, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
 
     const onSaveCompanyClicked = async (e) => {
 
         e.preventDefault()
         if (isAdmin && canSave) {
-                await addNewCompany({ user: userId, fantasyName, socialReason, rut, cel, street, streetNumber, userId })
+                await addNewCompany({ user: userId, fantasyName, socialReason, rut, cel, street, streetNumber, lat, long: lng, userId })
                 console.log(rut)
 
             } 
@@ -142,7 +162,7 @@ const NewCompanyForm = ({ users }) => {
                     }
                     return userIdLog
                 })
-                await addNewCompany({ user: userIdLog, fantasyName, socialReason, rut, cel, street, streetNumber, userIdLog })
+                await addNewCompany({ user: userIdLog, fantasyName, socialReason, rut, cel, street, streetNumber, lat, long: lng, userIdLog })
         }
     }
 
@@ -191,13 +211,13 @@ const NewCompanyForm = ({ users }) => {
                 <div className="formTitleRow">
                     <h2>Nueva Empresa</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
                 <label htmlFor="fantasyName">
@@ -344,32 +364,48 @@ const NewCompanyForm = ({ users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
-                <label htmlFor="latitud">
-                    Latitud:
-                </label>
-                <textarea
+                <textarea 
                     className={`formInput`}
                     id="lat"
                     name="lat"
                     value={lat}
                     onChange={onLatChanged}
+                    hidden
                     required
-                    onFocus={() => setCelFocus(true)}
-                    onBlur={() => setCelFocus(false)}
+                    aria-invalid={validLatitude ? "false" : "true"}
+                    aria-describedby="uidlat"
+                    onFocus={() => setLatitudeNumberFocus(true)}
+                    onBlur={() => setLatitudeNumberFocus(false)}
                 />
-                <label htmlFor="longitud">
+                <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    No es una geo correcta<br />
+                </p>
+                {/* <label htmlFor="longitud">
                     Longitud:
-                </label>
-                <textarea
+                    <FontAwesomeIcon icon={faCheck} className={validLongitude ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validLongitude || !lng ? "hide" : "invalid"} />
+                </label> */}
+                <textarea 
                     className={`formInput`}
                     id="lng"
                     name="lng"
                     value={lng}
                     onChange={onLngChanged}
                     required
-                    onFocus={() => setCelFocus(true)}
-                    onBlur={() => setCelFocus(false)}
+                    hidden
+                    aria-invalid={validLongitude? "false" : "true"}
+                    aria-describedby="uidlng"
+                    onFocus={() => setLongitudeNumberFocus(true)}
+                    onBlur={() => setLongitudeNumberFocus(false)}
                 />
+                <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude? "instructions" : "offscreen"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    No es una geo correcta<br />
+                </p>
+                <label>
+                    Ubicación:
+                </label>
                 <button
                     className="formSubmitButton"
                     onClick={(e) => {
@@ -384,6 +420,10 @@ const NewCompanyForm = ({ users }) => {
                     {labelSelector}
                     {selectorAdmin}
                     {input}
+
+                    <br></br>
+                    <button className="formSubmitButton" disabled={!validFantasyName || !validSocialReason || !validCompanyRUT || !validCel || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>Registrar</button>
+
             </form>
         </>
     )
