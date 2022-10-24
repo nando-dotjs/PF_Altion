@@ -15,7 +15,7 @@ const Driver = ({ driverId }) => {
         
         const handleEdit = () => navigate(`/dash/drivers/${driverId}`)
 
-        const cellStatus = driver.active ? '' : 'table__cell--inactive'
+        const cellStatus = driver.active ? '' : 'tableCell--inactive'
 
         return (
             <tr className="tableRow driver">

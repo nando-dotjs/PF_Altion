@@ -26,9 +26,11 @@ const getAllCompany = asyncHandler(async (req, res) => {
 // @route POST /companys
 // @access Private
 const createNewCompany = asyncHandler(async (req, res) => {
-    const { user, fantasyName, socialReason, rut, cel, street, streetNumber } = req.body
+    const { user, fantasyName, socialReason, rut, cel, street, streetNumber, lat, long} = req.body
     // Confirm data
-    if (!user || !fantasyName || !cel || !socialReason || !rut || !street || !streetNumber) {
+
+    console.log(user, fantasyName, socialReason, rut, cel, street, streetNumber, lat, long);
+    if (!user || !fantasyName || !cel || !socialReason || !rut || !street || !streetNumber || !lat || !long) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -40,7 +42,7 @@ const createNewCompany = asyncHandler(async (req, res) => {
     }
 
     // Create and store the new user 
-    const company = await Company.create({ user, fantasyName, cel, socialReason, rut, street, streetNumber })
+    const company = await Company.create({ user, fantasyName, cel, socialReason, rut, street, streetNumber, lat, long})
 
     if (company) { // Created 
         return res.status(201).json({ message: 'Nueva Empresa creada' })

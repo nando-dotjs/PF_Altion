@@ -3,12 +3,14 @@ import { useAddNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { faSave } from "@fortawesome/free-solid-svg-icons"
+// import { faSave } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+// eslint-disable-next-line
 const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const NewUserForm = () => {
@@ -23,10 +25,10 @@ const NewUserForm = () => {
     const navigate = useNavigate()
 
     const userRef = useRef();
-    const errRef = useRef();
-
+    // const errRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+    // const [success, setSuccess] = useState(false);
 
     const [name, setName] = useState('')
     const [validName, setValidName] = useState(false)

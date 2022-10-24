@@ -6,8 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROLES_PUBLICOS } from "../../config/roles"
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
+
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+// eslint-disable-next-line
 const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const Register = () => {
@@ -22,6 +25,7 @@ const Register = () => {
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const errRef = useRef();
 
     const [name, setName] = useState('')
@@ -51,8 +55,9 @@ const Register = () => {
     const [matchFocus, setMatchFocus] = useState(false);
 
     const [role, setRole] = useState('CEV')
-
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
+    // eslint-disable-next-line
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {

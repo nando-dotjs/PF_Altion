@@ -1,13 +1,17 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateCevMutation, useDeleteCevMutation } from "./cevsApiSlice"
+import { useUpdateCevMutation} from "./cevsApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import useAuth from '../../hooks/useAuth'
 
+// eslint-disable-next-line
 const ID_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
+// eslint-disable-next-line
 const CEL_REGEX = /^\d{9}$/;
+// eslint-disable-next-line
 const DETAILS_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
+// eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
@@ -23,15 +27,16 @@ const EditCevForm = ({ cev, users }) => {
         error
     }] = useUpdateCevMutation()
 
-    const [deleteCev, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteCevMutation()
+    // const [deleteCev, {
+    //     isSuccess: isDelSuccess,
+    //     isError: isDelError,
+    //     error: delerror
+    // }] = useDeleteCevMutation()
 
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
     const [idFamily, setIdFamily] = useState(cev.idFamily)
@@ -87,7 +92,16 @@ const EditCevForm = ({ cev, users }) => {
 
     useEffect(() => {
 
-        if (isSuccess || isDelSuccess) {
+        // if (isSuccess || isDelSuccess) {
+        //     setIdFamily('')
+        //     setCel('')
+        //     setDetails('')
+        //     setStreet('')
+        //     setStreetNumber('')
+        //     setUserId('')
+        //     navigate('/dash/cevs')
+        // }
+        if (isSuccess) {
             setIdFamily('')
             setCel('')
             setDetails('')
@@ -96,8 +110,8 @@ const EditCevForm = ({ cev, users }) => {
             setUserId('')
             navigate('/dash/cevs')
         }
-
-    }, [isSuccess, isDelSuccess, navigate])
+    //    [isSuccess, isDelSuccess, navigate]
+    }, [isSuccess, navigate])
 
     const onIdFamilyChanged = e => setIdFamily(e.target.value)
     const onCelChanged = e => setCel(e.target.value)
@@ -116,9 +130,9 @@ const EditCevForm = ({ cev, users }) => {
         }
     }
 
-    const onDeleteCevClicked = async () => {
-        await deleteCev({ id: cev.id })
-    }
+    // const onDeleteCevClicked = async () => {
+    //     await deleteCev({ id: cev.id })
+    // }
 
     const created = new Date(cev.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(cev.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -133,26 +147,28 @@ const EditCevForm = ({ cev, users }) => {
         )
     })
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+    const errClass = (isError) ? "errmsg" : "offscreen"
+    // const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
 
+    // const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message) ?? ''
 
-    let deleteButton = null
+    // let deleteButton = null
     let selector = null 
     let input = null
     let label = null
     let check = null
     if (isAdmin) {
-        deleteButton = (
-            <button
-                className="icon-button"
-                title="Delete"
-                onClick={onDeleteCevClicked}
-            >
-                <FontAwesomeIcon icon={faTrashCan} />
-            </button>
-        )
+        // deleteButton = (
+        //     <button
+        //         className="icon-button"
+        //         title="Delete"
+        //         onClick={onDeleteCevClicked}
+        //     >
+        //         <FontAwesomeIcon icon={faTrashCan} />
+        //     </button>
+        // )
         selector = (
             <select
                             id="cev-username"
@@ -197,15 +213,15 @@ const EditCevForm = ({ cev, users }) => {
                 <div className="formTitleRow">
                     <h2>Editar CEV</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveCevClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        {deleteButton}
+                        </button> */}
+                        {/* {deleteButton} */}
                     </div>
                 </div>
                 <label htmlFor="id">
@@ -342,6 +358,10 @@ const EditCevForm = ({ cev, users }) => {
                         <p className="formUpdated">Actualizado:<br />{updated}</p>
                     </div>
                 </div>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveCevClicked} disabled={!validId || !validCel || !validDetails || !validStreet || !validStreetNumber ? true : false}>Guardar cambios</button>
+
             </form>
         </>
     )

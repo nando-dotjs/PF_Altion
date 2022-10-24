@@ -5,6 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
 const NewDriverForm = () => {
@@ -19,6 +20,7 @@ const NewDriverForm = () => {
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
 
@@ -78,13 +80,13 @@ const NewDriverForm = () => {
                 <div className="formTitleRow">
                     <h2>Registro de Chofer</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
@@ -138,7 +140,9 @@ const NewDriverForm = () => {
                     Debe empezar y contener solo letras.<br />
                 </p>
 
-               
+                <br></br>
+                <button className="formSubmitButton" disabled={!validName || !validSurname ? true : false}>Registrar</button>
+
 
             </form>
         </>

@@ -1,13 +1,16 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
+import { useUpdateUserMutation} from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
+// eslint-disable-next-line
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+// eslint-disable-next-line
 const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const EditUserForm = ({ user }) => {
@@ -19,18 +22,21 @@ const EditUserForm = ({ user }) => {
         error
     }] = useUpdateUserMutation()
 
-    const [deleteUser, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteUserMutation()
+    // const [deleteUser, {
+    //     isSuccess: isDelSuccess,
+    //     // eslint-disable-next-line
+    //     isError: isDelError,
+    //     error: delerror
+    // }] = useDeleteUserMutation()
 
     const navigate = useNavigate()
     
     const userRef = useRef();
+    // eslint-disable-next-line
     const errRef = useRef();
-
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
+    // eslint-disable-next-line
     const [success, setSuccess] = useState(false);
 
     const [name, setName] = useState(user.name)
@@ -90,7 +96,7 @@ const EditUserForm = ({ user }) => {
     }, [name, surname, mail, username, password, matchPwd])
 
     useEffect(() => {
-        if (isSuccess || isDelSuccess) {
+        if (isSuccess) {
             setName('')
             setSurname('')
             setUsername('')
@@ -99,7 +105,7 @@ const EditUserForm = ({ user }) => {
             setRole('')
             navigate('/dash/users')
         }
-    }, [isSuccess, isDelSuccess, navigate])
+    }, [isSuccess, navigate])
 
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
@@ -118,9 +124,9 @@ const EditUserForm = ({ user }) => {
         }
     }
 
-    const onDeleteUserClicked = async () => {
-        await deleteUser({ id: user.id })
-    }
+    // const onDeleteUserClicked = async () => {
+    //     await deleteUser({ id: user.id })
+    // }
 
     const options = Object.values(ROLES).map(role => {
         return (
@@ -142,7 +148,7 @@ const EditUserForm = ({ user }) => {
     const errClass = isError ? "errmsg" : "offscreen"
 
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message) ?? ''
 
 
     const content = (
@@ -153,21 +159,21 @@ const EditUserForm = ({ user }) => {
                 <div className="formTitleRow">
                     <h2>Editar Usuario</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveUserClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
+                        </button> */}
+                        {/* <button
                             className="icon-button"
                             title="Delete"
                             onClick={onDeleteUserClicked}
                         >
                             <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
@@ -331,7 +337,7 @@ const EditUserForm = ({ user }) => {
                 </label>
 
                 <label className="formLabel" htmlFor="roles">
-                    ROLES:</label>
+                    Rol:</label>
                 <select
                     id="role"
                     name="role"
@@ -341,6 +347,9 @@ const EditUserForm = ({ user }) => {
                 >
                     {options}
                 </select>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validUsername || !validMail || !name || !surname ? true : false}>Guardar cambios</button>
 
             </form>
         </>

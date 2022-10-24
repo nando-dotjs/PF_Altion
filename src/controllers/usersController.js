@@ -20,6 +20,19 @@ const getAllUsers = asyncHandler (async (req, res) => {
     res.json(users)
 })
 
+// @desc Obtener un usuario
+// @route GET /users/user
+// @access Privada
+
+const getUser = asyncHandler (async (req, res) => {
+    const { username } = req.body
+    const user = await User.find({"username":username}).select('--password').lean()
+    if (!user) {
+        return res.status(400).json({message: 'No se encontró el usuario'})
+    } 
+    res.json(user)
+})
+
 // @desc Crear nuevo usuario
 // @route POST /users
 // @access Privada
@@ -180,5 +193,6 @@ module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUser
 }
