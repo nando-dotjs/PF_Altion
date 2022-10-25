@@ -7,7 +7,6 @@ let isDraggable = true;
 const containerStyle = {
   width: '90%',
   height: '30em',
-  position: center
 };
 
 let center = {
