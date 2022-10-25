@@ -28,6 +28,11 @@ import CompanysList from './features/companys/CompanysList';
 import EditCompany from './features/companys/EditCompany';
 import NewCompany from './features/companys/NewCompany';
 
+import ZonesList from './features/zones/ZonesList';
+import EditZone from './features/zones/EditZone';
+import NewZone from './features/zones/NewZone';
+
+
 import MapContainer from './features/maps/MapContainer';
 
 function App() {
@@ -60,6 +65,12 @@ function App() {
               <Route index element={<DriversList />} />
               <Route path=":id" element={<EditDriver />} />
               <Route path="new" element={<NewDriverForm />} />
+            </Route>
+
+            <Route path="zones">
+              <Route index element={<ZonesList />} />
+              <Route path=":id" element={<EditZone />} />
+              <Route path="new" element={<NewZone />} />
             </Route>
             </Route>
 
