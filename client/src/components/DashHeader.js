@@ -17,13 +17,13 @@ const CEVS_REGEX = /^\/dash\/cevs(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
+const ZONES_REGEX = /^\/dash\/zones(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
-
 const CEVS_EDIT_REGEX = /^\/dash\/cevs(\/.+)?$/
 const COMPANY_EDIT_REGEX = /^\/dash\/companys(\/.+)?$/
-
+const ZONE_EDIT_REGEX = /^\/dash\/zones(\/.+)?$/
 
 const DashHeader = () => {
 
@@ -55,14 +55,16 @@ const DashHeader = () => {
     const onGoBackCEV = () => navigate('/dash')
     const onGoBackCEVToTable = () => navigate('/dash/cevs')
 
-
     const onNewCompanyClicked = () => navigate('/dash/companys/new')
     const onGoBackCompany = () => navigate('/dash')
     const onGoBackCompanyToTable = () => navigate('/dash/companys')
 
+    const onNewZoneClicked = () => navigate('/dash/zones/new')
+    const onGoBackZone = () => navigate('/dash')
+    const onGoBackZoneToTable = () => navigate('/dash/zones')
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
@@ -210,6 +212,42 @@ const DashHeader = () => {
         )
     }
 
+    let newZoneButton = null
+    let goBackFromZoneButton = null;
+    if (ZONES_REGEX.test(pathname)) {
+        newZoneButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onNewZoneClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+        goBackFromZoneButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackZone}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromZoneToTable = null
+    if(ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
+        goBackFromZoneToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackZoneToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
     // let userButton = null
     // if (isAdmin) {
     //     if (!USERS_REGEX.test(pathname) && pathname.includes('/dash')) {
@@ -250,16 +288,19 @@ const DashHeader = () => {
                 {newDriverButton}
                 {newCevButton}
                 {newCompanyButton}
+                {newZoneButton}
                 {goBackFromCompanyButton}
                 {goBackFromCevButton}
                 {goBackFromDriverButton}
                 {goBackFromUserButton}
+                {goBackFromZoneButton}
 
                 {/* FORMULARIOS DE EDICION */}
                 {goBackFromUserToTable}
                 {goBackFromDriverToTable}
                 {goBackFromCEVToTable}
                 {goBackFromCompanyToTable}
+                {goBackFromZoneToTable}
                 
                 {logoutButton}
             </>

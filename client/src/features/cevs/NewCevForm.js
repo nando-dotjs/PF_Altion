@@ -151,7 +151,8 @@ const NewCevForm = ({ users }) => {
                 })
                 await addNewCev({ user: userIdLog, idFamily, cel, details, street, streetNumber, lat, long: lng, userIdLog })
         }
-        
+        <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
+                            Propietario:</label>
     }
 
 

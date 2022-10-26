@@ -18,10 +18,12 @@ const Welcome = () => {
 
             {(isAdmin) && <p><Link to="/dash/users">Gestion de Usuarios</Link></p>}
             {(isAdmin) && <p><Link to="/dash/drivers">Gestión de Choferes</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/zones">Gestión de Zonas</Link></p>}
             {(isCEV) && <p><Link to="/dash/cevs">Gestión de Puntos</Link></p>}
             {(isEmpresa) && <p><Link to="/dash/companys">Gestión de Puntos</Link></p>}
             {(isAdmin) && <p><Link to="/dash/cevs">Gestión de Puntos (CEV)</Link></p>}
             {(isAdmin) && <p><Link to="/dash/companys">Gestión de Puntos (Empresa)</Link></p>}
+            
 
         </section>
     )

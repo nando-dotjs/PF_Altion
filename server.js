@@ -18,6 +18,7 @@ app.use('/users', require('./src/routes/userRoutes'))
 app.use('/cevs', require('./src/routes/cevRoutes'))
 app.use('/companys', require('./src/routes/companyRoutes'))
 app.use('/auth', require('./src/routes/authRoutes'))
+app.use('/zones', require('./src/routes/zoneRoutes'))
 
 connectDB()
 

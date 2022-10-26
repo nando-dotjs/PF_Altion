@@ -56,8 +56,7 @@ const createNewCompany = asyncHandler(async (req, res) => {
 // @route PATCH /companys
 // @access Private
 const updateCompany = asyncHandler(async (req, res) => {
-    const { id, user, fantasyName, socialReason, rut, cel, street, streetNumber, completed } = req.body
-    console.log(user, fantasyName, socialReason, rut, cel, street, streetNumber, completed )
+    const { id, user, fantasyName, socialReason, rut, cel, street, streetNumber, completed, zone } = req.body
     // Confirm data
     if (!id || !user || !fantasyName || !cel || !socialReason || !rut || !street || !streetNumber || typeof completed !== 'boolean') {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
@@ -86,6 +85,7 @@ const updateCompany = asyncHandler(async (req, res) => {
     company.street = street
     company.streetNumber = streetNumber
     company.completed = completed
+    company.zone = zone
 
     const updatedCompany = await company.save()
 
