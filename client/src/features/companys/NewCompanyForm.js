@@ -77,6 +77,9 @@ const NewCompanyForm = ({ users }) => {
     const [validLongitude, setValidLongitude] = useState(false)
     const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
+    
+    let latlng = lat && lng ? {"lat":lat, "lng":lng} : null
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -413,7 +416,7 @@ const NewCompanyForm = ({ users }) => {
                         setMapPopup(true)}}>
                     Seleccionar dirección
                 </button>
-                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng}/>
+                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng}/>
 
                 
                 

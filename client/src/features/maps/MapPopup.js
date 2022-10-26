@@ -6,7 +6,7 @@ const MapPopup = (props) => {
     return (props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
-                <MapContainer lat={props.lat} lng={props.lng}  />
+                <MapContainer lat={props.lat} lng={props.lng} isEditable={true} latlng={props.latlng} />
                 <button className="formSubmitButton"
                 onClick={(e) => {
                         e.preventDefault()

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
 
+let isDraggable = true;
+
 const containerStyle = {
-  width: '30em',
-  height: '30em'
+  width: '90%',
+  height: '30em',
 };
 
 let center = {
@@ -31,7 +33,7 @@ class MyComponents extends Component {
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
+          center={this.props.latlng ? this.props.latlng : position}
           zoom={15}
           clickableIcons={false}
           options= {{streetViewControl:false, minZoom:14}}
@@ -41,8 +43,8 @@ class MyComponents extends Component {
           { /* Child components, such as markers, info windows, etc. */ }
             <MarkerF
             onLoad={onLoad}
-            position={position}
-            draggable={true}
+            position={((this.props.latlng) ? this.props.latlng : position)}
+            draggable={this.props.isEditable}
             onDragEnd={(e) => {
               this.props.lat(e.latLng.lat()) 
               this.props.lng(e.latLng.lng())}}

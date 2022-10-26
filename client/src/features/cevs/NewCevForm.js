@@ -59,7 +59,6 @@ const NewCevForm = ({ users }) => {
 
     const [mapPopup, setMapPopup] = useState(false)
 
-
     const [lat, setLat] = useState('')
     const [validLatitude, setValidLatitude] = useState(false)
     const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
@@ -130,6 +129,9 @@ const NewCevForm = ({ users }) => {
     const onLngChanged = e => setLng(e.target.value)
 
     const onUserIdChanged = e => setUserId(e.target.value)
+
+    let latlng = lat && lng ? {"lat":lat, "lng":lng} : null
+
 
     const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
 
@@ -379,7 +381,7 @@ const NewCevForm = ({ users }) => {
                         setMapPopup(true)}}>
                     Seleccionar dirección
                 </button>
-                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng}/>
+                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng}/>
 
                     {labelSelector}
                     {selectorAdmin}
