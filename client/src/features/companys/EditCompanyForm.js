@@ -3,6 +3,7 @@ import { useUpdateCompanyMutation} from "./companysApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
 
 // eslint-disable-next-line
@@ -169,6 +170,7 @@ const EditCompanyForm = ({ company, users }) => {
     let input = null
     let label = null
     let check = null
+    let map = null
     if (isAdmin) {
         // deleteButton = (
         //     <button
