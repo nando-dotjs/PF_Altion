@@ -68,6 +68,16 @@ const EditCompanyForm = ({ company, users }) => {
     const [completed, setCompleted] = useState(company.completed)
     const [userId, setUserId] = useState(company.user)
 
+    const [lat, setLat] = useState(+company.lat)
+    const [validLatitude, setValidLatitude] = useState(false)
+    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
+    
+    const [lng, setLng] = useState(+company.long)
+    const [validLongitude, setValidLongitude] = useState(false)
+    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
+
+    let latlng = {"lat":lat, "lng":lng}
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -169,6 +179,12 @@ const EditCompanyForm = ({ company, users }) => {
         //         <FontAwesomeIcon icon={faTrashCan} />
         //     </button>
         // )
+
+        map = (
+            <MapContainer isDraggable={false} latlng={latlng}/>
+        )
+
+
         selector = (
             <select
                             id="cev-username"
@@ -367,6 +383,8 @@ const EditCompanyForm = ({ company, users }) => {
                     Solo números.<br />
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
+
+                {map}
 
                 <div className="formRow">
                     <div className="formDivider">
