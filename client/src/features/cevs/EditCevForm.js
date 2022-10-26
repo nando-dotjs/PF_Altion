@@ -3,6 +3,7 @@ import { useUpdateCevMutation} from "./cevsApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
 
 // eslint-disable-next-line
@@ -62,6 +63,15 @@ const EditCevForm = ({ cev, users }) => {
     const [completed, setCompleted] = useState(cev.completed)
     const [userId, setUserId] = useState(cev.user)
 
+    const [lat, setLat] = useState(+cev.lat)
+    const [validLatitude, setValidLatitude] = useState(false)
+    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
+    
+    const [lng, setLng] = useState(+cev.long)
+    const [validLongitude, setValidLongitude] = useState(false)
+    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
+
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -88,7 +98,7 @@ const EditCevForm = ({ cev, users }) => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [idFamily, cel, details, street, streetNumber])
+    }, [idFamily, cel, details, street, streetNumber, lat, lng])
 
     useEffect(() => {
 
@@ -137,6 +147,8 @@ const EditCevForm = ({ cev, users }) => {
     const created = new Date(cev.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(cev.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
+    const latlng = {"lat": lat, "lng": lng}
+
     const options = users.map(user => {
         return (
             <option
@@ -159,6 +171,7 @@ const EditCevForm = ({ cev, users }) => {
     let input = null
     let label = null
     let check = null
+    let map = null
     if (isAdmin) {
         // deleteButton = (
         //     <button
@@ -169,7 +182,14 @@ const EditCevForm = ({ cev, users }) => {
         //         <FontAwesomeIcon icon={faTrashCan} />
         //     </button>
         // )
+        map = (
+            <MapContainer isDraggable={false} latlng={latlng}/>
+        )
+
         selector = (
+
+
+
             <select
                             id="cev-username"
                             name="username"
@@ -340,7 +360,10 @@ const EditCevForm = ({ cev, users }) => {
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
 
+                {map}
+
                 <div className="formRow">
+                    
                     <div className="formDivider">
                         <label className="formLabel formCheckboxContainer" htmlFor="cev-completed">
                             {label}
