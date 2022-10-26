@@ -27,7 +27,7 @@ const Company = ({ companyId }) => {
                     }
                 </td>
                 <td className="tableCell companyStatusCreated">{created}</td>
-                <td className="tableCell companyStatusUpdated">{updated}</td>
+                <td className="tableCell companyStatusUpdated">{company.zone}</td>
                 <td className="tableCell companyStatusTitle">{company.fantasyName}</td>
                 <td className="tableCell companyStatusUsername">{company.username}</td>
 

@@ -26,10 +26,10 @@ const getAllCevs = asyncHandler(async (req, res) => {
 // @route POST /cevs
 // @access Private
 const createNewCev = asyncHandler(async (req, res) => {
-    const { user, idFamily, cel, details, street, streetNumber } = req.body
+    const { user, idFamily, cel, details, street, streetNumber, lat, long } = req.body
 
     // Confirm data
-    if (!user || !idFamily || !cel || !details || !street || !streetNumber) {
+    if (!user || !idFamily || !cel || !details || !street || !streetNumber || !lat || !long) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -41,8 +41,7 @@ const createNewCev = asyncHandler(async (req, res) => {
     }
 
     // Create and store the new user 
-    const cev = await Cev.create({ user, idFamily, cel, details, street, streetNumber })
-
+    const cev = await Cev.create({ user, idFamily, cel, details, street, streetNumber, lat, long })
     if (cev) { // Created 
         return res.status(201).json({ message: 'Nuevo CEV creado' })
     } else {
@@ -55,7 +54,7 @@ const createNewCev = asyncHandler(async (req, res) => {
 // @route PATCH /cevs
 // @access Private
 const updateCev = asyncHandler(async (req, res) => {
-    const { id, user, idFamily, cel, details, street, streetNumber, completed } = req.body
+    const { id, user, idFamily, cel, details, street, streetNumber, completed, zone } = req.body
 
     // Confirm data
     if (!id || !user || !idFamily || !cel || !details || !street || !streetNumber || typeof completed !== 'boolean') {
@@ -84,6 +83,7 @@ const updateCev = asyncHandler(async (req, res) => {
     cev.street = street
     cev.streetNumber = streetNumber
     cev.completed = completed
+    cev.zone = zone
 
     const updatedCev = await cev.save()
 

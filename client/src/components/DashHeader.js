@@ -1,27 +1,33 @@
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
-    faUserGear,
-    faUserPlus,
     faRightFromBracket,
-    faPlus
+    faPlus,
+    faArrowLeft
 
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
-import useAuth from '../hooks/useAuth'
+// import useAuth from '../hooks/useAuth'
 
 const DASH_REGEX = /^\/dash(\/)?$/
 const CEVS_REGEX = /^\/dash\/cevs(\/)?$/
 const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
+const ZONES_REGEX = /^\/dash\/zones(\/)?$/
+
+const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
+const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
+const CEVS_EDIT_REGEX = /^\/dash\/cevs(\/.+)?$/
+const COMPANY_EDIT_REGEX = /^\/dash\/companys(\/.+)?$/
+const ZONE_EDIT_REGEX = /^\/dash\/zones(\/.+)?$/
 
 const DashHeader = () => {
 
-    const { isAdmin } = useAuth()
+    // const { isAdmin } = useAuth()
 
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -38,18 +44,32 @@ const DashHeader = () => {
     }, [isSuccess, navigate])
 
     const onNewUserClicked = () => navigate('/dash/users/new')
-    const onUsersClicked = () => navigate('/dash/users')
-    const onNewDriverClicked = () => navigate('/dash/drivers/new')
-    const onNewCevClicked = () => navigate('/dash/cevs/new')
-    const onNewCompanyClicked = () => navigate('/dash/companys/new')
+    const onGoBackUser = () => navigate('/dash')
+    const onGoBackUserToTable = () => navigate ('/dash/users')
 
+    const onNewDriverClicked = () => navigate('/dash/drivers/new')
+    const onGoBackDriver = () => navigate('/dash')
+    const onGoBackDriverToTable = () => navigate('/dash/drivers')
+
+    const onNewCevClicked = () => navigate('/dash/cevs/new')
+    const onGoBackCEV = () => navigate('/dash')
+    const onGoBackCEVToTable = () => navigate('/dash/cevs')
+
+    const onNewCompanyClicked = () => navigate('/dash/companys/new')
+    const onGoBackCompany = () => navigate('/dash')
+    const onGoBackCompanyToTable = () => navigate('/dash/companys')
+
+    const onNewZoneClicked = () => navigate('/dash/zones/new')
+    const onGoBackZone = () => navigate('/dash')
+    const onGoBackZoneToTable = () => navigate('/dash/zones')
 
     let dashClass = null
-    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+    if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
         dashClass = "dashHeaderContainer--small"
     }
 
     let newUserButton = null
+    let goBackFromUserButton = null
     if (USERS_REGEX.test(pathname)) {
         newUserButton = (
             <button
@@ -57,25 +77,71 @@ const DashHeader = () => {
                 title="New User"
                 onClick={onNewUserClicked}
             >
-                <FontAwesomeIcon icon={faUserPlus} />
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+        goBackFromUserButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackUser}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromUserToTable = null
+    if(USERS_EDIT_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+        goBackFromUserToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackUserToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
             </button>
         )
     }
 
     let newDriverButton = null
+    let goBackFromDriverButton = null;
     if (DRIVERS_REGEX.test(pathname)) {
         newDriverButton = (
             <button
                 className="icon-button"
-                title="New Driver"
+                title="Go back"
                 onClick={onNewDriverClicked}
             >
                 <FontAwesomeIcon icon={faPlus} />
             </button>
         )
+        goBackFromDriverButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackDriver}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromDriverToTable = null
+    if(DRIVERS_EDIT_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+        goBackFromDriverToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackDriverToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
     }
 
     let newCevButton = null
+    let goBackFromCevButton = null;
     if (CEVS_REGEX.test(pathname)) {
         newCevButton = (
             <button
@@ -86,9 +152,32 @@ const DashHeader = () => {
                 <FontAwesomeIcon icon={faPlus} />
             </button>
         )
+        goBackFromCevButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackCEV}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
     }
 
-    let newCompanyButton = null
+    let goBackFromCEVToTable = null
+    if(CEVS_EDIT_REGEX.test(pathname) && !CEVS_REGEX.test(pathname)) {
+        goBackFromCEVToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackCEVToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let newCompanyButton = null;
+    let goBackFromCompanyButton = null;
     if (COMPANY_REGEX.test(pathname)) {
         newCompanyButton = (
             <button
@@ -99,22 +188,80 @@ const DashHeader = () => {
                 <FontAwesomeIcon icon={faPlus} />
             </button>
         )
+        goBackFromCompanyButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackCompany}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
     }
 
-    let userButton = null
-    if (isAdmin) {
-        if (!USERS_REGEX.test(pathname) && pathname.includes('/dash')) {
-            userButton = (
-                <button
-                    className="icon-button"
-                    title="Users"
-                    onClick={onUsersClicked}
-                >
-                    <FontAwesomeIcon icon={faUserGear} />
-                </button>
-            )
-        }
+    let goBackFromCompanyToTable = null
+    if(COMPANY_EDIT_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname)) {
+        goBackFromCompanyToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackCompanyToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
     }
+
+    let newZoneButton = null
+    let goBackFromZoneButton = null;
+    if (ZONES_REGEX.test(pathname)) {
+        newZoneButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onNewZoneClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+        goBackFromZoneButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackZone}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromZoneToTable = null
+    if(ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
+        goBackFromZoneToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackZoneToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    // let userButton = null
+    // if (isAdmin) {
+    //     if (!USERS_REGEX.test(pathname) && pathname.includes('/dash')) {
+    //         userButton = (
+    //             <button
+    //                 className="icon-button"
+    //                 title="Users"
+    //                 onClick={onUsersClicked}
+    //             >
+    //                 <FontAwesomeIcon icon={faUserGear} />
+    //             </button>
+    //         )
+    //     }
+    // }
 
     const logoutButton = (
         <button
@@ -126,6 +273,8 @@ const DashHeader = () => {
         </button>
     )
 
+   
+
     const errClass = isError ? "errmsg" : "offscreen"
 
     let buttonContent
@@ -135,11 +284,25 @@ const DashHeader = () => {
         buttonContent = (
             <>
                 {newUserButton}
-                {userButton}
-                {logoutButton}
+                {/* {userButton} */}
                 {newDriverButton}
                 {newCevButton}
                 {newCompanyButton}
+                {newZoneButton}
+                {goBackFromCompanyButton}
+                {goBackFromCevButton}
+                {goBackFromDriverButton}
+                {goBackFromUserButton}
+                {goBackFromZoneButton}
+
+                {/* FORMULARIOS DE EDICION */}
+                {goBackFromUserToTable}
+                {goBackFromDriverToTable}
+                {goBackFromCEVToTable}
+                {goBackFromCompanyToTable}
+                {goBackFromZoneToTable}
+                
+                {logoutButton}
             </>
         )
     }
@@ -150,12 +313,14 @@ const DashHeader = () => {
 
             <header className="dashHeader">
                 <div className={`dashHeaderContainer ${dashClass}`}>
+                
                     <Link to="/dash">
                         <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
                     </Link>
                     <nav className="dashHeaderNav">
                         {buttonContent}
                     </nav>
+                    
                 </div>
             </header>
         </>

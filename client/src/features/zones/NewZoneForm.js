@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react"
-import { useAddNewDriverMutation } from "./driversApiSlice"
+import { useAddNewZoneMutation } from "./zonesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,14 +8,14 @@ import { faSave } from "@fortawesome/free-solid-svg-icons"
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
-const NewDriverForm = () => {
+const NewZoneForm = () => {
 
-    const [addNewDriver, {
+    const [addNewZone, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewDriverMutation()
+    }] = useAddNewZoneMutation()
 
     const navigate = useNavigate()
 
@@ -29,9 +29,9 @@ const NewDriverForm = () => {
     const [nameFocus, setNameFocus] = useState(false);
 
 
-    const [surname, setSurname] = useState('')
-    const [validSurname, setValidSurname] = useState(false)
-    const [surnameFocus, setSurnameFocus] = useState(false);
+    const [details, setDetails] = useState('')
+    const [validDetails, setValidSurname] = useState(false)
+    const [detailsFocus, setDetailsFocus] = useState(false);
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -42,30 +42,30 @@ const NewDriverForm = () => {
     }, [name])
 
     useEffect(() => {
-        setValidSurname(NAME_SURNAME_REGEX.test(surname));
-    }, [surname])
+        setValidSurname(NAME_SURNAME_REGEX.test(details));
+    }, [details])
 
     useEffect(() => {
         setErrMsg('');
-    }, [name, surname])
+    }, [name, details])
 
     useEffect(() => {
         if (isSuccess) {
             setName('')
-            setSurname('')
-            navigate('/dash/drivers')
+            setDetails('')
+            navigate('/dash/zones')
         }
     }, [isSuccess, navigate])
 
     const onNameChanged = e => setName(e.target.value)
-    const onSurnameChanged = e => setSurname(e.target.value)
+    const onDetailsChanged = e => setDetails(e.target.value)
 
-    const canSave = [validName, validSurname].every(Boolean) && !isLoading
+    const canSave = [validName].every(Boolean) && !isLoading
 
-    const onSaveDriverClicked = async (e) => {
+    const onSaveZoneClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewDriver({ name, surname})
+            await addNewZone({ name, details})
         }
     }
 
@@ -76,9 +76,9 @@ const NewDriverForm = () => {
         <>
             <p className={errClass}>{error?.data?.message}</p>
 
-            <form className="form" onSubmit={onSaveDriverClicked}>
+            <form className="form" onSubmit={onSaveZoneClicked}>
                 <div className="formTitleRow">
-                    <h2>Registro de Chofer</h2>
+                    <h2>Registro de Zona</h2>
                     <div className="formActionButtons">
                         {/* <button
                             className="icon-button"
@@ -115,33 +115,33 @@ const NewDriverForm = () => {
                     Debe empezar y contener solo letras.<br />
                 </p>
 
-                <label htmlFor="surname">
-                    Apellido: 
-                    <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                <label htmlFor="details">
+                    Detalles: 
+                    <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
                 </label>
                 <input
                     className={`formInput`}
-                    id="surname"
-                    name="surname"
+                    id="details"
+                    name="details"
                     type="text"
                     autoComplete="off"
-                    value={surname}
-                    onChange={onSurnameChanged}
-                    required
-                    aria-invalid={validSurname ? "false" : "true"}
+                    value={details}
+                    onChange={onDetailsChanged}
+                    
+                    aria-invalid={validDetails ? "false" : "true"}
                     aria-describedby="uidnote"
-                    onFocus={() => setSurnameFocus(true)}
-                    onBlur={() => setSurnameFocus(false)}
+                    onFocus={() => setDetailsFocus(true)}
+                    onBlur={() => setDetailsFocus(false)}
                 />
-                <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
+                <p id="uidnote" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     2 a 15 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
                 </p>
 
                 <br></br>
-                <button className="formSubmitButton" disabled={!validName || !validSurname ? true : false}>Registrar</button>
+                <button className="formSubmitButton" disabled={!validName ? true : false}>Registrar</button>
 
 
             </form>
@@ -150,4 +150,4 @@ const NewDriverForm = () => {
 
     return content
 }
-export default NewDriverForm
+export default NewZoneForm

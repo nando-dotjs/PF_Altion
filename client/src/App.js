@@ -28,6 +28,13 @@ import CompanysList from './features/companys/CompanysList';
 import EditCompany from './features/companys/EditCompany';
 import NewCompany from './features/companys/NewCompany';
 
+import ZonesList from './features/zones/ZonesList';
+import EditZone from './features/zones/EditZone';
+import NewZone from './features/zones/NewZone';
+
+
+import MapContainer from './features/maps/MapContainer';
+
 function App() {
   useTitle('UPC')
   return (
@@ -59,6 +66,12 @@ function App() {
               <Route path=":id" element={<EditDriver />} />
               <Route path="new" element={<NewDriverForm />} />
             </Route>
+
+            <Route path="zones">
+              <Route index element={<ZonesList />} />
+              <Route path=":id" element={<EditZone />} />
+              <Route path="new" element={<NewZone />} />
+            </Route>
             </Route>
 
             <Route path="cevs">
@@ -76,8 +89,11 @@ function App() {
             <Route path="routes">
               <Route index element={<RoutesList />} />
             </Route>
-            </Route>
 
+            <Route path="maps">
+              <Route index element={<MapContainer />} />
+            </Route>
+            </Route>
           </Route>{/* End Dash */}
         </Route>
         </Route>

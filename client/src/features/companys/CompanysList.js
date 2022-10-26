@@ -43,7 +43,7 @@ const CompanysList = () => {
                     <tr>
                         <th scope="col" className="tableTh companyStatus">Estado</th>
                         <th scope="col" className="tableTh companyCreated">Creado</th>
-                        <th scope="col" className="tableTh companyUpdated">Actualizado</th>
+                        <th scope="col" className="tableTh companyZone">Zona</th>
                         <th scope="col" className="tableTh companyTitle">Nombre</th>
                         <th scope="col" className="tableTh companyUsername">Propietario:</th>
                         <th scope="col" className="tableTh companyEdit">Editar</th>

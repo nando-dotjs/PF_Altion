@@ -1,24 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare} from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
+import { selectZoneById } from './zonesApiSlice'
 
-const User = ({ userId }) => {
-    const user = useSelector(state => selectUserById(state, userId))
+const Zone = ({ zoneId }) => {
+    
+    const zone = useSelector(state => selectZoneById(state, zoneId))
 
     const navigate = useNavigate()
 
-    if (user) {
-        const handleEdit = () => navigate(`/dash/users/${userId}`)
+    if (zone) {
+        
+        const handleEdit = () => navigate(`/dash/zones/${zoneId}`)
 
-        const cellStatus = user.active ? '' : 'tableCell--inactive'
+        const cellStatus = zone.active ? '' : 'tableCell--inactive'
 
         return (
-            <tr className="tableRow user">
-                <td className={`tableCell ${cellStatus}`}>{user.username}</td>
-                <td className={`tableCell ${cellStatus}`}>{user.role}</td>
+            <tr className="tableRow zone">
+                <td className={`tableCell ${cellStatus}`}>{zone.name}</td>
+                <td className={`tableCell ${cellStatus}`}>{zone.details}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
                         className="icon-button tableButton"
@@ -32,4 +34,4 @@ const User = ({ userId }) => {
 
     } else return null
 }
-export default User
+export default Zone

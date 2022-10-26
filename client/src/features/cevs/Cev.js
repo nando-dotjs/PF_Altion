@@ -27,7 +27,7 @@ const Cev = ({ cevId }) => {
                     }
                 </td>
                 <td className="tableCell cevCreated">{created}</td>
-                <td className="tableCell cevUpdated">{updated}</td>
+                <td className="tableCell cevUpdated">{cev.zone}</td>
                 <td className="tableCell cevTitle">{cev.idFamily}</td>
                 <td className="tableCell cevUsername">{cev.username}</td>
 

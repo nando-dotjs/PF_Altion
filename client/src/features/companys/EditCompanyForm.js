@@ -1,14 +1,22 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateCompanyMutation, useDeleteCompanyMutation } from "./companysApiSlice"
+import { useUpdateCompanyMutation} from "./companysApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
 
+// eslint-disable-next-line
 const FANTASY_NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{5,20}$/;
-const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{1,15}$/;
+
+// eslint-disable-next-line
+const SOCIAL_REASON_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,10}$/;
+// eslint-disable-next-line
+
+
 const RUT_REGEX = /^\d{12}$/;
 const CEL_REGEX = /^\d{9}$/;
+// eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
@@ -24,15 +32,17 @@ const EditCompanyForm = ({ company, users }) => {
         error
     }] = useUpdateCompanyMutation()
 
-    const [deleteCompany, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteCompanyMutation()
+    // const [deleteCompany, {
+    //     isSuccess: isDelSuccess,
+    //     isError: isDelError,
+    //     error: delerror
+    // }] = useDeleteCompanyMutation()
 
+    // eslint-disable-next-line
     const navigate = useNavigate()
 
     const userRef = useRef();
+    // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
     const [fantasyName, setFantasyName] = useState(company.fantasyName)
@@ -62,9 +72,28 @@ const EditCompanyForm = ({ company, users }) => {
     const [completed, setCompleted] = useState(company.completed)
     const [userId, setUserId] = useState(company.user)
 
+    const [lat, setLat] = useState(+company.lat)
+    const [validLatitude, setValidLatitude] = useState(false)
+    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
+    
+    const [lng, setLng] = useState(+company.long)
+    const [validLongitude, setValidLongitude] = useState(false)
+    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
+
+    let latlng = {"lat":lat, "lng":lng}
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
+    
+    const [values, setValues] = useState([])
+    const [optionsZone, setOptions] = useState()
+    useEffect(() => {
+        fetch("http://localhost:5000/zones")
+        .then((data) => data.json()).then((val) => setValues(val))
+    }, []);
+
+    const optionsToChoose = values.map((options,i)=><option key={i}>{options.active ? options.name : 'No asignar'}</option>)
 
     useEffect(() => {
         setValidFantasyName(FANTASY_NAME_REGEX.test(fantasyName));
@@ -95,18 +124,19 @@ const EditCompanyForm = ({ company, users }) => {
     }, [fantasyName, socialReason, rut, cel, street, streetNumber])
     useEffect(() => {
 
-        if (isSuccess || isDelSuccess) {
+        if (isSuccess) {
             setFantasyName('')
             setSocialReason('')
             setrut('')
             setCel('')
             setStreet('')
             setStreetNumber('')
+            setOptions('')
             setUserId('')
             navigate('/dash/companys')
         }
 
-    }, [isSuccess, isDelSuccess, navigate])
+    }, [isSuccess, navigate])
 
     const onFantasyNameChanged = e => setFantasyName(e.target.value)
     const onSocialReasonChanged = e => setSocialReason(e.target.value)
@@ -117,18 +147,20 @@ const EditCompanyForm = ({ company, users }) => {
 
     const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
+    const onZoneNameChanged = e => setOptions(e.target.value)
 
-    const canSave = [validFantasyName, validSocialReason, validCompanyRUT,validCel, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
+
+    const canSave = [validFantasyName, validSocialReason, validCompanyRUT,validCel, validStreet, validStreetNumber, userId, optionsZone].every(Boolean) && !isLoading
 
     const onSaveCompanyClicked = async (e) => {
         if (canSave) {
-            await updateCompany({ id: company.id, user: userId, fantasyName, socialReason, rut, cel, street, streetNumber, completed })
+            await updateCompany({ id: company.id, user: userId, fantasyName, socialReason, rut, cel, street, streetNumber, completed, zone: optionsZone })
         }
     }
 
-    const onDeleteCompanyClicked = async () => {
-        await deleteCompany({ id: company.id })
-    }
+    // const onDeleteCompanyClicked = async () => {
+    //     await deleteCompany({ id: company.id })
+    // }
 
     const created = new Date(company.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(company.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -143,26 +175,34 @@ const EditCompanyForm = ({ company, users }) => {
         )
     })
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+    const errClass = (isError ) ? "errmsg" : "offscreen"
 
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+    const errContent = (error?.data?.message) ?? ''
 
-    let deleteButton = null
+    // let deleteButton = null
     let selector = null 
+    let selectorZone = null
     let input = null
     let label = null
     let check = null
+    let map = null
     if (isAdmin) {
-        deleteButton = (
-            <button
-                className="icon-button"
-                title="Delete"
-                onClick={onDeleteCompanyClicked}
-            >
-                <FontAwesomeIcon icon={faTrashCan} />
-            </button>
+        // deleteButton = (
+        //     <button
+        //         className="icon-button"
+        //         title="Delete"
+        //         onClick={onDeleteCompanyClicked}
+        //     >
+        //         <FontAwesomeIcon icon={faTrashCan} />
+        //     </button>
+        // )
+
+        map = (
+            <MapContainer isDraggable={false} latlng={latlng}/>
         )
+
+
         selector = (
             <select
                             id="cev-username"
@@ -174,6 +214,21 @@ const EditCompanyForm = ({ company, users }) => {
                             {options}
                         </select>
         )
+        selectorZone = (
+            // onChange={(e)=>setOptions(e.target.value)}
+                    <select 
+                            id="cev-zone"
+                            name="cev-zone"
+                            className="formSelect"
+                            value={optionsZone}
+                            onChange={onZoneNameChanged}
+                            >
+                            <option selected="true" disabled="disabled" value=""> -- Elige zona -- </option>    
+                            {    
+                                optionsToChoose
+                            }
+                    </select>
+            )
         label = (
                 <label>Registro completado:</label>
                 )
@@ -207,15 +262,15 @@ const EditCompanyForm = ({ company, users }) => {
                 <div className="formTitleRow">
                     <h2>Editar CEV</h2>
                     <div className="formActionButtons">
-                        <button
+                        {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveCompanyClicked}
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        {deleteButton}
+                        </button> */}
+                        {/* {deleteButton} */}
                     </div>
                 </div>
                 <label htmlFor="fantasyName">
@@ -362,6 +417,8 @@ const EditCompanyForm = ({ company, users }) => {
                     No puedo contener otro tipo de carácteres.<br />
                 </p>
 
+                {map}
+
                 <div className="formRow">
                     <div className="formDivider">
                         <label className="formLabel formCheckboxContainer" htmlFor="cev-completed">
@@ -373,6 +430,10 @@ const EditCompanyForm = ({ company, users }) => {
                             Propietario:</label>
                             {selector}
                             {input}
+
+                        <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
+                            Zona:</label>
+                            {selectorZone}
                         
                     </div>
                     <div className="formDivider">
@@ -380,6 +441,10 @@ const EditCompanyForm = ({ company, users }) => {
                         <p className="formUpdated">Actualizado:<br />{updated}</p>
                     </div>
                 </div>
+
+                <br></br>
+                <button className="formSubmitButton" onClick={onSaveCompanyClicked} disabled={!validFantasyName || !validSocialReason || !validCompanyRUT || !validCel || !validStreet || !validStreetNumber ? true : false}>Guardar cambios</button>
+
             </form>
         </>
     )

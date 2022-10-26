@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateDriverMutation} from "./driversApiSlice"
+import { useUpdateZoneMutation} from "./zonesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
@@ -7,20 +7,20 @@ import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
-const EditDriverForm = ({ driver }) => {
+const EditZoneForm = ({ zone }) => {
 
-    const [updateDriver, {
+    const [updateZone, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useUpdateDriverMutation()
+    }] = useUpdateZoneMutation()
 
-    // const [deleteDriver, {
+    // const [deleteZone, {
     //     isSuccess: isDelSuccess,
     //     isError: isDelError,
     //     error: delerror
-    // }] = useDeleteDriverMutation()
+    // }] = useDeleteZoneMutation()
 
     const navigate = useNavigate()
     const userRef = useRef();
@@ -28,16 +28,16 @@ const EditDriverForm = ({ driver }) => {
     const [errMsg, setErrMsg] = useState('');
 
 
-    const [name, setName] = useState(driver.name)
+    const [name, setName] = useState(zone.name)
     const [validName, setValidName] = useState(false)
     const [nameFocus, setNameFocus] = useState(false);
 
 
-    const [surname, setSurname] = useState(driver.surname)
-    const [validSurname, setValidSurname] = useState(false)
-    const [surnameFocus, setSurnameFocus] = useState(false);
+    const [details, setDetails] = useState(zone.details)
+    const [validDetails, setValidSurname] = useState(false)
+    const [detailsFocus, setDetailsFocus] = useState(false);
 
-    const [active, setActive] = useState(driver.active)
+    const [active, setActive] = useState(zone.active)
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -48,36 +48,36 @@ const EditDriverForm = ({ driver }) => {
     }, [name])
 
     useEffect(() => {
-        setValidSurname(NAME_SURNAME_REGEX.test(surname));
-    }, [surname])
+        setValidSurname(NAME_SURNAME_REGEX.test(details));
+    }, [details])
 
     useEffect(() => {
         setErrMsg('');
-    }, [name, surname])
+    }, [name, details])
 
     useEffect(() => {
         if (isSuccess) {
             setName('')
-            setSurname('')
-            navigate('/dash/drivers')
+            setDetails('')
+            navigate('/dash/zones')
         }
 
     }, [isSuccess, navigate])
 
     const onNameChanged = e => setName(e.target.value)
-    const onSurnameChanged = e => setSurname(e.target.value)
+    const onDetailsChanged = e => setDetails(e.target.value)
     
     const onActiveChanged = () => setActive(prev => !prev)
 
-    const onSaveDriverClicked = async (e) => {
-        await updateDriver({ id: driver.id, name, surname, active })
+    const onSaveZoneClicked = async (e) => {
+        await updateZone({ id: zone.id, name, details, active })
     }
 
-    // const onDeleteDriverClicked = async () => {
-    //     await deleteDriver({ id: driver.id })
+    // const onDeleteZoneClicked = async () => {
+    //     await deleteZone({ id: zone.id })
     // }
 
-    let canSave = [validName, validSurname].every(Boolean) && !isLoading
+    let canSave = [validName, validDetails].every(Boolean) && !isLoading
 
     const errClass = (isError) ? "errmsg" : "offscreen"
 
@@ -87,16 +87,16 @@ const EditDriverForm = ({ driver }) => {
     const content = (
         <>
             <p className={errClass}>{errContent}</p>
-            <main className='editDriver'>
+            <main className='editZone'>
 
                 <form className="form" onSubmit={e => e.preventDefault()}>
                     <div className="formTitleRow">
-                        <h2>Editar chófer</h2>
+                        <h2>Editar Zona</h2>
                         <div className="formActionButtons">
                             {/* <button
                                 className="icon-button"
                                 title="Save"
-                                onClick={onSaveDriverClicked}
+                                onClick={onSaveZoneClicked}
                                 disabled={!canSave}
                             >
                                 <FontAwesomeIcon icon={faSave} />
@@ -104,7 +104,7 @@ const EditDriverForm = ({ driver }) => {
                             {/* <button
                                 className="icon-button"
                                 title="Delete"
-                                onClick={onDeleteDriverClicked}
+                                onClick={onDeleteZoneClicked}
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                             </button> */}
@@ -136,43 +136,43 @@ const EditDriverForm = ({ driver }) => {
                     Debe empezar y contener solo letras.<br />
                     </p>
 
-                    <label className="formLabel" htmlFor="surname">
-                        Apellido: 
-                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                    <label className="formLabel" htmlFor="details">
+                        Detalles: 
+                        <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
+                        <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
                     </label>
                     <input
                         className={`formInput`}
-                        id="surname"
-                        name="surname"
+                        id="details"
+                        name="details"
                         type="text"
                         autoComplete="off"
-                        value={surname}
-                        onChange={onSurnameChanged}
-                        required
-                        aria-invalid={validSurname ? "false" : "true"}
+                        value={details}
+                        onChange={onDetailsChanged}
+                        
+                        aria-invalid={validDetails ? "false" : "true"}
                         aria-describedby="uidnote"
-                        onFocus={() => setSurnameFocus(true)}
-                        onBlur={() => setSurnameFocus(false)}
+                        onFocus={() => setDetailsFocus(true)}
+                        onBlur={() => setDetailsFocus(false)}
                     />
-                    <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
+                    <p id="uidnote" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
                         <FontAwesomeIcon icon={faInfoCircle} />
                         2 a 15 caracteres.<br />
                         Debe empezar y contener solo letras.<br />
                     </p>
-                    <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
+                    <label className="formLabel formCheckboxContainer" htmlFor="zone-active">
                         ACTIVO:
                         <input
                             className="formCheckbox"
-                            id="driver-active"
-                            name="driver-active"
+                            id="zone-active"
+                            name="zone-active"
                             type="checkbox"
                             checked={active}
                             onChange={onActiveChanged}
                         />
                     </label>
                     
-                    <button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</button>
+                    <button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</button>
 
                 </form>
             </main>
@@ -181,4 +181,4 @@ const EditDriverForm = ({ driver }) => {
 
     return content
 }
-export default EditDriverForm
+export default EditZoneForm

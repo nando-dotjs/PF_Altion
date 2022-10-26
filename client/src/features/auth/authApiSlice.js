@@ -17,6 +17,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
+                    // eslint-disable-next-line
                     const { data } = await queryFulfilled
                     //console.log(data)
                     dispatch(logOut())
