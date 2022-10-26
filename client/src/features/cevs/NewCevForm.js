@@ -130,7 +130,7 @@ const NewCevForm = ({ users }) => {
 
     const onUserIdChanged = e => setUserId(e.target.value)
 
-    let latlng = {"lat":lat, "lng":lng}
+    let latlng = lat && lng ? {"lat":lat, "lng":lng} : null
 
 
     const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
