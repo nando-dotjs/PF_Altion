@@ -34,6 +34,9 @@ const companySchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
+        zone: {
+            type: String
+        },
         lat: {
             type: String
         },

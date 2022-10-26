@@ -8,8 +8,7 @@ const zoneSchema = new mongoose.Schema({
     },
 
     details: {
-        type: String,
-        required: true
+        type: String
     }, 
 
     active: {

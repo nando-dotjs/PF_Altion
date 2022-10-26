@@ -60,7 +60,7 @@ const NewZoneForm = () => {
     const onNameChanged = e => setName(e.target.value)
     const onDetailsChanged = e => setDetails(e.target.value)
 
-    const canSave = [validName, validDetails].every(Boolean) && !isLoading
+    const canSave = [validName].every(Boolean) && !isLoading
 
     const onSaveZoneClicked = async (e) => {
         e.preventDefault()
@@ -128,7 +128,7 @@ const NewZoneForm = () => {
                     autoComplete="off"
                     value={details}
                     onChange={onDetailsChanged}
-                    required
+                    
                     aria-invalid={validDetails ? "false" : "true"}
                     aria-describedby="uidnote"
                     onFocus={() => setDetailsFocus(true)}
@@ -141,7 +141,7 @@ const NewZoneForm = () => {
                 </p>
 
                 <br></br>
-                <button className="formSubmitButton" disabled={!validName || !validDetails ? true : false}>Registrar</button>
+                <button className="formSubmitButton" disabled={!validName ? true : false}>Registrar</button>
 
 
             </form>

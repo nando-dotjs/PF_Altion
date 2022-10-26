@@ -66,6 +66,16 @@ const EditCevForm = ({ cev, users }) => {
         userRef?.current?.focus();
     }, [])
 
+    const [values, setValues] = useState([])
+    const [optionsZone, setOptions] = useState()
+    useEffect(() => {
+        fetch("http://localhost:5000/zones")
+        .then((data) => data.json()).then((val) => setValues(val))
+    }, []);
+
+    const optionsToChoose = values.map((options,i)=><option key={i}>{options.active ? options.name : 'No asignar'}</option>)
+
+
     useEffect(() => {
         setValidID(ID_REGEX.test(idFamily));
     }, [idFamily])
@@ -108,6 +118,7 @@ const EditCevForm = ({ cev, users }) => {
             setStreet('')
             setStreetNumber('')
             setUserId('')
+            setOptions('')
             navigate('/dash/cevs')
         }
     //    [isSuccess, isDelSuccess, navigate]
@@ -122,11 +133,13 @@ const EditCevForm = ({ cev, users }) => {
     const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
 
-    const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId].every(Boolean) && !isLoading
+    const onZoneNameChanged = e => setOptions(e.target.value)
+
+    const canSave = [validId, validCel, validDetails, validStreet, validStreetNumber, userId, optionsZone].every(Boolean) && !isLoading
 
     const onSaveCevClicked = async (e) => {
         if (canSave) {
-            await updateCev({ id: cev.id, user: userId, idFamily, cel, details, street, streetNumber, completed })
+            await updateCev({ id: cev.id, user: userId, idFamily, cel, details, street, streetNumber, completed, zone: optionsZone })
         }
     }
 
@@ -156,6 +169,7 @@ const EditCevForm = ({ cev, users }) => {
 
     // let deleteButton = null
     let selector = null 
+    let selectorZone = null
     let input = null
     let label = null
     let check = null
@@ -179,6 +193,22 @@ const EditCevForm = ({ cev, users }) => {
                         >
                             {options}
                         </select>
+        )
+
+        selectorZone = (
+                                    // onChange={(e)=>setOptions(e.target.value)}
+                            <select 
+                            id="cev-zone"
+                            name="cev-zone"
+                            className="formSelect"
+                            value={optionsZone}
+                            onChange={onZoneNameChanged}
+                            >
+                            <option selected="true" disabled="disabled" value=""> -- Elige zona -- </option>    
+                            {    
+                                optionsToChoose
+                            }
+                            </select>
         )
         label = (
                 <label>Registro completado:</label>
@@ -351,7 +381,10 @@ const EditCevForm = ({ cev, users }) => {
                             Propietario:</label>
                             {selector}
                             {input}
-                        
+
+                        <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
+                            Zona:</label>
+                            {selectorZone}
                     </div>
                     <div className="formDivider">
                         <p className="formCreated">Creado:<br />{created}</p>
@@ -360,7 +393,7 @@ const EditCevForm = ({ cev, users }) => {
                 </div>
 
                 <br></br>
-                <button className="formSubmitButton" onClick={onSaveCevClicked} disabled={!validId || !validCel || !validDetails || !validStreet || !validStreetNumber ? true : false}>Guardar cambios</button>
+                <button className="formSubmitButton" onClick={onSaveCevClicked} disabled={!validId || !validCel || !validDetails || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</button>
 
             </form>
         </>

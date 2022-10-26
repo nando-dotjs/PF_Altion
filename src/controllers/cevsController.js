@@ -54,7 +54,7 @@ const createNewCev = asyncHandler(async (req, res) => {
 // @route PATCH /cevs
 // @access Private
 const updateCev = asyncHandler(async (req, res) => {
-    const { id, user, idFamily, cel, details, street, streetNumber, completed } = req.body
+    const { id, user, idFamily, cel, details, street, streetNumber, completed, zone } = req.body
 
     // Confirm data
     if (!id || !user || !idFamily || !cel || !details || !street || !streetNumber || typeof completed !== 'boolean') {
@@ -83,6 +83,7 @@ const updateCev = asyncHandler(async (req, res) => {
     cev.street = street
     cev.streetNumber = streetNumber
     cev.completed = completed
+    cev.zone = zone
 
     const updatedCev = await cev.save()
 

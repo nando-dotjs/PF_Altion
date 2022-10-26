@@ -149,7 +149,7 @@ const EditZoneForm = ({ zone }) => {
                         autoComplete="off"
                         value={details}
                         onChange={onDetailsChanged}
-                        required
+                        
                         aria-invalid={validDetails ? "false" : "true"}
                         aria-describedby="uidnote"
                         onFocus={() => setDetailsFocus(true)}
@@ -172,7 +172,7 @@ const EditZoneForm = ({ zone }) => {
                         />
                     </label>
                     
-                    <button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName || !validDetails ? true : false}>Guardar cambios</button>
+                    <button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</button>
 
                 </form>
             </main>

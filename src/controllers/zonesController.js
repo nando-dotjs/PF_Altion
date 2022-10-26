@@ -23,8 +23,8 @@ const createNewZone = asyncHandler (async (req, res) => {
     const { name, details } = req.body
 
     // Confirm values
-    if (!name || !details) {
-        return res.status(400).json({ message: 'Debe completar todos los campos' })
+    if (!name) {
+        return res.status(400).json({ message: 'Debe ingresar un nombre' })
     }
 
     const zoneObject = { name, details }
@@ -47,7 +47,7 @@ const updateZone = asyncHandler (async (req, res) => {
     const { id, name, details, active} = req.body
 
     // Confirmamos los valores
-    if (!id || !name || !details || typeof active !== 'boolean'){
+    if (!id || !name || typeof active !== 'boolean'){
         return res.status(400).json({ message: 'Todos los campos son requeridos'})
     }
 
