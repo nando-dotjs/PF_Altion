@@ -5,6 +5,14 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 
+import './Login.css';
+
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 const Login = () => {
     const userRef = useRef()
     const errRef = useRef()
@@ -61,44 +69,57 @@ const Login = () => {
     if (isLoading) return <p>Cargando...</p>
 
     const content = (
-        <section className="public">
-            <header>
-                <h1>Login</h1>
-            </header>
-            <main className="login">
-                <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
-
-                <form className="form" onSubmit={handleSubmit}>
-                    <label htmlFor="username">Usuario:</label>
-                    <input
-                        className="formInput"
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        value={username}
-                        onChange={handleUserInput}
-                        autoComplete="off"
-                        required
-                    />
-
-                    <label htmlFor="password">Contraseña:</label>
-                    <input
-                        className="formInput"
-                        type="password"
-                        id="password"
-                        onChange={handlePwdInput}
-                        value={password}
-                        required
-                    />
-                    <button className="formSubmitButton">Ingresar</button>
-                </form>
-                <label htmlFor="registerLbl">¿No tiene cuenta? </label> 
-                <Link to="/register">Cree una</Link>
-            </main>
-            <footer>
-            ¡Da vida al planeta: RECICLA!       
-            </footer>
-        </section>
+        <div className="account-wall" align="center">
+            <img id="profile-img" src={require('../../img/logoUC.PNG')} />
+        <Container fluid>
+            <Form>
+                    <Row className="justify-content-md-center">
+                    <Col>
+                    <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
+                    </Col>
+                    <Form className="form-signin">
+                        <Col md="auto">
+                        {/* <label htmlFor="username">Usuario:</label> */}
+                        </Col>
+                        <Col>
+                        <input className="form-control" placeholder="Usuario" type="text" id="username" ref={userRef} value={username} onChange={handleUserInput}
+                            autoComplete="off"
+                            required
+                        />
+                        <br/>
+                        </Col>
+                        <Col>
+                        {/* <label htmlFor="password">Contraseña:</label> */}
+                        </Col>
+                        <Col>
+                        <input
+                            className="form-control"
+                            type="password"
+                            id="password"
+                            placeholder="Contraseña"
+                            onChange={handlePwdInput}
+                            value={password}
+                            required
+                        />
+                        </Col>
+                        <Col>
+                        <Button className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button>
+                        </Col>
+                        <br/>
+                        <label htmlFor="registerLbl">¿No tiene cuenta? </label> 
+                    <Link to="/register">Cree una</Link>
+                    </Form >
+                    <Col>
+                   
+                    </Col>
+                </Row>
+                <footer>
+                ¡Da vida al planeta: RECICLA!       
+                </footer>
+                </Form>
+            </Container>
+            </div>
+            
     )
 
     return content
