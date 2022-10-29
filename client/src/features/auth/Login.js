@@ -6,6 +6,7 @@ import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 
 import './Login.css';
+import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -46,14 +47,32 @@ const Login = () => {
             dispatch(setCredentials({ accessToken }))
             setUsername('')
             setPassword('')
+            Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
+                position: 'center',
+                icon: 'success',
+                title: 'Logueado con éxito al sistema',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            
             navigate('/dash')
+          
         } catch (err) {
             if (!err.status) {
                 setErrMsg('No Server Response');
+                Swal.fire('No Server Response')
             } else if (err.status === 400) {
                 setErrMsg('Missing Username or Password');
+                Swal.fire('Missing Username or Password')
             } else if (err.status === 401) {
                 setErrMsg('El usuario y/o contraseña es incorrecto');
+               
+                Swal.fire({ //Ventana de error datos incorrectos Lib Sweetalert2
+                    title:"Error",
+                    text:'El usuario y/o contraseña es incorrecto',
+                    icon:"error",
+                    button: "Aceptar"
+                })
             } else {
                 setErrMsg(err.data?.message);
             }
@@ -71,18 +90,22 @@ const Login = () => {
     const content = (
         <div className="account-wall" align="center">
             <img id="profile-img" src={require('../../img/logoUC.PNG')} />
+            {/* <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p> */}
         <Container fluid>
             <Form>
                     <Row className="justify-content-md-center">
                     <Col>
-                    <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
+                    
                     </Col>
                     <Form className="form-signin">
                         <Col md="auto">
                         {/* <label htmlFor="username">Usuario:</label> */}
                         </Col>
                         <Col>
-                        <input className="form-control" placeholder="Usuario" type="text" id="username" ref={userRef} value={username} onChange={handleUserInput}
+                        <input className="form-control" 
+                            placeholder="Usuario" 
+                            type="text" id="username" 
+                            ref={userRef} value={username} onChange={handleUserInput}
                             autoComplete="off"
                             required
                         />
@@ -94,9 +117,9 @@ const Login = () => {
                         <Col>
                         <input
                             className="form-control"
+                            placeholder="Contraseña"
                             type="password"
                             id="password"
-                            placeholder="Contraseña"
                             onChange={handlePwdInput}
                             value={password}
                             required
