@@ -337,14 +337,14 @@ const Register = () => {
                             {options}
                         </select>
 
-                        
-                        
+                        <Col>
+                        <br/>
                         <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</Button>
                         <Button className="btn btn-secondary" href="/">Volver</Button>
-                        
+                        </Col>
                         
                     </form>
-                    
+                    <br/>
                     <p>
                         Ya estás registrado?<br />
                         <span className="line">
