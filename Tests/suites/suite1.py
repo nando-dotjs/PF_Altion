@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 
 def login(user,password):
     # Ingreso a login
-    AuxiliarFunctions.driver.get("http://localhost:3000/")
+    AuxiliarFunctions.driver.get("http://192.168.1.100:3000/")
     AuxiliarFunctions.waitFiveSeconds()
 
     # Limpio y tipeo campo Usuario.

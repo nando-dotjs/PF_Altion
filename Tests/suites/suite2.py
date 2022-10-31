@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 
 def Register(name,surname,mail,username,password,type):
     # Ingreso a login
-    AuxiliarFunctions.driver.get("http://localhost:3000/register")
+    AuxiliarFunctions.driver.get("http://192.168.1.100:3000/register")
     AuxiliarFunctions.waitFiveSeconds()
 
     # Limpio y tipeo campo Nombre.

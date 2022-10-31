@@ -8,4 +8,4 @@ driver = webdriver.Chrome()
 
 # funcion tiempo espera
 def waitFiveSeconds():
-    time.sleep(2)
+    time.sleep(1)
