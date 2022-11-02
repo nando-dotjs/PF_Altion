@@ -5,16 +5,16 @@ const routeSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        // time: {
-        //     type: String,
-        //     required: true
-        // },
+        time: {
+            type: String,
+            required: true
+        },
         points: [{
-            // point: {
-            //     type: mongoose.Schema.Types.ObjectId,
-            //     required: true,
-            //     ref: ['Cev', 'Company']
-            // },
+            point: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+                ref: 'Point'
+            },
             collected: {
                 type: Boolean,
                 required: true,
@@ -54,7 +54,5 @@ const routeSchema = new mongoose.Schema(
         timestamps: true
     }
 )
-
-
 
 module.exports = mongoose.model('Route', routeSchema)

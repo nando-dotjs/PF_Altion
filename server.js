@@ -20,6 +20,7 @@ app.use('/companys', require('./src/routes/companyRoutes'))
 app.use('/auth', require('./src/routes/authRoutes'))
 app.use('/zones', require('./src/routes/zoneRoutes'))
 app.use('/routes', require('./src/routes/routeRoutes'))
+app.use('/points', require('./src/routes/pointRoutes'))
 
 connectDB()
 
