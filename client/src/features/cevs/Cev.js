@@ -3,33 +3,33 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
-import { selectCevById } from './cevsApiSlice'
+import { selectPointById } from './pointsApiSlice'
 
-const Cev = ({ cevId }) => {
+const Point = ({ pointId }) => {
 
-    const cev = useSelector(state => selectCevById(state, cevId))
+    const point = useSelector(state => selectPointById(state, pointId))
 
     const navigate = useNavigate()
 
-    if (cev) {
-        const created = new Date(cev.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
+    if (point) {
+        const created = new Date(point.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
 
-        const updated = new Date(cev.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
+        const updated = new Date(point.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
 
-        const handleEdit = () => navigate(`/dash/cevs/${cevId}`)
+        const handleEdit = () => navigate(`/dash/points/${pointId}`)
 
         return (
             <tr className="tableRow">
-                <td className="tableCell cevStatus">
-                    {cev.completed
-                        ? <span className="cevStatusCompleted">Completado</span>
-                        : <span className="cevStatusOpen">Abierto</span>
+                <td className="tableCell pointStatus">
+                    {point.completed
+                        ? <span className="pointStatusCompleted">Completado</span>
+                        : <span className="pointStatusOpen">Abierto</span>
                     }
                 </td>
-                <td className="tableCell cevCreated">{created}</td>
-                <td className="tableCell cevUpdated">{cev.zone}</td>
-                <td className="tableCell cevTitle">{cev.idFamily}</td>
-                <td className="tableCell cevUsername">{cev.username}</td>
+                <td className="tableCell pointCreated">{created}</td>
+                <td className="tableCell pointUpdated">{point.zone}</td>
+                <td className="tableCell pointTitle">{point.details}</td>
+                <td className="tableCell pointUsername">{point.username}</td>
 
                 <td className="tableCell">
                     <button
@@ -44,4 +44,4 @@ const Cev = ({ cevId }) => {
 
     } else return null
 }
-export default Cev
+export default Point
