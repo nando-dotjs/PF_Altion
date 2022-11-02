@@ -1,7 +1,6 @@
 const Route = require('../models/Route')
 const User = require('../models/User')
-const Cev = require('../models/Cev')
-const Company = require('../models/Company')
+const Point = require('../models/Point')
 const Driver = require('../models/Driver')
 const asyncHandler = require('express-async-handler')
 
@@ -32,7 +31,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     const { date, time, points, collectors, driver, createdBy} = req.body
 
     // Confirm data
-    if (!date || !points || !driver || !collectors || !createdBy) {
+    if (!date || !time || !points || !driver || !collectors || !createdBy) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -44,7 +43,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     // }
 
     // Create and store the new user 
-    const route = await Route.create({ date, points, collectors, driver, createdBy })
+    const route = await Route.create({ date, time, points, collectors, driver, createdBy })
     if (route) { // Created 
         return res.status(201).json({ message: 'Nuevo recorrido creado' })
     } else {
