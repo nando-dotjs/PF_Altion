@@ -5,23 +5,27 @@ const routeSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        time: {
-            type: String,
-            required: true
-        },
+        // time: {
+        //     type: String,
+        //     required: true
+        // },
         points: [{
-            point: {
-                type: mongoose.Schema.Types.ObjectId,
-                required: true,
-                ref: ['Cev', 'Company']
-            },
+            // point: {
+            //     type: mongoose.Schema.Types.ObjectId,
+            //     required: true,
+            //     ref: ['Cev', 'Company']
+            // },
             collected: {
-                type: String,
+                type: Boolean,
                 required: true,
                 default: false
             },
             amountCollected: {
                 type: Number,
+                required: false
+            },
+            timeCollected: {
+                type: String,
                 required: false
             }
         }],
@@ -38,7 +42,7 @@ const routeSchema = new mongoose.Schema(
         state:{
             type: String,
             required: true,
-            default: 'Sin realizar'
+            default: 'Pendiente'
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
