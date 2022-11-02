@@ -26,10 +26,10 @@ const getAllPoints = asyncHandler(async (req, res) => {
 // @route POST /points
 // @access Private
 const createNewPoint = asyncHandler(async (req, res) => {
-    const { user, details, phoneNumber, street, streetNumber, lat, long } = req.body
+    const { user, name, phoneNumber, street, streetNumber, lat, long } = req.body
 
     // Confirm data
-    if (!user || !details || !phoneNumber || !street || !streetNumber || !lat || !long) {
+    if (!user || !name || !phoneNumber || !street || !streetNumber || !lat || !long) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -41,7 +41,7 @@ const createNewPoint = asyncHandler(async (req, res) => {
     }
 
     // Create and store the new user 
-    const point = await Point.create({ user, details, phoneNumber, street, streetNumber, lat, long })
+    const point = await Point.create({ user, name, phoneNumber, street, streetNumber, lat, long })
     if (point) { // Created 
         return res.status(201).json({ message: 'Nuevo punto creado' })
     } else {
@@ -54,10 +54,10 @@ const createNewPoint = asyncHandler(async (req, res) => {
 // @route PATCH /points
 // @access Private
 const updatePoint = asyncHandler(async (req, res) => {
-    const { id, user, details, phoneNumber, street, streetNumber, completed, zone } = req.body
+    const { id, user, name, phoneNumber, street, streetNumber, completed, zone } = req.body
 
     // Confirm data
-    if (!id || !user || !details || !phoneNumber || !street || !streetNumber || typeof completed !== 'boolean') {
+    if (!id || !user || !name || !phoneNumber || !street || !streetNumber || typeof completed !== 'boolean') {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -77,7 +77,7 @@ const updatePoint = asyncHandler(async (req, res) => {
     }
 
     point.user = user
-    point.details = details
+    point.name = name
     point.phoneNumber = phoneNumber
     point.street = street
     point.streetNumber = streetNumber
@@ -86,7 +86,7 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     const updatedPoint = await point.save()
 
-    res.json(`'${updatedPoint.details}' actualizado`)
+    res.json(`'${updatedPoint.name}' actualizado`)
 })
 
 // @desc Delete a point
@@ -109,7 +109,7 @@ const deletePoint = asyncHandler(async (req, res) => {
 
     const result = await point.deleteOne()
 
-    const reply = `Punto '${result.details}' con el ID ${result._id} eliminado`
+    const reply = `Punto '${result.name}' con el ID ${result._id} eliminado`
 
     res.json(reply)
 })

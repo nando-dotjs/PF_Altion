@@ -8,7 +8,7 @@ import MapPopup from '../maps/MapPopup'
 
 const PHONENUMBER_REGEX = /^\d{9}$/;
 // eslint-disable-next-line
-const DETAILS_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
+const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
 // eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
@@ -33,9 +33,9 @@ const NewPointForm = ({ users }) => {
     // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
 
-    const [details, setDetails] = useState('')
-    const [validDetails, setValidDetails] = useState(false)
-    const [detailsFocus, setDetailsFocus] = useState(false);
+    const [name, setName] = useState('')
+    const [validName, setValidName] = useState(false)
+    const [nameFocus, setNameFocus] = useState(false);
 
     const [phoneNumber, setPhoneNumber] = useState('')
     const [validPhoneNumber, setValidPhoneNumber] = useState(false)
@@ -72,8 +72,8 @@ const NewPointForm = ({ users }) => {
     }, [phoneNumber])
 
     useEffect(() => {
-        setValidDetails(DETAILS_REGEX.test(details));
-    }, [details])
+        setValidName(NAME_REGEX.test(name));
+    }, [name])
 
     useEffect(() => {
         setValidStreet(STREET_REGEX.test(street));
@@ -93,12 +93,12 @@ const NewPointForm = ({ users }) => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [phoneNumber, details, street, streetNumber, lat, lng])
+    }, [phoneNumber, name, street, streetNumber, lat, lng])
 
     useEffect(() => {
         if (isSuccess) {
             setPhoneNumber('')
-            setDetails('')
+            setName('')
             setStreet('')
             setStreetNumber('')
             setUserId('')
@@ -109,7 +109,7 @@ const NewPointForm = ({ users }) => {
     }, [isSuccess, navigate])
 
     const onPhoneNumberChanged = e => setPhoneNumber(e.target.value)
-    const onDetailsChanged = e => setDetails(e.target.value)
+    const onNameChanged = e => setName(e.target.value)
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
     
@@ -121,12 +121,12 @@ const NewPointForm = ({ users }) => {
     let latlng = lat && lng ? {"lat":lat, "lng":lng} : null
 
 
-    const canSave = [validPhoneNumber, validDetails, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
+    const canSave = [validPhoneNumber, validName, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
 
     const onSavePointClicked = async (e) => {
         e.preventDefault()
         if (isAdmin && canSave) {
-                await addNewPoint({ user: userId, details, phoneNumber, street, streetNumber, lat, long: lng, userId })
+                await addNewPoint({ user: userId, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
                 console.log(canSave);
         } 
         if((isCEV || isEmpresa)) {
@@ -137,7 +137,7 @@ const NewPointForm = ({ users }) => {
                     }
                     return userIdLog
                 })
-                await addNewPoint({ user: userIdLog, details, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
+                await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
         }
         <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
                             Propietario:</label>
@@ -199,24 +199,24 @@ const NewPointForm = ({ users }) => {
                     </div>
                 </div>
 
-                <label htmlFor="details">
-                    Detalles:
-                    <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
+                <label htmlFor="name">
+                    Nombre:
+                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                 </label>
                 <textarea
                     className={`formInput`}
-                    id="details"
-                    name="details"
-                    value={details}
-                    onChange={onDetailsChanged}
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={onNameChanged}
                     required
-                    aria-invalid={validDetails ? "false" : "true"}
+                    aria-invalid={validName ? "false" : "true"}
                     aria-describedby="uidcev"
-                    onFocus={() => setDetailsFocus(true)}
-                    onBlur={() => setDetailsFocus(false)}
+                    onFocus={() => setNameFocus(true)}
+                    onBlur={() => setNameFocus(false)}
                 />
-                <p id="uidcev" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
+                <p id="uidcev" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     10 a 50 caracteres.<br />
                     Debe empezar y contener solo letras.<br />
@@ -351,7 +351,7 @@ const NewPointForm = ({ users }) => {
                     {selectorAdmin}
                     {input}
                     <br></br>
-                    <button className="formSubmitButton" disabled={!validPhoneNumber||  !validDetails||  !validStreet||  !validStreetNumber ||  !validLatitude || !validLongitude ? true : false}>Registrar</button>
+                    <button className="formSubmitButton" disabled={!validPhoneNumber||  !validName||  !validStreet||  !validStreetNumber ||  !validLatitude || !validLongitude ? true : false}>Registrar</button>
 
 
             </form>

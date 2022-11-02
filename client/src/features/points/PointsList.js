@@ -38,8 +38,8 @@ const PointsList = () => {
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
        
         content = (
-            <table className="table tablePoints">
-                <thead className="tableThead">
+            <table>
+                <thead>
                     <tr>
                         <th scope="col" className="tableTh pointStatus">Estado</th>
                         <th scope="col" className="tableTh pointCreated">Creado</th>
@@ -50,7 +50,7 @@ const PointsList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {tableContent} */}
+                    {tableContent}
                 </tbody>
             </table>
         )

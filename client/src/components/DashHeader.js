@@ -45,7 +45,7 @@ const DashHeader = () => {
         if (isSuccess) navigate('/')
     }, [isSuccess, navigate])
 
-    const onNewUserClicked = () => navigate('/dash/users/new')
+    const onNewUserClicked = () => navigate(`/dash/users/new`)
     const onGoBackUser = () => navigate('/dash')
     const onGoBackUserToTable = () => navigate ('/dash/users')
 

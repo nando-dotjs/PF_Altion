@@ -28,7 +28,7 @@ const Point = ({ pointId }) => {
                 </td>
                 <td className="tableCell pointCreated">{created}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
-                <td className="tableCell pointTitle">{point.details}</td>
+                <td className="tableCell pointTitle">{point.name}</td>
                 <td className="tableCell pointUsername">{point.username}</td>
 
                 <td className="tableCell">
