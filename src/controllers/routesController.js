@@ -32,7 +32,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     const { date, time, points, collectors, driver, createdBy} = req.body
 
     // Confirm data
-    if (!date || !time || !points || !driver || !collectors || !createdBy) {
+    if (!date || !points || !driver || !collectors || !createdBy) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -44,7 +44,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     // }
 
     // Create and store the new user 
-    const route = await Route.create({ date, time, points, collectors, driver, createdBy })
+    const route = await Route.create({ date, points, collectors, driver, createdBy })
     if (route) { // Created 
         return res.status(201).json({ message: 'Nuevo recorrido creado' })
     } else {
@@ -57,10 +57,10 @@ const createNewRoute = asyncHandler(async (req, res) => {
 // @route PATCH /routes
 // @access Private
 const updateRoute = asyncHandler(async (req, res) => {
-    const { id, date, time, points, driver, collectors, state } = req.body
+    const { id, date, points, driver, collectors, state } = req.body
 
     // Confirm data
-    if (!id || !date || !time || !points || !driver || !collectors || !state) {
+    if (!id || !date || !points || !driver || !collectors || !state) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -81,7 +81,6 @@ const updateRoute = asyncHandler(async (req, res) => {
 
     route.user = user
     route.date = date
-    route.time = time
     route.points = points
     route.driver = driver
     route.collectors = collectors
@@ -89,7 +88,7 @@ const updateRoute = asyncHandler(async (req, res) => {
 
     const updatedRoute = await route.save()
 
-    res.json(`Recorrido ${updatedRoute.time} de ${updatedRoute.date} actualizado`)
+    res.json(`Recorrido de ${updatedRoute.date} actualizado`)
 })
 
 // @desc Delete a route
@@ -100,19 +99,19 @@ const deleteRoute = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!id) {
-        return res.status(400).json({ message: 'Se requiere ID de ROUTE' })
+        return res.status(400).json({ message: 'Se requiere ID de recorrido' })
     }
 
     // Confirm route exists to delete 
     const route = await Route.findById(id).exec()
 
     if (!route) {
-        return res.status(400).json({ message: 'ROUTE no encontrado' })
+        return res.status(400).json({ message: 'Recorrido no encontrado' })
     }
 
     const result = await route.deleteOne()
 
-    const reply = `ROUTE '${result.idFamily}' with ID ${result._id} eliminado`
+    const reply = `Recorrido del día ${result.date} con id ${result._id} eliminado`
 
     res.json(reply)
 })
