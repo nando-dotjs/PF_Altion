@@ -136,9 +136,6 @@ const Login = () => {
                    
                     </Col>
                 </Row>
-                <footer>
-                ¡Da vida al planeta: RECICLA!       
-                </footer>
                 </Form>
             </Container>
             </div>

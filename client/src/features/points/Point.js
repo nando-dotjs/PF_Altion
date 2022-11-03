@@ -17,6 +17,8 @@ const Point = ({ pointId }) => {
         const updated = new Date(point.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
 
         const handleEdit = () => navigate(`/dash/points/${pointId}`)
+        
+
 
         return (
             <tr className="tableRow">

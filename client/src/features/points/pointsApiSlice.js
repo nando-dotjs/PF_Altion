@@ -4,9 +4,7 @@ import {
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
-const pointsAdapter = createEntityAdapter({
-    sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
-})
+const pointsAdapter = createEntityAdapter({})
 
 const initialState = pointsAdapter.getInitialState()
 
@@ -34,11 +32,23 @@ export const pointsApiSlice = apiSlice.injectEndpoints({
             }
         }),
         addNewPoint: builder.mutation({
-            query: initialPoint => ({
+            query: initialPointData => ({
                 url: '/points',
                 method: 'POST',
                 body: {
-                    ...initialPoint,
+                    ...initialPointData,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'Point', id: "LIST" }
+            ]
+        }),
+        createNewPoint: builder.mutation({
+            query: initialPointData => ({
+                url: '/register',
+                method: 'POST',
+                body: {
+                    ...initialPointData,
                 }
             }),
             invalidatesTags: [
@@ -46,11 +56,11 @@ export const pointsApiSlice = apiSlice.injectEndpoints({
             ]
         }),
         updatePoint: builder.mutation({
-            query: initialPoint => ({
+            query: initialPointData => ({
                 url: '/points',
                 method: 'PATCH',
                 body: {
-                    ...initialPoint,
+                    ...initialPointData,
                 }
             }),
             invalidatesTags: (result, error, arg) => [
@@ -73,19 +83,24 @@ export const pointsApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetPointsQuery,
     useAddNewPointMutation,
+    useCreateNewPointMutation,
     useUpdatePointMutation,
     useDeletePointMutation,
 } = pointsApiSlice
 
+// returns the query result object
 export const selectPointsResult = pointsApiSlice.endpoints.getPoints.select()
 
+// creates memoized selector
 const selectPointsData = createSelector(
     selectPointsResult,
     pointsResult => pointsResult.data // normalized state object with ids & entities
 )
 
+//getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
     selectAll: selectAllPoints,
     selectById: selectPointById,
     selectIds: selectPointIds
+    // Pass in a selector that returns the points slice of state
 } = pointsAdapter.getSelectors(state => selectPointsData(state) ?? initialState)
