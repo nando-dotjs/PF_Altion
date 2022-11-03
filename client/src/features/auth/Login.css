@@ -4,6 +4,10 @@ body {
     background-color: gainsboro;
     color: var(--COLOR);
     /* background-image: url('../auth/background.jpg');  */
+<<<<<<< HEAD
+=======
+    background-image: url('../../img/back3.jpg'); 
+>>>>>>> 9cc74e8 (Cambios menores en formulario de registro)
     background-size: cover;
     background-position: top right;
     background-blend-mode: multiply;
