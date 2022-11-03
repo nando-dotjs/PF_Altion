@@ -6,6 +6,7 @@ const pointSchema = new mongoose.Schema(
             required: true,
             ref: 'User'
         },
+
         name: {
             type: String,
             required: true
@@ -44,4 +45,6 @@ const pointSchema = new mongoose.Schema(
 
 
 
+
 module.exports = mongoose.model('Point', pointSchema)
+
