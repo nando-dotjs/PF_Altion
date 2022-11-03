@@ -3,7 +3,8 @@ body {
     min-height: 100vh;
     background-color: var(--BGCOLOR);
     color: var(--COLOR);
-    background-image: url('../auth/background.jpg'); 
+    /* background-image: url('../auth/background.jpg');  */
+    background-image: url('../../img/back3.jpg'); 
     background-size: cover;
     background-position: top right;
     background-blend-mode: multiply;
