@@ -1,6 +1,7 @@
 import { useGetUsersQuery } from "./usersApiSlice"
 import User from './User'
 import useTitle from "../../hooks/useTitle"
+import Table from 'react-bootstrap/Table';
 
 const UsersList = () => {
     useTitle('Lista de Usuarios')
@@ -28,10 +29,9 @@ const UsersList = () => {
 
         const { ids } = users
 
-        const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
-            
+        const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)  
         content = (
-            <table className="table tableUsers">
+            <Table className="table tableUsers">
                 <thead className="tableThead">
                     <tr>
                         <th scope="col" className="tableTh userUsername">Usuario</th>
@@ -42,7 +42,7 @@ const UsersList = () => {
                 <tbody>
                     {tableContent}
                 </tbody>
-            </table>
+            </Table>
         )
     }
 

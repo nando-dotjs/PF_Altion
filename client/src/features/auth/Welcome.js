@@ -21,9 +21,9 @@ const Welcome = () => {
             {(isAdmin) && <p><Link to="/dash/zones">Gestión de Zonas</Link></p>}
             {(isCEV) && <p><Link to="/dash/cevs">Gestión de Puntos</Link></p>}
             {(isEmpresa) && <p><Link to="/dash/companys">Gestión de Puntos</Link></p>}
-            {(isAdmin) && <p><Link to="/dash/cevs">Gestión de Puntos (CEV)</Link></p>}
-            {(isAdmin) && <p><Link to="/dash/companys">Gestión de Puntos (Empresa)</Link></p>}
-            
+            {/* {(isAdmin) && <p><Link to="/dash/cevs">Gestión de Puntos (CEV)</Link></p>}
+            {(isAdmin) && <p><Link to="/dash/companys">Gestión de Puntos (Empresa)</Link></p>} */}
+            {(isAdmin || isCEV || isEmpresa) && <p><Link to="/dash/points">Gestión de Puntos</Link></p>}
 
         </section>
     )

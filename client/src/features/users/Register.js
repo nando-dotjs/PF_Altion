@@ -5,6 +5,15 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROLES_PUBLICOS } from "../../config/roles"
 
+
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
+
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -53,6 +62,8 @@ const Register = () => {
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
+
+    
 
     const [role, setRole] = useState('CEV')
     // eslint-disable-next-line
@@ -117,7 +128,15 @@ const Register = () => {
         try{ 
             if (canSave) {
                 await createNewUser({ name, surname, mail, username, password, role })
+                Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Usuario creado con éxito',
+                    showConfirmButton: false,
+                    timer: 2500
+                  })
             }
+           
         } catch(err) {
             if (!err.status) {
                 setErrMsg('No Server Response');
@@ -134,10 +153,12 @@ const Register = () => {
 
     return (
         <>
+         <div className="account-wall" align="center">
+         <Container fluid>
             <section>
 
                 <header>
-                    <h1>Registro</h1>
+                    <h1>Registro de usuarios</h1>
                 </header>
 
                 <main className='register'>
@@ -147,13 +168,13 @@ const Register = () => {
                     <form className="form" onSubmit={onSaveUserClicked}>
 
                         <label htmlFor="name">
-                            Nombre:
-                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"}/>
                             <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className="formInput"
+                            className="form-control"
+                            placeholder="Nombre"
                             type="text"
                             id="name"
                             autoComplete="off"
@@ -174,13 +195,13 @@ const Register = () => {
 
                         
                         <label htmlFor="surname">
-                            Apellido:
                             <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className=  "formInput"
+                            className="form-control"
+                             placeholder="Apellido"
                             type="text"
                             id="surname"
                             autoComplete="off"
@@ -201,13 +222,13 @@ const Register = () => {
 
                         
                         <label htmlFor="mail">
-                            Correo electrónico:
                             <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className="formInput"
+                            className="form-control"
+                            placeholder="Correo Electrónico"
                             type="text"
                             id="mail"
                             autoComplete="off"
@@ -226,13 +247,13 @@ const Register = () => {
 
                         
                         <label htmlFor="username">
-                            Nombre de Usuario:
                             <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className="formInput"
+                            className="form-control"
+                            placeholder="Nombre de usuario"
                             type="text"
                             id="username"
                             ref={userRef}
@@ -254,13 +275,13 @@ const Register = () => {
 
                         
                         <label htmlFor="password">
-                            Contraseña:
-                            <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
+                            <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} id="pass" className={validPassword || !password ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className="formInput"
+                            className="form-control"
+                            placeholder="Contraseña"
                             type="password"
                             id="password"
                             onChange={(e) => setPassword(e.target.value)}
@@ -280,13 +301,13 @@ const Register = () => {
 
                         
                         <label htmlFor="confirm_pwd">
-                            Confirmar contraseña:
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
                         </label>
                         
                         <input
-                            className="formInput"
+                              className="form-control"
+                              placeholder="Confirmar contraseña"
                             type="password"
                             id="confirm_pwd"
                             onChange={(e) => setMatchPwd(e.target.value)}
@@ -316,13 +337,14 @@ const Register = () => {
                             {options}
                         </select>
 
-                        
-                        
-                        <button className="formSubmitButton" disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</button>
-                        
+                        <Col>
+                        <br/>
+                        <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</Button>
+                        <Button className="btn btn-secondary" href="/">Volver</Button>
+                        </Col>
                         
                     </form>
-                    
+                    <br/>
                     <p>
                         Ya estás registrado?<br />
                         <span className="line">
@@ -332,6 +354,8 @@ const Register = () => {
                     </p>
                 </main>    
             </section>
+            </Container>
+            </div>
         </>
     )
 }

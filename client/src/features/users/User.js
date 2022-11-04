@@ -17,7 +17,7 @@ const User = ({ userId }) => {
 
         return (
             <tr className="tableRow user">
-                <td className={`tableCell ${cellStatus}`}>{user.username}</td>
+                <td className={`tableCell ${cellStatus}`}>{user.mail}</td>
                 <td className={`tableCell ${cellStatus}`}>{user.role}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button

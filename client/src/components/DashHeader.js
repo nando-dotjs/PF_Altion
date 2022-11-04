@@ -18,12 +18,14 @@ const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 const ZONES_REGEX = /^\/dash\/zones(\/)?$/
+const POINT_REGEX = /^\/dash\/points(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
 const CEVS_EDIT_REGEX = /^\/dash\/cevs(\/.+)?$/
 const COMPANY_EDIT_REGEX = /^\/dash\/companys(\/.+)?$/
 const ZONE_EDIT_REGEX = /^\/dash\/zones(\/.+)?$/
+const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
 
@@ -43,7 +45,7 @@ const DashHeader = () => {
         if (isSuccess) navigate('/')
     }, [isSuccess, navigate])
 
-    const onNewUserClicked = () => navigate('/dash/users/new')
+    const onNewUserClicked = () => navigate(`/dash/users/new`)
     const onGoBackUser = () => navigate('/dash')
     const onGoBackUserToTable = () => navigate ('/dash/users')
 
@@ -62,6 +64,10 @@ const DashHeader = () => {
     const onNewZoneClicked = () => navigate('/dash/zones/new')
     const onGoBackZone = () => navigate('/dash')
     const onGoBackZoneToTable = () => navigate('/dash/zones')
+
+    const onNewPointClicked = () => navigate('/dash/points/new')
+    const onGoBackPoint = () => navigate('/dash')
+    const onGoBackPointToTable = () => navigate('/dash/points')
 
     let dashClass = null
     if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
@@ -263,6 +269,42 @@ const DashHeader = () => {
     //     }
     // }
 
+    let newPointButton = null;
+    let goBackFromPointButton = null;
+    if (POINT_REGEX.test(pathname)) {
+        newPointButton = (
+            <button
+                className="icon-button"
+                title="New Point"
+                onClick={onNewPointClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+        goBackFromPointButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackPoint}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromPointToTable = null
+    if(POINT_EDIT_REGEX.test(pathname) && !POINT_REGEX.test(pathname)) {
+        goBackFromPointToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackPointToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
     const logoutButton = (
         <button
             className="icon-button"
@@ -288,8 +330,10 @@ const DashHeader = () => {
                 {newDriverButton}
                 {newCevButton}
                 {newCompanyButton}
+                {newPointButton}
                 {newZoneButton}
                 {goBackFromCompanyButton}
+                {goBackFromPointButton}
                 {goBackFromCevButton}
                 {goBackFromDriverButton}
                 {goBackFromUserButton}
@@ -298,6 +342,7 @@ const DashHeader = () => {
                 {/* FORMULARIOS DE EDICION */}
                 {goBackFromUserToTable}
                 {goBackFromDriverToTable}
+                {goBackFromPointToTable}
                 {goBackFromCEVToTable}
                 {goBackFromCompanyToTable}
                 {goBackFromZoneToTable}

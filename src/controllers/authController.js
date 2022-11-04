@@ -8,13 +8,13 @@ const jwt = require('jsonwebtoken')
 // @access Publico
 
 const login = asyncHandler(async (req, res) => {
-    const { username, password } = req.body
+    const { mail, password } = req.body
 
-    if (!username || !password) {
+    if (!mail || !password) {
         return res.status(400).json({ message: 'Todos los campos son requeridos' })
     }
 
-    const foundUser = await User.findOne({ username }).exec()
+    const foundUser = await User.findOne({ mail }).exec()
 
     if (!foundUser || !foundUser.active) {
         return res.status(401).json({ message: 'No está autorizado' })
@@ -27,7 +27,7 @@ const login = asyncHandler(async (req, res) => {
     const accessToken = jwt.sign(
         {
             "UserInfo": {
-                "username": foundUser.username,
+                "mail": foundUser.mail,
                 "role": foundUser.role
             }
         },
@@ -36,7 +36,7 @@ const login = asyncHandler(async (req, res) => {
     )
 
     const refreshToken = jwt.sign(
-        { "username": foundUser.username },
+        { "mail": foundUser.mail },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '7d' }
     )
@@ -71,14 +71,14 @@ const refresh = (req, res) => {
         asyncHandler(async (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
 
-            const foundUser = await User.findOne({ username: decoded.username }).exec()
+            const foundUser = await User.findOne({ mail: decoded.mail }).exec()
 
             if (!foundUser) return res.status(401).json({ message: 'No está autorizado' })
 
             const accessToken = jwt.sign(
                 {
                     "UserInfo": {
-                        "username": foundUser.username,
+                        "mail": foundUser.mail,
                         "role": foundUser.role
                     }
                 },
