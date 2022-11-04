@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth'
 
 const DashFooter = () => {
 
-    const { username, role } = useAuth()
+    const { mail, role } = useAuth()
 
     const navigate = useNavigate()
     const {pathname} = useLocation()
@@ -29,7 +29,7 @@ const DashFooter = () => {
     const content = (
         <footer className="dashFooter">
             {goHomeButton}
-            <p>Usuario: {username}</p>
+            <p>Usuario: {mail}</p>
             <p>Tipo: {role}</p>
         </footer>
     )

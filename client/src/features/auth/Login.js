@@ -17,7 +17,7 @@ import Col from 'react-bootstrap/Col';
 const Login = () => {
     const userRef = useRef()
     const errRef = useRef()
-    const [username, setUsername] = useState('')
+    const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
     const [persist] = useState(JSON.parse(localStorage.getItem("persist")));
@@ -37,15 +37,15 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [username, password])
+    }, [mail, password])
 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const { accessToken } = await login({ username, password }).unwrap()
+            const { accessToken } = await login({ mail, password }).unwrap()
             dispatch(setCredentials({ accessToken }))
-            setUsername('')
+            setMail('')
             setPassword('')
             Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
                 position: 'center',
@@ -62,8 +62,8 @@ const Login = () => {
                 setErrMsg('No Server Response');
                 Swal.fire('No Server Response')
             } else if (err.status === 400) {
-                setErrMsg('Missing Username or Password');
-                Swal.fire('Missing Username or Password')
+                setErrMsg('Missing Mail or Password');
+                Swal.fire('Missing Mail or Password')
             } else if (err.status === 401) {
                 setErrMsg('El usuario y/o contraseña es incorrecto');
                
@@ -80,7 +80,7 @@ const Login = () => {
         }
     }
 
-    const handleUserInput = (e) => setUsername(e.target.value)
+    const handleUserInput = (e) => setMail(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
 
     const errClass = errMsg ? "errmsg" : "offscreen"
@@ -99,13 +99,13 @@ const Login = () => {
                     </Col>
                     <Form className="form-signin">
                         <Col md="auto">
-                        {/* <label htmlFor="username">Usuario:</label> */}
+                        {/* <label htmlFor="mail">Usuario:</label> */}
                         </Col>
                         <Col>
                         <input className="form-control" 
-                            placeholder="Usuario" 
-                            type="text" id="username" 
-                            ref={userRef} value={username} onChange={handleUserInput}
+                            placeholder="Correo" 
+                            type="text" id="mail" 
+                            ref={userRef} value={mail} onChange={handleUserInput}
                             autoComplete="off"
                             required
                         />

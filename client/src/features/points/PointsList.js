@@ -1,6 +1,5 @@
 import { useGetPointsQuery } from "./pointsApiSlice"
 import Point from "./Point"
-import Table from 'react-bootstrap/Table';
 import useAuth from "../../hooks/useAuth"
 
 const PointsList = () => {
@@ -37,24 +36,23 @@ const PointsList = () => {
         }
 
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
-        
-
+       
         content = (
-            <Table striped bordered responsive>
-                <thead>
+            <table className="table tablePoints">
+                <thead className="tableThead">
                     <tr>
                         <th scope="col" className="tableTh pointStatus">Estado</th>
                         <th scope="col" className="tableTh pointCreated">Creado</th>
                         <th scope="col" className="tableTh pointZone">Zona</th>
-                        <th scope="col" className="tableTh pointTitle">Detalle</th>
-                        <th scope="col" className="tableTh pointUsername">Propietario</th>
+                        <th scope="col" className="tableTh pointTitle">Nombre</th>
+                        <th scope="col" className="tableTh pointUsername">Propietario:</th>
                         <th scope="col" className="tableTh pointEdit">Editar</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tableContent}
                 </tbody>
-            </Table>
+            </table>
         )
     }
 

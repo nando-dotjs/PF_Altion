@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 // eslint-disable-next-line
@@ -51,10 +50,6 @@ const EditUserForm = ({ user }) => {
     const [validMail, setValidMail] = useState(false)
     const [mailFocus, setMailFocus] = useState(false);
 
-    const [username, setUsername] = useState(user.username);
-    const [validUsername, setValidUsername] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
-
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
     const [pwdFocus, setPwdFocus] = useState(false);
@@ -83,23 +78,18 @@ const EditUserForm = ({ user }) => {
     }, [mail])
 
     useEffect(() => {
-        setValidUsername(USER_REGEX.test(username));
-    }, [username])
-
-    useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
         setValidMatch(password === matchPwd);
     }, [password, matchPwd])
 
     useEffect(() => {
         setErrMsg('');
-    }, [name, surname, mail, username, password, matchPwd])
+    }, [name, surname, mail, password, matchPwd])
 
     useEffect(() => {
         if (isSuccess) {
             setName('')
             setSurname('')
-            setUsername('')
             setPassword('')
             setMail('')
             setRole('')
@@ -110,7 +100,6 @@ const EditUserForm = ({ user }) => {
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
     const onMailChanged = e => setMail(e.target.value)
-    const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
     const onActiveChanged = () => setActive(prev => !prev)
@@ -118,9 +107,9 @@ const EditUserForm = ({ user }) => {
     const onSaveUserClicked = async (e) => {
 
         if (password) {
-            await updateUser({ id: user.id, name, surname, mail, username, password, role, active })
+            await updateUser({ id: user.id, name, surname, mail, password, role, active })
         } else {
-            await updateUser({ id: user.id, name, surname, mail, username, role, active })
+            await updateUser({ id: user.id, name, surname, mail, role, active })
         }
     }
 
@@ -140,9 +129,9 @@ const EditUserForm = ({ user }) => {
 
     let canSave
     if (password) {
-        canSave = [role, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
+        canSave = [role, validPassword, validMail, name, surname].every(Boolean) && !isLoading
     } else {
-        canSave = [role, validUsername, validMail, name, surname].every(Boolean) && !isLoading
+        canSave = [role, validMail, name, surname].every(Boolean) && !isLoading
     }
 
     const errClass = isError ? "errmsg" : "offscreen"
@@ -250,32 +239,6 @@ const EditUserForm = ({ user }) => {
                     Ingrese un correo electrónico válido.<br />
                 </p>
 
-                <label htmlFor="username">
-                    Nombre de Usuario:
-                    <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                </label>
-                <input
-                    className={`formInput`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                    required
-                    aria-invalid={validUsername ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setUserFocus(true)}
-                    onBlur={() => setUserFocus(false)}
-                />
-                <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    4 a 24 caracteres.<br />
-                    Debe empezar con una letra.<br />
-                    Letras, números, guión bajo y guiones permitidos.
-                </p>
-
                 <label htmlFor="password">
                     Contraseña:
                     <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
@@ -349,7 +312,7 @@ const EditUserForm = ({ user }) => {
                 </select>
 
                 <br></br>
-                <button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validUsername || !validMail || !name || !surname ? true : false}>Guardar cambios</button>
+                <button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</button>
 
             </form>
         </>
