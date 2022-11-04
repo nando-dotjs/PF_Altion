@@ -4,6 +4,10 @@ body {
     background-color: gainsboro;
     color: var(--COLOR);
     /* background-image: url('../auth/background.jpg');  */
+
+    background-image: url('../../img/back3.jpg'); 
+
+    
     background-size: cover;
     background-position: top right;
     background-blend-mode: multiply;
