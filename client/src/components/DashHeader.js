@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
+import {
     faRightFromBracket,
     faPlus,
     faArrowLeft
@@ -8,7 +8,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
+import useAuth from '../hooks/useAuth'
+
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+// import Navbar from 'react-bootstrap';
+
 
 // import useAuth from '../hooks/useAuth'
 
@@ -26,6 +35,8 @@ const COMPANY_EDIT_REGEX = /^\/dash\/companys(\/.+)?$/
 const ZONE_EDIT_REGEX = /^\/dash\/zones(\/.+)?$/
 
 const DashHeader = () => {
+
+    const { username, role } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -45,7 +56,7 @@ const DashHeader = () => {
 
     const onNewUserClicked = () => navigate('/dash/users/new')
     const onGoBackUser = () => navigate('/dash')
-    const onGoBackUserToTable = () => navigate ('/dash/users')
+    const onGoBackUserToTable = () => navigate('/dash/users')
 
     const onNewDriverClicked = () => navigate('/dash/drivers/new')
     const onGoBackDriver = () => navigate('/dash')
@@ -92,7 +103,7 @@ const DashHeader = () => {
     }
 
     let goBackFromUserToTable = null
-    if(USERS_EDIT_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+    if (USERS_EDIT_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
         goBackFromUserToTable = (
             <button
                 className="icon-button"
@@ -128,7 +139,7 @@ const DashHeader = () => {
     }
 
     let goBackFromDriverToTable = null
-    if(DRIVERS_EDIT_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+    if (DRIVERS_EDIT_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         goBackFromDriverToTable = (
             <button
                 className="icon-button"
@@ -164,7 +175,7 @@ const DashHeader = () => {
     }
 
     let goBackFromCEVToTable = null
-    if(CEVS_EDIT_REGEX.test(pathname) && !CEVS_REGEX.test(pathname)) {
+    if (CEVS_EDIT_REGEX.test(pathname) && !CEVS_REGEX.test(pathname)) {
         goBackFromCEVToTable = (
             <button
                 className="icon-button"
@@ -200,7 +211,7 @@ const DashHeader = () => {
     }
 
     let goBackFromCompanyToTable = null
-    if(COMPANY_EDIT_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname)) {
+    if (COMPANY_EDIT_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname)) {
         goBackFromCompanyToTable = (
             <button
                 className="icon-button"
@@ -236,7 +247,7 @@ const DashHeader = () => {
     }
 
     let goBackFromZoneToTable = null
-    if(ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
+    if (ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
         goBackFromZoneToTable = (
             <button
                 className="icon-button"
@@ -273,7 +284,7 @@ const DashHeader = () => {
         </button>
     )
 
-   
+
 
     const errClass = isError ? "errmsg" : "offscreen"
 
@@ -301,7 +312,7 @@ const DashHeader = () => {
                 {goBackFromCEVToTable}
                 {goBackFromCompanyToTable}
                 {goBackFromZoneToTable}
-                
+
                 {logoutButton}
             </>
         )
@@ -310,22 +321,66 @@ const DashHeader = () => {
     const content = (
         <>
             <p className={errClass}>{error?.data?.message}</p>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand href="/dash">Unidos por la clasificación</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/dash">Inicio</Nav.Link>
+                            <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
+                                <NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Validar usuarios</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Listar usuarios</NavDropdown.Item>
+                            </NavDropdown>
 
-            <header className="dashHeader">
+                            <NavDropdown title="Choferes" id="basic-nav-dropdown" >
+                                <NavDropdown.Item onClick={sendLogout}>Crear chofer</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Listar choferes</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <NavDropdown title="Zonas" id="basic-nav-dropdown" >
+                                <NavDropdown.Item onClick={sendLogout}>Crear Zona</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Listar Zonas</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <NavDropdown title="Puntos" id="basic-nav-dropdown" >
+                                <NavDropdown.Item onClick={sendLogout}>Crear Punto</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item>
+                                <NavDropdown.Item onClick={sendLogout}>Listar Puntos</NavDropdown.Item>
+                            </NavDropdown>
+
+                        </Nav>
+                        <div >
+                        <NavDropdown align="end" title={username} id="basic-nav-dropdown" >
+                            <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
+                        </NavDropdown>
+                    </div>
+                    </Navbar.Collapse>
+                  
+                </Container>
+            </Navbar>
+           
+            {/* <header className="dashHeader">
                 <div className={`dashHeaderContainer ${dashClass}`}>
-                
+
                     <Link to="/dash">
-                        <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
-                    </Link>
+                        {/* <h1 className="dashHeaderTitle">Unidos por la clasificación</h1> */}
+                    {/* </Link> */}
                     <nav className="dashHeaderNav">
                         {buttonContent}
                     </nav>
-                    
+{/*
                 </div>
-            </header>
+            </header> */}
+
+           
+
         </>
+
     )
 
     return content
 }
+
 export default DashHeader
