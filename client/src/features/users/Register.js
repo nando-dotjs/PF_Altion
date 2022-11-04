@@ -51,9 +51,9 @@ const Register = () => {
     const [validMail, setValidMail] = useState(false)
     const [mailFocus, setMailFocus] = useState(false);
 
-    const [username, setUsername] = useState('');
-    const [validUsername, setValidUsername] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
+    // const [username, setUsername] = useState('');
+    // const [validUsername, setValidUsername] = useState(false);
+    // const [userFocus, setUserFocus] = useState(false);
 
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
@@ -71,9 +71,9 @@ const Register = () => {
     // eslint-disable-next-line
     const [success, setSuccess] = useState(false);
 
-    useEffect(() => {
-        userRef.current.focus();
-    }, [])
+    // useEffect(() => {
+    //     userRef.current.focus();
+    // }, [])
 
     useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
@@ -87,9 +87,9 @@ const Register = () => {
         setValidMail(EMAIL_REGEX.test(mail))
     }, [mail])
 
-    useEffect(() => {
-        setValidUsername(USER_REGEX.test(username));
-    }, [username])
+    // useEffect(() => {
+    //     setValidUsername(USER_REGEX.test(username));
+    // }, [username])
 
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
@@ -98,13 +98,13 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [name, surname, mail, username, password, matchPwd])
+    }, [name, surname, mail, password, matchPwd])
 
     useEffect(() => {
         if (isSuccess) {
             setName('')
             setSurname('')
-            setUsername('')
+            // setUsername('')
             setPassword('')
             setMatchPwd('')
             setMail('')
@@ -124,10 +124,10 @@ const Register = () => {
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        const canSave = [validUsername, validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
+        const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
         try {
             if (canSave) {
-                await createNewUser({ name, surname, mail, username, password, role })
+                await createNewUser({ name, surname, mail, password, role })
                 Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
                     position: 'center',
                     icon: 'success',
@@ -262,7 +262,7 @@ const Register = () => {
                                     Ingrese un correo electrónico válido.<br />
                                 </p>
                                 <br />
-                                <div class="container-fluid">
+                                {/* <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
                                             <input
@@ -292,7 +292,7 @@ const Register = () => {
                                     4 a 24 caracteres.<br />
                                     Debe empezar con una letra.<br />
                                     Letras, números, guión bajo y guiones permitidos.
-                                </p>
+                                </p> */}
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
@@ -371,7 +371,7 @@ const Register = () => {
 
                                 <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</Button>
+                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
                                     <Button className="btn btn-secondary" href="/">Volver</Button>
                                 </Col>
 

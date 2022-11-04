@@ -38,7 +38,7 @@ const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
 
-    const { username, role } = useAuth()
+    const { mail, role, isAdmin, isCEV, isEmpresa } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -373,21 +373,21 @@ const DashHeader = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link href="/dash">Inicio</Nav.Link>
-                            <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
+                            {(isAdmin) && <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
                                 <NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item>
                                 <NavDropdown.Item onClick={sendLogout}>Validar usuarios</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Listar usuarios</NavDropdown.Item>
-                            </NavDropdown>
+                                <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item>
+                            </NavDropdown>}
 
-                            <NavDropdown title="Choferes" id="basic-nav-dropdown" >
+                            {(isAdmin) && <NavDropdown title="Choferes" id="basic-nav-dropdown" >
                                 <NavDropdown.Item onClick={sendLogout}>Crear chofer</NavDropdown.Item>
                                 <NavDropdown.Item onClick={sendLogout}>Listar choferes</NavDropdown.Item>
-                            </NavDropdown>
+                            </NavDropdown>}
 
-                            <NavDropdown title="Zonas" id="basic-nav-dropdown" >
+                            {(isAdmin) && <NavDropdown title="Zonas" id="basic-nav-dropdown" >
                                 <NavDropdown.Item onClick={sendLogout}>Crear Zona</NavDropdown.Item>
                                 <NavDropdown.Item onClick={sendLogout}>Listar Zonas</NavDropdown.Item>
-                            </NavDropdown>
+                            </NavDropdown>}
 
                             <NavDropdown title="Puntos" id="basic-nav-dropdown" >
                                 <NavDropdown.Item onClick={sendLogout}>Crear Punto</NavDropdown.Item>
@@ -396,13 +396,11 @@ const DashHeader = () => {
                             </NavDropdown>
 
                         </Nav>
-                        <div >
-                        <NavDropdown align="end" title={username} id="basic-nav-dropdown" >
+                      
+                        <NavDropdown title={mail} id="basic-nav-dropdown" >
                             <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
                         </NavDropdown>
-                    </div>
                     </Navbar.Collapse>
-                  
                 </Container>
             </Navbar>
            
@@ -412,9 +410,9 @@ const DashHeader = () => {
                     <Link to="/dash">
                         {/* <h1 className="dashHeaderTitle">Unidos por la clasificación</h1> */}
                     {/* </Link> */}
-                    <nav className="dashHeaderNav">
+                    {/* <nav className="dashHeaderNav">
                         {buttonContent}
-                    </nav>
+                    </nav> */}
 {/*
                 </div>
             </header> */}
