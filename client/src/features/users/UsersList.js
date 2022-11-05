@@ -43,7 +43,7 @@ const UsersList = () => {
 
         const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
 
-       
+
         const handleClose = () => {
             setShow(true)
             navigate('/dash');
@@ -51,51 +51,51 @@ const UsersList = () => {
 
 
         content = (
-<>
-<Modal show={!show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title id="cabezal"><strong>Lista de Usuarios</strong></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Container>
-                <section className="welcome">
-                    <div id="fechaDiv" className="">
+            <>
+                <Modal show={!show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="cabezal"><strong>Lista de Usuarios</strong></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Container>
+                            <section className="welcome">
+                                <div id="fechaDiv" className="">
 
-                        <p>{today}</p>
+                                    <p>{today}</p>
 
-                    </div>
-                </section>
-                <br />
-                <div id="fondoTabla">
+                                </div>
+                            </section>
+                            <br />
+                            <div id="fondoTabla">
 
-                    <Table striped bordered hover size="sm" className="table tableUsers">
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Roles</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <th>{name}</th>
-                            {tableContent}
-                        </tbody>
-                    </Table>
+                                <Table striped bordered hover size="sm" className="table tableUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Roles</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <th>{name}</th>
+                                        {tableContent}
+                                    </tbody>
+                                </Table>
 
-                </div>
+                            </div>
 
-            </Container>
-            </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-           Cancelar
-          </Button>
-          {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
+                        </Container>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancelar
+                        </Button>
+                        {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
            Registrar
           </Button> */}
-        </Modal.Footer>
-      </Modal>
-        </>
+                    </Modal.Footer>
+                </Modal>
+            </>
         )
     }
 
