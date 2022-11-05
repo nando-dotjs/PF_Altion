@@ -93,6 +93,26 @@ body {
     -webkit-border-radius: 50%;
     border-radius: 50%;
 }
+#welcome-img
+{
+    width: 492px;
+    height: 492px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+#header-img
+{
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
 .need-help
 {
     margin-top: 10px;

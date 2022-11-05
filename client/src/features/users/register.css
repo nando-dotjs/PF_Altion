@@ -1,7 +1,15 @@
 .hide {
     display: none;
   }
-  
+  #fechaDiv{
+    margin-top: 0.5%;
+    background-color:whitesmoke;
+   position:sticky;
+   width: max-content;
+   margin-left: auto;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   box-shadow: 4px 4px 15px #52556944; 
+  }
   .valid {
     color: limegreen;
     margin-left: 0.25rem;
@@ -41,4 +49,7 @@
 }
 #iconito2{
     width: 91%;
+}
+#fondoTabla{
+  background-color: whitesmoke;
 }
