@@ -23,7 +23,7 @@ const Zone = ({ zoneId }) => {
                 <td className={`tableCell ${cellStatus}`}>{zone.details}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
-                        className="icon-button tableButton"
+                        className="btn btn-primary"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />

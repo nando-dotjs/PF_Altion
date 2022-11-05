@@ -5,6 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
+import Modal from 'react-bootstrap/Modal';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -78,17 +79,28 @@ const NewZoneForm = () => {
 
     const errClass = isError ? "errmsg" : "offscreen"
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+}
+    ;
 
     const content = (
         <>
-            <div className="account-wall" align="center">
+           <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Nueva Zona</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {/* <div className="account-wall" align="center"> */}
 
                 <Container fluid>
                     <p className={errClass}>{error?.data?.message}</p>
 
                     <form className="form" onSubmit={onSaveZoneClicked}>
                         <div className="formTitleRow">
-                            <h1 id="cabezal">Registro de Zona</h1>
+                            {/* <h1 id="cabezal">Registro de Zona</h1> */}
                             <div className="formActionButtons">
                                 {/* <button
                             className="icon-button"
@@ -163,13 +175,23 @@ const NewZoneForm = () => {
                         </p>
 
                         <br></br>
-                        <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Registrar</Button>
+                        {/* <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Registrar</Button> */}
 
 
                     </form>
                     <br />
                 </Container>
-            </div>
+            {/* </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSaveZoneClicked}  disabled={!validName ? true : false}>
+           Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 

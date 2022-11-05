@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import MapPopup from '../maps/MapPopup'
 import '../users/register.css'
 import Swal from "sweetalert2"
+import Modal from 'react-bootstrap/Modal';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -188,15 +189,28 @@ const NewPointForm = ({ users }) => {
 
     const errClass = isError ? "errmsg" : "offscreen"
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+}
+    ;
+    
     const content = (
         <>
-            <div className="account-wall" align="center">
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Nuevo Punto</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        
+            {/* <div className="account-wall" align="center"> */}
                 <Container fluid>
                     <p className={errClass}>{error?.data?.message}</p>
 
                     <form className="form" onSubmit={onSavePointClicked}>
                         <div className="formTitleRow">
-                            <h1 id="cabezal">Nuevo Punto</h1>
+                            {/* <h1 id="cabezal">Nuevo Punto</h1> */}
                             <div className="formActionButtons">
                                 {/* <button
                             className="icon-button"
@@ -392,13 +406,23 @@ const NewPointForm = ({ users }) => {
                         {input}
                         <br/>
                         
-                        <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>Registrar</Button>
+                        {/* <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>Registrar</Button> */}
 
                         <br/>
                         <br/>
                     </form>
                 </Container>
-            </div>
+            {/* </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>
+           Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 

@@ -5,13 +5,18 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
+import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
+
+
 const NewDriverForm = () => {
+
+    
 
     const [addNewDriver, {
         isLoading,
@@ -72,18 +77,30 @@ const NewDriverForm = () => {
         }
     }
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+}
+    ;
+    const handleShow = () => setShow(true);
     const errClass = isError ? "errmsg" : "offscreen"
 
 
     const content = (
         <>
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Nuevo chofer</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             <p className={errClass}>{error?.data?.message}</p>
 
-            <div className="account-wall" align="center">
+            {/* <div className="account-wall" align="center"> */}
 
                 <form className="form" onSubmit={onSaveDriverClicked}>
                     <div className="formTitleRow">
-                        <h1 id="cabezal">Registro de Chofer</h1>
+                        {/* <h1 id="cabezal">Registro de Chofer</h1> */}
                         <div className="formActionButtons">
                             {/* <button
                             className="icon-button"
@@ -160,12 +177,22 @@ const NewDriverForm = () => {
                     </p>
 
                     <br/>
-                    <Button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Registrar</Button>
+                    {/* <Button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Registrar</Button> */}
 
 
                 </form>
                 <br/>
-            </div>
+            {/* </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>
+           Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 

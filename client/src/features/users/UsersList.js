@@ -5,8 +5,14 @@ import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
 import './register.css'
 import DashFooter from "../../components/DashFooter";
+import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from "react-router-dom"
+import { useRef, useState, useEffect } from "react"
+import Button from 'react-bootstrap/Button';
 
 const UsersList = () => {
+    const [show, setShow] = useState(false);
+    const navigate = useNavigate()
     useTitle('Lista de Usuarios')
     const {
         data: users,
@@ -36,16 +42,29 @@ const UsersList = () => {
         console.log(users)
 
         const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
+
+       
+        const handleClose = () => {
+            setShow(true)
+            navigate('/dash');
+        };
+
+
         content = (
-
+<>
+<Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Lista de Usuarios</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
             <Container>
-                 <section className="welcome">
-                        <div id="fechaDiv" className="">
+                <section className="welcome">
+                    <div id="fechaDiv" className="">
 
-                            <p>{today}</p>
+                        <p>{today}</p>
 
-                        </div>
-                    </section>
+                    </div>
+                </section>
                 <br />
                 <div id="fondoTabla">
 
@@ -62,11 +81,21 @@ const UsersList = () => {
                             {tableContent}
                         </tbody>
                     </Table>
-                    
-                </div>
-               
-            </Container>
 
+                </div>
+
+            </Container>
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
+           Registrar
+          </Button> */}
+        </Modal.Footer>
+      </Modal>
+        </>
         )
     }
 
