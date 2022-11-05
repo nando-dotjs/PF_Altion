@@ -1,11 +1,16 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdatePointMutation} from "./pointsApiSlice"
+import { useUpdatePointMutation } from "./pointsApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
 import Form from 'react-bootstrap/Form';
+import '../users/register.css'
+
+
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 // eslint-disable-next-line
 const PHONENUMBER_REGEX = /^\d{9}$/;
@@ -18,7 +23,7 @@ const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 const EditPointForm = ({ point, users }) => {
 
-    const {username, isAdmin, isCEV, isEmpresa} = useAuth()
+    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const [updatePoint, {
         isLoading,
@@ -61,7 +66,7 @@ const EditPointForm = ({ point, users }) => {
     const [lat, setLat] = useState(+point.lat)
     const [validLatitude, setValidLatitude] = useState(false)
     const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
-    
+
     const [lng, setLng] = useState(+point.long)
     const [validLongitude, setValidLongitude] = useState(false)
     const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
@@ -75,10 +80,10 @@ const EditPointForm = ({ point, users }) => {
     const [optionsZone, setOptions] = useState()
     useEffect(() => {
         fetch("http://localhost:5000/zones")
-        .then((data) => data.json()).then((val) => {setValues(val)})
+            .then((data) => data.json()).then((val) => { setValues(val) })
     }, []);
 
-    const optionsToChoose = values?.map((options,i) => (<option key={i}>{options.active ? options.name : 'No asignar'}</option>))
+    const optionsToChoose = values?.map((options, i) => (<option key={i}>{options.active ? options.name : 'No asignar'}</option>))
 
     useEffect(() => {
         setValidPhoneNumber(PHONENUMBER_REGEX.test(phoneNumber));
@@ -120,7 +125,7 @@ const EditPointForm = ({ point, users }) => {
             setOptions('')
             navigate('/dash/points')
         }
-    //    [isSuccess, isDelSuccess, navigate]
+        //    [isSuccess, isDelSuccess, navigate]
     }, [isSuccess, navigate])
 
     const onPhoneNumberChanged = e => setPhoneNumber(e.target.value)
@@ -144,7 +149,7 @@ const EditPointForm = ({ point, users }) => {
     const created = new Date(point.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(point.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
-    const latlng = {"lat": lat, "lng": lng}
+    const latlng = { "lat": lat, "lng": lng }
 
     const options = users.map(user => {
         return (
@@ -164,7 +169,7 @@ const EditPointForm = ({ point, users }) => {
     const errContent = (error?.data?.message) ?? ''
 
     // let deleteButton = null
-    let selector = null 
+    let selector = null
     let selectorZone = null
     let input = null
     let label = null
@@ -172,73 +177,75 @@ const EditPointForm = ({ point, users }) => {
     let map = null
     if (isAdmin) {
         map = (
-            <MapContainer isDraggable={false} latlng={latlng}/>
+            <MapContainer isDraggable={false} latlng={latlng} />
         )
 
         selector = (
 
 
 
-            <select
-                            id="point-username"
-                            name="username"
-                            className="formSelect"
-                            value={userId}
-                            onChange={onUserIdChanged}
-                        >
-                            {options}
-                        </select>
+            <Form.Select
+                id="point-username"
+                name="username"
+                className="formSelect"
+                value={userId}
+                onChange={onUserIdChanged}
+            >
+                {options}
+            </Form.Select>
         )
 
         selectorZone = (
-                                    // onChange={(e)=>setOptions(e.target.value)}
-                            <select 
-                            id="point-zone"
-                            name="point-zone"
-                            className="formSelect"
-                            value={optionsZone}
-                            onChange={onZoneNameChanged}
-                            >
-                            <option disabled="disabled" value=""> -- Elige zona -- </option>    
-                            {    
-                                optionsToChoose
-                            }
-                            </select>
+            // onChange={(e)=>setOptions(e.target.value)}
+            <Form.Select
+                id="point-zone"
+                name="point-zone"
+                className="formSelect"
+                value={optionsZone}
+                onChange={onZoneNameChanged}
+            >
+                <option disabled="disabled" value=""> -- Elige zona -- </option>
+                {
+                    optionsToChoose
+                }
+            </Form.Select>
         )
         label = (
-                <label>Registro completado:</label>
-                )
+            <label>Validar Punto:</label>
+        )
         check = (
-                        
-                            <input
-                                className="formCheckbox"
-                                id="point-completed"
-                                name="completed"
-                                type="checkbox"
-                                checked={completed}
-                                onChange={onCompletedChanged}
-                            />
+
+            <Form.Check
+                className="formCheckbox"
+                id="point-completed"
+                name="completed"
+                type="checkbox"
+                checked={completed}
+                onChange={onCompletedChanged}
+            />
         )
     } else if (isCEV || isEmpresa) {
-        input = <input readOnly
-                className={`formInput`}
-                id="idUser"
-                name="idUser"
-                type="text"
-                autoComplete="off"
-                value={username}
-            />
+        input = <Form.Check readOnly
+            className={`formInput`}
+            id="idUser"
+            name="idUser"
+            type="text"
+            autoComplete="off"
+            value={username}
+        />
     }
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
+            <div className="puntos-wall" align="center">
+                <Container fluid>
+                    <p className={errClass}>{errContent}</p>
 
-            <Form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="formTitleRow">
-                    <h2>Editar Punto</h2>
-                    <div className="formActionButtons">
-                        {/* <button
+                    <Form className="form" onSubmit={e => e.preventDefault()}>
+                        <div className="formTitleRow">
+                            <h1 id="cabezal">Editar Punto</h1>
+                            <div className="formActionButtons">
+                                {/* <button
                             className="icon-button"
                             title="Save"
                             onClick={onSaveCevClicked}
@@ -246,131 +253,174 @@ const EditPointForm = ({ point, users }) => {
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button> */}
-                        {/* {deleteButton} */}
-                    </div>
-                </div>
+                                {/* {deleteButton} */}
+                            </div>
+                        </div>
+                        <br />
+                        <div className="formDivider">
+                            <p className="formCreated">Creado: {created}</p>
+                            <p className="formUpdated">Actualizado: {updated}</p>
+                        </div>
+                        <br />
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Nombre"
+                                        id="name"
+                                        name="name"
+                                        value={name}
+                                        onChange={onNameChanged}
+                                        required
+                                        aria-invalid={validName ? "false" : "true"}
+                                        aria-describedby="uidpoint"
+                                        onFocus={() => setNameFocus(true)}
+                                        onBlur={() => setNameFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="name" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidpoint" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            10 a 50 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
 
-                <label htmlFor="name">
-                    Detalles:
-                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput `}
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={onNameChanged}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidpoint"
-                    onFocus={() => setNameFocus(true)}
-                    onBlur={() => setNameFocus(false)}
-                />
-                <p id="uidpoint" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                10 a 50 caracteres.<br />
-                Debe empezar y contener solo letras.<br />
-                </p>
+                                    <input
+                                        className="form-control"
+                                        placeholder="Teléfono"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        value={phoneNumber}
+                                        onChange={onPhoneNumberChanged}
+                                        required
+                                        aria-invalid={validPhoneNumber ? "false" : "true"}
+                                        aria-describedby="uidpoint"
+                                        onFocus={() => setPhoneNumberFocus(true)}
+                                        onBlur={() => setPhoneNumberFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="phoneNumber" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validPhoneNumber || !phoneNumber ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidpoint" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            0 a 9 números.<br />
+                            No puedo contener otro tipo de carácteres.<br />
+                        </p>
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        id="street"
+                                        placeholder="Calle"
+                                        name="street"
+                                        value={street}
+                                        onChange={onStreetChanged}
+                                        required
+                                        aria-invalid={validStreet ? "false" : "true"}
+                                        aria-describedby="uidpoint"
+                                        onFocus={() => setStreetFocus(true)}
+                                        onBlur={() => setStreetFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="street" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidpoint" className={streetFocus && street && !validStreet ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            3 a 20 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Número"
+                                        id="text"
+                                        name="text"
+                                        value={streetNumber}
+                                        onChange={onStreetNumberChanged}
+                                        required
+                                        aria-invalid={validStreetNumber ? "false" : "true"}
+                                        aria-describedby="uidpoint"
+                                        onFocus={() => setStreetNumberFocus(true)}
+                                        onBlur={() => setStreetNumberFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="number" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validStreetNumber || !streetNumber ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidpoint" className={streetNumberFocus && streetNumber && !validStreetNumber ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            Solo números.<br />
+                            No puedo contener otro tipo de carácteres.<br />
+                        </p>
+                        <br/>
+                        <div className="formRow">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col">
+                                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
+                                            Propietario:</label>
+                                        <br />
+                                        {selector}
+                                        {input}
+                                    </div>
+                                <br />
+                                <div className="col">
+                                <label className="formLabel formCheckboxContainer" htmlFor="point-username">
+                                    Zona:</label>
+                                {selectorZone}
+                                </div>
+                            </div>
 
-                <label htmlFor="phoneNumber">
-                Teléfono/PhoneNumberular:
-                <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validPhoneNumber || !phoneNumber ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput `}
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={onPhoneNumberChanged}
-                    required
-                    aria-invalid={validPhoneNumber ? "false" : "true"}
-                    aria-describedby="uidpoint"
-                    onFocus={() => setPhoneNumberFocus(true)}
-                    onBlur={() => setPhoneNumberFocus(false)}
-                />
-                <p id="uidpoint" className={phoneNumberFocus && phoneNumber && !validPhoneNumber? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    0 a 9 números.<br />
-                    No puedo contener otro tipo de carácteres.<br />
-                </p>
 
-                <label htmlFor="street">
-                    Calle:
-                    <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
-                    </label>
-                <textarea
-                    className={`formInput`}
-                    id="street"
-                    name="street"
-                    value={street}
-                    onChange={onStreetChanged}
-                    required
-                    aria-invalid={validStreet ? "false" : "true"}
-                    aria-describedby="uidpoint"
-                    onFocus={() => setStreetFocus(true)}
-                    onBlur={() => setStreetFocus(false)}
-                />
-                <p id="uidpoint" className={streetFocus && street && !validStreet? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    3 a 20 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                </p>
+                                <label className="formLabel formCheckboxContainer" htmlFor="point-completed">
+                                    <br />
+                                    {label}
+                                    {check}
+                                </label>
+                                <br />
 
-                <label htmlFor="number">
-                    Número:
-                    <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validStreetNumber || !streetNumber ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput`}
-                    id="text"
-                    name="text"
-                    value={streetNumber}
-                    onChange={onStreetNumberChanged}
-                    required
-                    aria-invalid={validStreetNumber ? "false" : "true"}
-                    aria-describedby="uidpoint"
-                    onFocus={() => setStreetNumberFocus(true)}
-                    onBlur={() => setStreetNumberFocus(false)}
-                />
-                <p id="uidpoint" className={streetNumberFocus && streetNumber && !validStreetNumber? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    Solo números.<br />
-                    No puedo contener otro tipo de carácteres.<br />
-                </p>
+                            </div>
 
-                {map}
+                        </div>
+                        <br />
+                        {map}
+                        <br />
 
-                <div className="formRow">
-                    
-                    <div className="formDivider">
-                        <label className="formLabel formCheckboxContainer" htmlFor="point-completed">
-                            {label}
-                            {check}
-                        </label>
 
-                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                            Propietario:</label>
-                            {selector}
-                            {input}
+                        <br></br>
+                        <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</Button>
+                        <br></br>
+                        <br></br>
+                    </Form>
 
-                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                            Zona:</label>
-                            {selectorZone}
-                    </div>
-                    <div className="formDivider">
-                        <p className="formCreated">Creado:<br />{created}</p>
-                        <p className="formUpdated">Actualizado:<br />{updated}</p>
-                    </div>
-                </div>
-
-                <br></br>
-                <button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</button>
-
-            </Form>
+                </Container>
+            </div>
         </>
     )
 

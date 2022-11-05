@@ -1,6 +1,8 @@
 import { useGetPointsQuery } from "./pointsApiSlice"
 import Point from "./Point"
 import useAuth from "../../hooks/useAuth"
+import Table from 'react-bootstrap/Table';
+import Container from "react-bootstrap/esm/Container";
 
 const PointsList = () => {
 
@@ -18,6 +20,10 @@ const PointsList = () => {
     })
 
     let content
+
+    const date = new Date()
+    const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+
 
     if (isLoading) content = <p>Cargando...</p>
 
@@ -38,21 +44,37 @@ const PointsList = () => {
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
        
         content = (
-            <table className="table tablePoints">
-                <thead className="tableThead">
-                    <tr>
-                        <th scope="col" className="tableTh pointStatus">Estado</th>
-                        <th scope="col" className="tableTh pointCreated">Creado</th>
-                        <th scope="col" className="tableTh pointZone">Zona</th>
-                        <th scope="col" className="tableTh pointTitle">Nombre</th>
-                        <th scope="col" className="tableTh pointUsername">Propietario:</th>
-                        <th scope="col" className="tableTh pointEdit">Editar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </table>
+            <Container>
+            <section className="welcome">
+                   <div id="fechaDiv" className="">
+
+                       <p>{today}</p>
+
+                   </div>
+               </section>
+           <br />
+           <div id="fondoTabla">
+
+               <Table striped bordered hover size="sm" className="table tableUsers">
+                   <thead>
+                       <tr>
+                           <th>Estado</th>
+                           <th>Creado</th>
+                           <th>Zona</th>
+                           <th>Nombre</th>
+                           <th>Propietario</th>
+                           <th>Acciones</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {tableContent}
+                   </tbody>
+               </Table>
+               
+           </div>
+          
+       </Container>
+          
         )
     }
 
