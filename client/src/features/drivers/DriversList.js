@@ -1,6 +1,9 @@
 import { useGetDriversQuery } from "./driversApiSlice"
 import Driver from './Driver'
 import useTitle from "../../hooks/useTitle"
+import Table from 'react-bootstrap/Table';
+import Container from "react-bootstrap/esm/Container";
+import '../users/register.css'
 
 const DriversList = () => {
     useTitle('Lista de Choferes')
@@ -16,6 +19,9 @@ const DriversList = () => {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
+    const date = new Date()
+    const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+
 
     let content
 
@@ -32,18 +38,33 @@ const DriversList = () => {
         const tableContent = ids?.length && ids.map(driverId => <Driver key={driverId} driverId={driverId} />)
           
         content = (
-            <table className="table tableDrivers">
-                <thead className="tableThead">
+            <Container>
+                  
+                 <section className="welcome">
+                        <div id="fechaDiv" className="">
+
+                            <p>{today}</p>
+
+                        </div>
+                    </section>
+                <br />
+            <div id="fondoTabla">
+
+            <Table striped bordered hover size="sm" className="table tableUsers">
+                <thead>
                     <tr>
-                        <th scope="col" className="tableTh driverName">Nombre</th>
-                        <th scope="col" className="tableTh driverSurname">Apellido</th>
-                        <th scope="col" className="tableTh driverEdit">Editar</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tableContent}
                 </tbody>
-            </table>
+            </Table>
+            
+        </div>
+        </Container>
         )
     }
 

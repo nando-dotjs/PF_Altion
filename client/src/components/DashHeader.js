@@ -376,24 +376,23 @@ const DashHeader = () => {
                         <Navbar.Brand><Nav.Link href="/dash">Inicio</Nav.Link></Navbar.Brand>
                             {(isAdmin) && <Navbar.Brand>  <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
                             <Navbar.Brand><NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand><NavDropdown.Item onClick={sendLogout}>Validar usuarios</NavDropdown.Item></Navbar.Brand>
                             <Navbar.Brand>  <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Crear chofer</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Listar choferes</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Zonas" id="basic-nav-dropdown" >
-                            <Navbar.Brand><NavDropdown.Item onClick={sendLogout}>Crear Zona</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Listar Zonas</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand><NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>}
 
                             <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Crear Punto</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item></Navbar.Brand>
                             <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Listar Puntos</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>
 
                         </Nav>

@@ -1,11 +1,14 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateZoneMutation} from "./zonesApiSlice"
+import { useUpdateZoneMutation } from "./zonesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import '../users/register.css'
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 // eslint-disable-next-line
-const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
+const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
 
 const EditZoneForm = ({ zone }) => {
 
@@ -66,7 +69,7 @@ const EditZoneForm = ({ zone }) => {
 
     const onNameChanged = e => setName(e.target.value)
     const onDetailsChanged = e => setDetails(e.target.value)
-    
+
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveZoneClicked = async (e) => {
@@ -86,14 +89,17 @@ const EditZoneForm = ({ zone }) => {
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
-            <main className='editZone'>
+            <div className="account-wall" align="center">
 
-                <form className="form" onSubmit={e => e.preventDefault()}>
-                    <div className="formTitleRow">
-                        <h2>Editar Zona</h2>
-                        <div className="formActionButtons">
-                            {/* <button
+                <Container fluid>
+                    <p className={errClass}>{errContent}</p>
+                    <main className='editZone'>
+
+                        <form className="form" onSubmit={e => e.preventDefault()}>
+                            <div className="formTitleRow">
+                                <h1 id="cabezal">Editar Zona</h1>
+                                <div className="formActionButtons">
+                                    {/* <button
                                 className="icon-button"
                                 title="Save"
                                 onClick={onSaveZoneClicked}
@@ -101,84 +107,90 @@ const EditZoneForm = ({ zone }) => {
                             >
                                 <FontAwesomeIcon icon={faSave} />
                             </button> */}
-                            {/* <button
+                                    {/* <button
                                 className="icon-button"
                                 title="Delete"
                                 onClick={onDeleteZoneClicked}
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                             </button> */}
+                                </div>
+                            </div>
+                            <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Nombre de la zona"
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        autoComplete="off"
+                                        value={name}
+                                        onChange={onNameChanged}
+                                        required
+                                        aria-invalid={validName ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setNameFocus(true)}
+                                        onBlur={() => setNameFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="name" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <label htmlFor="name">
-                        Nombre: 
-                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                    </label>
-                    <input
-                    
-                        className={`formInput`}
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoComplete="off"
-                        value={name}
-                        onChange={onNameChanged}
-                        required
-                        aria-invalid={validName ? "false" : "true"}
-                        aria-describedby="uidnote"
-                        onFocus={() => setNameFocus(true)}
-                        onBlur={() => setNameFocus(false)}
-                    />
-                    <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    2 a 15 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                    </p>
-
-                    <label className="formLabel" htmlFor="details">
-                        Detalles: 
-                        <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
-                        <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
-                    </label>
-                    <input
-                        className={`formInput`}
-                        id="details"
-                        name="details"
-                        type="text"
-                        autoComplete="off"
-                        value={details}
-                        onChange={onDetailsChanged}
-                        
-                        aria-invalid={validDetails ? "false" : "true"}
-                        aria-describedby="uidnote"
-                        onFocus={() => setDetailsFocus(true)}
-                        onBlur={() => setDetailsFocus(false)}
-                    />
-                    <p id="uidnote" className={detailsFocus && details && !validDetails? "instructions" : "offscreen"}>
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                        2 a 15 caracteres.<br />
-                        Debe empezar y contener solo letras.<br />
-                    </p>
-                    <label className="formLabel formCheckboxContainer" htmlFor="zone-active">
-                        ACTIVO:
+                        <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            2 a 15 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
                         <input
-                            className="formCheckbox"
-                            id="zone-active"
-                            name="zone-active"
-                            type="checkbox"
-                            checked={active}
-                            onChange={onActiveChanged}
+                            className="form-control"
+                            placeholder="Detalles"
+                            id="details"
+                            name="details"
+                            type="text"
+                            autoComplete="off"
+                            value={details}
+                            onChange={onDetailsChanged}
+
+                            aria-invalid={validDetails ? "false" : "true"}
+                            aria-describedby="uidnote"
+                            onFocus={() => setDetailsFocus(true)}
+                            onBlur={() => setDetailsFocus(false)}
                         />
-                    </label>
-                    
-                    <button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</button>
+                        </div>
+                        <label htmlFor="details" id="iconito">
+                            <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
+                        </label>
+                        </div>
+                        </div>
+                        <p id="uidnote" className={detailsFocus && details && !validDetails ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            2 a 15 caracteres.<br />
+                            Puede contener números y letras.<br />
+                        </p>
 
-                </form>
-            </main>
-        </>
-    )
+                        <br></br>
 
-    return content
+                            <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button>
+
+                        </form>
+                    </main>
+                    <br />
+                    </Container>
+                    </div>
+                </>
+                )
+
+                return content
 }
-export default EditZoneForm
+                export default EditZoneForm

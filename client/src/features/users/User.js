@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faPenToSquare, faTrash} from "@fortawesome/free-solid-svg-icons"
+import { faArrowDown, faPenToSquare, faPersonWalkingWithCane, faToggleOn, faTrash} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 
@@ -29,7 +29,7 @@ const User = ({ userId }) => {
                     </button>
                     
                     <button className="btn btn-warning" onClick={handleEdit} >                      
-                        <FontAwesomeIcon icon={faArrowDown} /></button>
+                        <FontAwesomeIcon icon={faToggleOn} /></button>
                    
                
                  
