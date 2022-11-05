@@ -66,7 +66,7 @@ const NewUserForm = () => {
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
-    
+
     const [role, setRole] = useState('')
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const NewUserForm = () => {
 
     useEffect(() => {
         document.title = 'Registro de Usuario';
-      });
+    });
 
     useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
@@ -138,14 +138,26 @@ const NewUserForm = () => {
             > {role}</option >
         )
     })
-
+    const date = new Date()
+    const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
     const errClass = isError ? "errmsg" : "offscreen"
 
 
     const content = (
         <>
+            <Container>
+                <section className="welcome">
+                    <div id="fechaDiv" className="">
+
+                        <p>{today}</p>
+
+                    </div>
+                </section>
+            </Container>
             <div className="account-wall" align="center">
+
                 <Container fluid>
+
                     <section>
 
                         <header>
@@ -350,7 +362,7 @@ const NewUserForm = () => {
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
 
-                                <Form.Select 
+                                <Form.Select
                                     id="role"
                                     name="role"
                                     className={`formSelect`}
@@ -368,13 +380,13 @@ const NewUserForm = () => {
 
                             </form>
                             <br />
-                            <p>
+                            {/* <p>
                                 Ya estás registrado?<br />
                                 <span className="line">
-                                    {/*put router link here*/}
+                                   
                                     <a href="/">Ingresar</a>
                                 </span>
-                            </p>
+                            </p> */}
                         </main>
                     </section>
                 </Container>
