@@ -3,8 +3,15 @@ import Point from "./Point"
 import useAuth from "../../hooks/useAuth"
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
+import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from "react-router-dom"
+import { useRef, useState, useEffect } from "react"
+import Button from 'react-bootstrap/Button';
 
 const PointsList = () => {
+
+    const [show, setShow] = useState(false);
+    const navigate = useNavigate()
 
     const { username, isAdmin } = useAuth()
     const {
@@ -42,16 +49,27 @@ const PointsList = () => {
         }
 
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
-       
+        const handleClose = () => {
+            setShow(true)
+            navigate('/dash');
+        };
+
+
         content = (
+            <>
+                <Modal show={!show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="cabezal"><strong>Lista de Puntos</strong></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
             <Container>
-            <section className="welcome">
+            {/* <section className="welcome">
                    <div id="fechaDiv" className="">
 
                        <p>{today}</p>
 
                    </div>
-               </section>
+               </section> */}
            <br />
            <div id="fondoTabla">
 
@@ -74,6 +92,17 @@ const PointsList = () => {
            </div>
           
        </Container>
+       </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancelar
+                        </Button>
+                        {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
+           Registrar
+          </Button> */}
+                    </Modal.Footer>
+                </Modal>
+            </>
           
         )
     }
