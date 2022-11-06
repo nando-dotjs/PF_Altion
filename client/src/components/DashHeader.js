@@ -28,6 +28,7 @@ const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 const ZONES_REGEX = /^\/dash\/zones(\/)?$/
 const POINT_REGEX = /^\/dash\/points(\/)?$/
+const ROUTES_REGEX = /^\/dash\/users(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
