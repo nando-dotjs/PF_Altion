@@ -32,6 +32,9 @@ import ZonesList from './features/zones/ZonesList';
 import EditZone from './features/zones/EditZone';
 import NewZone from './features/zones/NewZone';
 
+import PointsList from './features/points/PointsList';
+import EditPoint from './features/points/EditPoint';
+import NewPoint from './features/points/NewPoint';
 
 import MapContainer from './features/maps/MapContainer';
 
@@ -84,6 +87,12 @@ function App() {
               <Route index element={<CompanysList />} />
               <Route path=":id" element={<EditCompany />} />
               <Route path="new" element={<NewCompany />} />
+            </Route>
+
+            <Route path="points">
+              <Route index element={<PointsList />} />
+              <Route path=":id" element={<EditPoint />} />
+              <Route path="new" element={<NewPoint />} />
             </Route>
 
             <Route path="routes">

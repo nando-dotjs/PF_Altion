@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
+import {
     faRightFromBracket,
     faPlus,
     faArrowLeft
@@ -8,7 +8,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
+import useAuth from '../hooks/useAuth'
+
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+// import Navbar from 'react-bootstrap';
+
 
 // import useAuth from '../hooks/useAuth'
 
@@ -18,14 +27,19 @@ const USERS_REGEX = /^\/dash\/users(\/)?$/
 const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 const ZONES_REGEX = /^\/dash\/zones(\/)?$/
+const POINT_REGEX = /^\/dash\/points(\/)?$/
+const ROUTES_REGEX = /^\/dash\/users(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
 const CEVS_EDIT_REGEX = /^\/dash\/cevs(\/.+)?$/
 const COMPANY_EDIT_REGEX = /^\/dash\/companys(\/.+)?$/
 const ZONE_EDIT_REGEX = /^\/dash\/zones(\/.+)?$/
+const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
+
+    const { mail, role, isAdmin, isCEV, isEmpresa } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -43,9 +57,9 @@ const DashHeader = () => {
         if (isSuccess) navigate('/')
     }, [isSuccess, navigate])
 
-    const onNewUserClicked = () => navigate('/dash/users/new')
+    const onNewUserClicked = () => navigate(`/dash/users/new`)
     const onGoBackUser = () => navigate('/dash')
-    const onGoBackUserToTable = () => navigate ('/dash/users')
+    const onGoBackUserToTable = () => navigate('/dash/users')
 
     const onNewDriverClicked = () => navigate('/dash/drivers/new')
     const onGoBackDriver = () => navigate('/dash')
@@ -62,6 +76,10 @@ const DashHeader = () => {
     const onNewZoneClicked = () => navigate('/dash/zones/new')
     const onGoBackZone = () => navigate('/dash')
     const onGoBackZoneToTable = () => navigate('/dash/zones')
+
+    const onNewPointClicked = () => navigate('/dash/points/new')
+    const onGoBackPoint = () => navigate('/dash')
+    const onGoBackPointToTable = () => navigate('/dash/points')
 
     let dashClass = null
     if (!DASH_REGEX.test(pathname) && !CEVS_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname) && !USERS_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
@@ -92,7 +110,7 @@ const DashHeader = () => {
     }
 
     let goBackFromUserToTable = null
-    if(USERS_EDIT_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
+    if (USERS_EDIT_REGEX.test(pathname) && !USERS_REGEX.test(pathname)) {
         goBackFromUserToTable = (
             <button
                 className="icon-button"
@@ -128,7 +146,7 @@ const DashHeader = () => {
     }
 
     let goBackFromDriverToTable = null
-    if(DRIVERS_EDIT_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
+    if (DRIVERS_EDIT_REGEX.test(pathname) && !DRIVERS_REGEX.test(pathname)) {
         goBackFromDriverToTable = (
             <button
                 className="icon-button"
@@ -164,7 +182,7 @@ const DashHeader = () => {
     }
 
     let goBackFromCEVToTable = null
-    if(CEVS_EDIT_REGEX.test(pathname) && !CEVS_REGEX.test(pathname)) {
+    if (CEVS_EDIT_REGEX.test(pathname) && !CEVS_REGEX.test(pathname)) {
         goBackFromCEVToTable = (
             <button
                 className="icon-button"
@@ -200,7 +218,7 @@ const DashHeader = () => {
     }
 
     let goBackFromCompanyToTable = null
-    if(COMPANY_EDIT_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname)) {
+    if (COMPANY_EDIT_REGEX.test(pathname) && !COMPANY_REGEX.test(pathname)) {
         goBackFromCompanyToTable = (
             <button
                 className="icon-button"
@@ -236,7 +254,7 @@ const DashHeader = () => {
     }
 
     let goBackFromZoneToTable = null
-    if(ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
+    if (ZONE_EDIT_REGEX.test(pathname) && !ZONES_REGEX.test(pathname)) {
         goBackFromZoneToTable = (
             <button
                 className="icon-button"
@@ -263,6 +281,42 @@ const DashHeader = () => {
     //     }
     // }
 
+    let newPointButton = null;
+    let goBackFromPointButton = null;
+    if (POINT_REGEX.test(pathname)) {
+        newPointButton = (
+            <button
+                className="icon-button"
+                title="New Point"
+                onClick={onNewPointClicked}
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+        )
+        goBackFromPointButton = (
+            <button
+                className="icon-button"
+                title="Go back"
+                onClick={onGoBackPoint}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
+    let goBackFromPointToTable = null
+    if(POINT_EDIT_REGEX.test(pathname) && !POINT_REGEX.test(pathname)) {
+        goBackFromPointToTable = (
+            <button
+                className="icon-button"
+                title="Go back table"
+                onClick={onGoBackPointToTable}
+            >
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+        )
+    }
+
     const logoutButton = (
         <button
             className="icon-button"
@@ -273,7 +327,7 @@ const DashHeader = () => {
         </button>
     )
 
-   
+
 
     const errClass = isError ? "errmsg" : "offscreen"
 
@@ -288,8 +342,10 @@ const DashHeader = () => {
                 {newDriverButton}
                 {newCevButton}
                 {newCompanyButton}
+                {newPointButton}
                 {newZoneButton}
                 {goBackFromCompanyButton}
+                {goBackFromPointButton}
                 {goBackFromCevButton}
                 {goBackFromDriverButton}
                 {goBackFromUserButton}
@@ -298,10 +354,11 @@ const DashHeader = () => {
                 {/* FORMULARIOS DE EDICION */}
                 {goBackFromUserToTable}
                 {goBackFromDriverToTable}
+                {goBackFromPointToTable}
                 {goBackFromCEVToTable}
                 {goBackFromCompanyToTable}
                 {goBackFromZoneToTable}
-                
+
                 {logoutButton}
             </>
         )
@@ -310,22 +367,70 @@ const DashHeader = () => {
     const content = (
         <>
             <p className={errClass}>{error?.data?.message}</p>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                <img id="header-img" src={require('../img/logoUC.PNG')} />
+                    <Navbar.Brand href="/dash"><strong>Unidos por la clasificación</strong></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                        <Navbar.Brand><Nav.Link href="/dash">Inicio</Nav.Link></Navbar.Brand>
+                            {(isAdmin) && <Navbar.Brand>  <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
+                            <Navbar.Brand><NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand>  <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
 
-            <header className="dashHeader">
+                            {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
+
+                            {(isAdmin) && <Navbar.Brand><NavDropdown title="Zonas" id="basic-nav-dropdown" >
+                            <Navbar.Brand><NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
+
+                            <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>
+
+                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>
+
+                        </Nav>
+                      
+                        <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
+                        <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item></Navbar.Brand>
+                        </NavDropdown></Navbar.Brand>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+           
+            {/* <header className="dashHeader">
                 <div className={`dashHeaderContainer ${dashClass}`}>
-                
+
                     <Link to="/dash">
-                        <h1 className="dashHeaderTitle">Unidos por la clasificación</h1>
-                    </Link>
-                    <nav className="dashHeaderNav">
+                        {/* <h1 className="dashHeaderTitle">Unidos por la clasificación</h1> */}
+                    {/* </Link> */}
+                    {/* <nav className="dashHeaderNav">
                         {buttonContent}
-                    </nav>
-                    
+                    </nav> */}
+{/*
                 </div>
-            </header>
+            </header> */}
+
+           
+
         </>
+
     )
 
     return content
 }
+
 export default DashHeader

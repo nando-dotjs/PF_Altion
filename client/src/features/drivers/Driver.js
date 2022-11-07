@@ -23,7 +23,7 @@ const Driver = ({ driverId }) => {
                 <td className={`tableCell ${cellStatus}`}>{driver.surname}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
-                        className="icon-button tableButton"
+                        className="btn btn-primary"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />

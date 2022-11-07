@@ -1,8 +1,13 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateDriverMutation} from "./driversApiSlice"
+import { useUpdateDriverMutation } from "./driversApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import '../users/register.css'
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -66,7 +71,7 @@ const EditDriverForm = ({ driver }) => {
 
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
-    
+
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveDriverClicked = async (e) => {
@@ -86,14 +91,16 @@ const EditDriverForm = ({ driver }) => {
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
-            <main className='editDriver'>
+            <div className="account-wall" align="center">
+                <Container fluid>
+                    <p className={errClass}>{errContent}</p>
+                    <main className='editDriver'>
 
-                <form className="form" onSubmit={e => e.preventDefault()}>
-                    <div className="formTitleRow">
-                        <h2>Editar chófer</h2>
-                        <div className="formActionButtons">
-                            {/* <button
+                        <form className="form" onSubmit={e => e.preventDefault()}>
+                            <div className="formTitleRow">
+                                <h1 id="cabezal">Editar chófer</h1>
+                                <div className="formActionButtons">
+                                    {/* <button
                                 className="icon-button"
                                 title="Save"
                                 onClick={onSaveDriverClicked}
@@ -101,81 +108,96 @@ const EditDriverForm = ({ driver }) => {
                             >
                                 <FontAwesomeIcon icon={faSave} />
                             </button> */}
-                            {/* <button
+                                    {/* <button
                                 className="icon-button"
                                 title="Delete"
                                 onClick={onDeleteDriverClicked}
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                             </button> */}
-                        </div>
-                    </div>
-                    <label htmlFor="name">
-                        Nombre: 
-                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                    </label>
-                    <input
-                    
-                        className={`formInput`}
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoComplete="off"
-                        value={name}
-                        onChange={onNameChanged}
-                        required
-                        aria-invalid={validName ? "false" : "true"}
-                        aria-describedby="uidnote"
-                        onFocus={() => setNameFocus(true)}
-                        onBlur={() => setNameFocus(false)}
-                    />
-                    <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    2 a 15 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                    </p>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-10 col-md-8" id="iconito2">
+                                        <input
+                                            className="form-control"
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            autoComplete="off"
+                                            value={name}
+                                            onChange={onNameChanged}
+                                            required
+                                            aria-invalid={validName ? "false" : "true"}
+                                            aria-describedby="uidnote"
+                                            onFocus={() => setNameFocus(true)}
+                                            onBlur={() => setNameFocus(false)}
+                                        />
+                                    </div>
+                                    <label htmlFor="name" id="iconito">
+                                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                    </label>
+                                </div>
+                            </div>
+                            <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                2 a 15 caracteres.<br />
+                                Debe empezar y contener solo letras.<br />
+                            </p>
+                            <br/> 
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-10 col-md-8" id="iconito2">
+                                        <input
+                                            className="form-control"
+                                            id="surname"
+                                            name="surname"
+                                            type="text"
+                                            autoComplete="off"
+                                            value={surname}
+                                            onChange={onSurnameChanged}
+                                            required
+                                            aria-invalid={validSurname ? "false" : "true"}
+                                            aria-describedby="uidnote"
+                                            onFocus={() => setSurnameFocus(true)}
+                                            onBlur={() => setSurnameFocus(false)}
+                                        />
+                                    </div>
+                                    <label htmlFor="surname" id="iconito">
+                                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
+                                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                                    </label>
+                                </div>
+                            </div>
+                            <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                2 a 15 caracteres.<br />
+                                Debe empezar y contener solo letras.<br />
+                            </p>
+                            <br/> 
+                            <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
+                                ACTIVO:
+                                <input
+                                    className="formCheckbox"
+                                    id="driver-active"
+                                    name="driver-active"
+                                    type="checkbox"
+                                    checked={active}
+                                    onChange={onActiveChanged}
+                                />
+                            </label>
+                            <br/> 
+                            <br/> 
+                            <Button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</Button>
 
-                    <label className="formLabel" htmlFor="surname">
-                        Apellido: 
-                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
-                    </label>
-                    <input
-                        className={`formInput`}
-                        id="surname"
-                        name="surname"
-                        type="text"
-                        autoComplete="off"
-                        value={surname}
-                        onChange={onSurnameChanged}
-                        required
-                        aria-invalid={validSurname ? "false" : "true"}
-                        aria-describedby="uidnote"
-                        onFocus={() => setSurnameFocus(true)}
-                        onBlur={() => setSurnameFocus(false)}
-                    />
-                    <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                        2 a 15 caracteres.<br />
-                        Debe empezar y contener solo letras.<br />
-                    </p>
-                    <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
-                        ACTIVO:
-                        <input
-                            className="formCheckbox"
-                            id="driver-active"
-                            name="driver-active"
-                            type="checkbox"
-                            checked={active}
-                            onChange={onActiveChanged}
-                        />
-                    </label>
-                    
-                    <button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</button>
-
-                </form>
-            </main>
+                        </form>
+                        <br/> 
+                    </main>
+                </Container>
+            </div>
         </>
     )
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
+import Swal from "sweetalert2"
 
 let isDraggable = true;
 

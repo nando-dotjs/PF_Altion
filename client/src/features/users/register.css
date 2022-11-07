@@ -1,0 +1,58 @@
+.hide {
+    display: none;
+  }
+  #fechaDiv{
+    margin-top: 0.5%;
+    background-color:whitesmoke;
+   position:sticky;
+   width: max-content;
+   margin-left: auto;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   box-shadow: 4px 4px 15px #52556944; 
+  }
+  .valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+  }
+  
+  .invalid {
+    color: red;
+    margin-left: 0.25rem;
+  }
+  .instructions {
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    background: #000;
+    color: #fff;
+    padding: 0.25rem;
+    position: relative;
+    bottom: -10px;
+  }
+  
+  .instructions > svg {
+    margin-right: 0.25rem;
+  }
+  
+  .offscreen {
+    position: absolute;
+    left: -9999px;
+  }
+#cabezal{
+
+    text-align: left;
+    /* background-color:; */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: darkgray;
+}
+#iconito{
+    width: 1%;
+}
+#iconito2{
+    width: 91%;
+}
+#fondoTabla{
+  background-color: whitesmoke;
+}
+#EditPuntos{
+  width: 200 px;
+}
