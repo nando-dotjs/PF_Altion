@@ -396,6 +396,12 @@ const DashHeader = () => {
                             <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>
 
+                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>
+
                         </Nav>
                       
                         <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
