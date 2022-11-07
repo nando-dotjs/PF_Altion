@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
 import Modal from 'react-bootstrap/Modal';
-
+import Swal from 'sweetalert2'
 import Button from 'react-bootstrap/Button';
 
 // eslint-disable-next-line
@@ -75,6 +75,10 @@ const NewDriverForm = () => {
         if (canSave) {
             await addNewDriver({ name, surname })
         }
+        Toast.fire({
+            icon: 'info',
+            title: 'Chofer modificado'
+          })
     }
 
     const [show, setShow] = useState(false);
@@ -85,6 +89,19 @@ const NewDriverForm = () => {
     ;
     const handleShow = () => setShow(true);
     const errClass = isError ? "errmsg" : "offscreen"
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        iconColor: 'white',
+        customClass: {
+          popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+      })
+    
 
 
     const content = (

@@ -6,6 +6,8 @@ import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-
 import '../users/register.css'
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Swal from 'sweetalert2'
+import Modal from 'react-bootstrap/Modal';
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
@@ -74,7 +76,12 @@ const EditZoneForm = ({ zone }) => {
 
     const onSaveZoneClicked = async (e) => {
         await updateZone({ id: zone.id, name, details, active })
+        Toast.fire({
+            icon: 'info',
+            title: 'Zona modificada'
+          })
     }
+    
 
     // const onDeleteZoneClicked = async () => {
     //     await deleteZone({ id: zone.id })
@@ -86,18 +93,40 @@ const EditZoneForm = ({ zone }) => {
 
     const errContent = (error?.data?.message) ?? ''
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+};
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        iconColor: 'white',
+        customClass: {
+          popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+      })
 
     const content = (
         <>
-            <div className="account-wall" align="center">
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Editar Zona</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {/* <div className="account-wall" align="center">
 
-                <Container fluid>
+                <Container fluid> */}
                     <p className={errClass}>{errContent}</p>
                     <main className='editZone'>
 
                         <form className="form" onSubmit={e => e.preventDefault()}>
                             <div className="formTitleRow">
-                                <h1 id="cabezal">Editar Zona</h1>
+                                {/* <h1 id="cabezal">Editar Zona</h1> */}
                                 <div className="formActionButtons">
                                     {/* <button
                                 className="icon-button"
@@ -181,13 +210,22 @@ const EditZoneForm = ({ zone }) => {
 
                         <br></br>
 
-                            <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button>
+                            {/* <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button> */}
 
                         </form>
                     </main>
                     <br />
-                    </Container>
-                    </div>
+                    {/* </Container>
+                    </div> */}
+                    </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button>
+          
+        </Modal.Footer>
+      </Modal>
                 </>
                 )
 

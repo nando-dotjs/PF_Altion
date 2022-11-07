@@ -26,7 +26,8 @@ const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 
 const NewUserForm = () => {
-
+    
+        
     const [addNewUser, {
         isLoading,
         isSuccess,
@@ -128,6 +129,10 @@ const NewUserForm = () => {
         if (canSave) {
             await addNewUser({ name, surname, mail, username, password, role })
         }
+        Toast.fire({
+            icon: 'success',
+            title: 'Nuevo Usuario Creado'
+          })
     }
 
     const options = Object.values(ROLES).map(role => {
@@ -149,8 +154,19 @@ const NewUserForm = () => {
     const handleClose = () => {
     setShow(true)
     navigate('/dash');
-}
-    ;
+};
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  })
 
 
 

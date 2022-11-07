@@ -9,6 +9,8 @@ import './register.css'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -116,6 +118,10 @@ const EditUserForm = ({ user }) => {
         } else {
             await updateUser({ id: user.id, name, surname, mail, role, active })
         }
+        Toast.fire({
+            icon: 'info',
+            title: 'Usuario Actualizado'
+          })
     }
 
     // const onDeleteUserClicked = async () => {
@@ -143,17 +149,38 @@ const EditUserForm = ({ user }) => {
 
 
     const errContent = (error?.data?.message) ?? ''
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+};
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  })
 
     const content = (
         <>
-            <div className="account-wall" align="center">
-                <Container fluid>
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Editar Usuario</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {/* <div className="account-wall" align="center">
+                <Container fluid> */}
                     <p className={errClass}>{errContent}</p>
 
                     <form className="form" onSubmit={e => e.preventDefault()}>
                         <div className="formTitleRow">
-                            <h1 id="cabezal">Editar Usuario</h1>
+                            {/* <h1 id="cabezal">Editar Usuario</h1> */}
                             <div className="formActionButtons">
                             </div>
                         </div>
@@ -335,13 +362,23 @@ const EditUserForm = ({ user }) => {
                         </Form.Select>
                         <br />
                         <br />
-                        <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</Button>
+                        {/* <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</Button> */}
                         <br />
                         <br />
                     </form>
-                </Container>
-            </div>
-
+                {/* </Container>
+                
+            </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>
+            Guardar cambios
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 

@@ -137,6 +137,10 @@ const NewPointForm = ({ users }) => {
             await addNewPoint({ user: userId, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
             console.log(canSave);
         }
+        Toast.fire({
+            icon: 'success',
+            title: 'Nuevo Punto Creado'
+          })
         if ((isCEV || isEmpresa)) {
             let userIdLog = '';
             users.map(user => {
@@ -146,7 +150,12 @@ const NewPointForm = ({ users }) => {
                 return userIdLog
             })
             await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
+            Toast.fire({
+                icon: 'success',
+                title: 'Nuevo usuario creado'
+              })
         }
+        
         <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
             Propietario:</label>
     }
@@ -193,8 +202,19 @@ const NewPointForm = ({ users }) => {
     const handleClose = () => {
     setShow(true)
     navigate('/dash');
-}
-    ;
+};
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  })
     
     const content = (
         <>

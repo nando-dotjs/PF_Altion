@@ -8,9 +8,11 @@ import useAuth from '../../hooks/useAuth'
 import Form from 'react-bootstrap/Form';
 import '../users/register.css'
 
-
+import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+
+import Swal from "sweetalert2"
 
 // eslint-disable-next-line
 const PHONENUMBER_REGEX = /^\d{9}$/;
@@ -144,6 +146,10 @@ const EditPointForm = ({ point, users }) => {
         if (canSave) {
             await updatePoint({ id: point.id, user: userId, name, phoneNumber, street, streetNumber, completed, zone: optionsZone })
         }
+        Toast.fire({
+            icon: 'info',
+            title: 'Punto Modificado'
+          })
     }
 
     const created = new Date(point.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -235,15 +241,36 @@ const EditPointForm = ({ point, users }) => {
         />
     }
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(true)
+        navigate('/dash');
+    };
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        iconColor: 'white',
+        customClass: {
+            popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+    })
+
+
     const content = (
         <>
-            <div className="puntos-wall" align="center">
-                <Container fluid>
+            <Modal show={!show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Editar Punto</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <p className={errClass}>{errContent}</p>
 
                     <Form className="form" onSubmit={e => e.preventDefault()}>
                         <div className="formTitleRow">
-                            <h1 id="cabezal">Editar Punto</h1>
+                            {/* <h1 id="cabezal">Editar Punto</h1> */}
                             <div className="formActionButtons">
                                 {/* <button
                             className="icon-button"
@@ -378,24 +405,24 @@ const EditPointForm = ({ point, users }) => {
                             Solo números.<br />
                             No puedo contener otro tipo de carácteres.<br />
                         </p>
-                        <br/>
+                        <br />
                         <div className="formRow">
                             <div className="container">
                                 <div className="row">
                                     <div className="col">
                                         <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                                            Propietario:</label>
+                                            Asigando a:</label>
                                         <br />
                                         {selector}
                                         {input}
                                     </div>
-                                <br />
-                                <div className="col">
-                                <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                                    Zona:</label>
-                                {selectorZone}
+                                    <br />
+                                    <div className="col">
+                                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
+                                            Zona:</label>
+                                        {selectorZone}
+                                    </div>
                                 </div>
-                            </div>
 
 
                                 <label className="formLabel formCheckboxContainer" htmlFor="point-completed">
@@ -414,13 +441,18 @@ const EditPointForm = ({ point, users }) => {
 
 
                         <br></br>
-                        <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</Button>
+                        {/* <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</Button> */}
                         <br></br>
                         <br></br>
                     </Form>
-
-                </Container>
-            </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !optionsZone ? true : false}>Guardar cambios</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 
