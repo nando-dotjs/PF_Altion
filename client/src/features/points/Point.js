@@ -35,7 +35,7 @@ const Point = ({ pointId }) => {
 
                 <td className="tableCell">
                     <button
-                        className="icon-button tableButton"
+                        className="btn btn-primary"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />

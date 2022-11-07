@@ -1,9 +1,14 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateUserMutation} from "./usersApiSlice"
+import { useUpdateUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
+import './register.css'
+
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -29,7 +34,7 @@ const EditUserForm = ({ user }) => {
     // }] = useDeleteUserMutation()
 
     const navigate = useNavigate()
-    
+
     const userRef = useRef();
     // eslint-disable-next-line
     const errRef = useRef();
@@ -142,179 +147,201 @@ const EditUserForm = ({ user }) => {
 
     const content = (
         <>
-            <p className={errClass}>{errContent}</p>
+            <div className="account-wall" align="center">
+                <Container fluid>
+                    <p className={errClass}>{errContent}</p>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="formTitleRow">
-                    <h2>Editar Usuario</h2>
-                    <div className="formActionButtons">
-                        {/* <button
-                            className="icon-button"
-                            title="Save"
-                            onClick={onSaveUserClicked}
-                            disabled={!canSave}
+                    <form className="form" onSubmit={e => e.preventDefault()}>
+                        <div className="formTitleRow">
+                            <h1 id="cabezal">Editar Usuario</h1>
+                            <div className="formActionButtons">
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Nombre"
+                                        type="text"
+                                        id="name"
+                                        autoComplete="off"
+                                        onChange={onNameChanged}
+                                        value={name}
+                                        required
+                                        aria-invalid={validName ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setNameFocus(true)}
+                                        onBlur={() => setNameFocus(false)}
+                                    />
+                                </div>
+                                {/* <div class="col-3 col-md-1" id="iconito"> */}
+                                <label htmlFor="name" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                </label>
+                                {/* </div> */}
+                            </div>
+                        </div>
+                        <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            2 a 15 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+
+                                    <input
+                                        className="form-control"
+                                        placeholder="Apellido"
+                                        type="text"
+                                        id="surname"
+                                        autoComplete="off"
+                                        onChange={onSurnameChanged}
+                                        value={surname}
+                                        required
+                                        aria-invalid={validSurname ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setSurnameFocus(true)}
+                                        onBlur={() => setSurnameFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="surname" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
+                                </label>
+
+                            </div>
+                        </div>
+                        <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            2 a 15 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br />
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Correo Electrónico"
+                                        type="text"
+                                        id="mail"
+                                        autoComplete="off"
+                                        onChange={onMailChanged}
+                                        value={mail}
+                                        required
+                                        aria-invalid={validMail ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setMailFocus(true)}
+                                        onBlur={() => setMailFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="mail" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
+                                </label>
+
+                            </div>
+                        </div>
+                        <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            Ingrese un correo electrónico válido.<br />
+                        </p>
+                        <br />
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Contraseña"
+                                        type="password"
+                                        id="password"
+                                        onChange={onPasswordChanged}
+                                        value={password}
+                                        required
+                                        aria-invalid={validPassword ? "false" : "true"}
+                                        aria-describedby="pwdnote"
+                                        onFocus={() => setPwdFocus(true)}
+                                        onBlur={() => setPwdFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="password" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} id="pass" className={validPassword || !password ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Confirmar contraseña"
+                                        type="password"
+                                        id="confirm_pwd"
+                                        onChange={(e) => setMatchPwd(e.target.value)}
+                                        value={matchPwd}
+                                        required
+                                        aria-invalid={validMatch ? "false" : "true"}
+                                        aria-describedby="confirmnote"
+                                        onFocus={() => setMatchFocus(true)}
+                                        onBlur={() => setMatchFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="confirm_pwd" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            La contraseña debe coincidir con el primer campo
+                        </p>
+
+                        <br />
+
+
+                        <label className="formLabel formCheckboxContainer" htmlFor="user-active">
+                            ACTIVO:
+                            <input
+                                className="form-check-input"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                checked={active}
+                                onChange={onActiveChanged}
+                            />
+                           
+                        </label>
+                        <br/>
+                        <br/>
+                        <Form.Select
+                            id="role"
+                            name="role"
+                            className={`formSelect`}
+                            value={role}
+                            onChange={e => setRole(e.target.value)}
                         >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button> */}
-                        {/* <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteUserClicked}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button> */}
-                    </div>
-                </div>
+                            {options}
+                        </Form.Select>
+                        <br />
+                        <br />
+                        <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</Button>
+                        <br />
+                        <br />
+                    </form>
+                </Container>
+            </div>
 
-                <label htmlFor="name">
-                    Nombre:
-                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                </label>
-                <input
-                    className={`formInput`}
-                    id="name"
-                    name="name"
-                    type="text"
-                    autoComplete="off"
-                    value={name}
-                    onChange={onNameChanged}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setNameFocus(true)}
-                    onBlur={() => setNameFocus(false)}
-                />
-                <p id="uidnote" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    2 a 15 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                </p>
-
-                <label htmlFor="surname">
-                    Apellido:
-                    <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
-                </label>
-                <input
-                    className={`formInput`}
-                    id="surname"
-                    name="surname"
-                    type="text"
-                    autoComplete="off"
-                    value={surname}
-                    onChange={onSurnameChanged}
-                    required
-                    aria-invalid={validSurname ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setSurnameFocus(true)}
-                    onBlur={() => setSurnameFocus(false)}
-                />
-                <p id="uidnote" className={surnameFocus && surname && !validSurname? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    2 a 15 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                </p>
-
-                <label htmlFor="mail">
-                    Correo electrónico:
-                    <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
-                </label>
-                <input
-                    className={`formInput`}
-                    id="mail"
-                    name="mail"
-                    type="text"
-                    value={mail}
-                    onChange={onMailChanged}
-                    required
-                    aria-invalid={validMail ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setMailFocus(true)}
-                    onBlur={() => setMailFocus(false)}
-                />
-                <p id="uidnote" className={mailFocus && mail && !validMail? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    Ingrese un correo electrónico válido.<br />
-                </p>
-
-                <label htmlFor="password">
-                    Contraseña:
-                    <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
-                </label>
-                <input
-                    className={`formInput`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                    required
-                    aria-invalid={validPassword ? "false" : "true"}
-                    aria-describedby="pwdnote"
-                    onFocus={() => setPwdFocus(true)}
-                    onBlur={() => setPwdFocus(false)}
-                />
-                <p id="pwdnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    8 a 24 caracteres.<br />
-                    Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
-                    Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                </p>
-
-                <label htmlFor="confirm_pwd">
-                    Confirmar contraseña:
-                    <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                </label>
-
-                <input
-                    className="formInput"
-                    type="password"
-                    id="confirm_pwd"
-                    onChange={(e) => setMatchPwd(e.target.value)}
-                    value={matchPwd}
-                    required
-                    aria-invalid={validMatch ? "false" : "true"}
-                    aria-describedby="confirmnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                />
-                <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    La contraseña debe coincidir con el primer campo
-                </p>
-
-                <label className="formLabel formCheckboxContainer" htmlFor="user-active">
-                    ACTIVO:
-                    <input
-                        className="formCheckbox"
-                        id="user-active"
-                        name="user-active"
-                        type="checkbox"
-                        checked={active}
-                        onChange={onActiveChanged}
-                    />
-                </label>
-
-                <label className="formLabel" htmlFor="roles">
-                    Rol:</label>
-                <select
-                    id="role"
-                    name="role"
-                    className={`formSelect`}
-                    value={role}
-                    onChange={e => setRole(e.target.value)}
-                >
-                    {options}
-                </select>
-
-                <br></br>
-                <button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</button>
-
-            </form>
         </>
     )
 

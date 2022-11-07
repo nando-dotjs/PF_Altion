@@ -76,6 +76,23 @@ body {
     -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
+.puntos-wall
+{
+    margin-top: 20px;
+    
+   
+    /* padding: 40px 20px 20px 20px; */
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    height: fit-content;
+    max-width: 80%;
+    background-color: #f7f7f7;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
 .login-title
 {
     color: #555;
@@ -93,6 +110,26 @@ body {
     -webkit-border-radius: 50%;
     border-radius: 50%;
 }
+#welcome-img
+{
+    width: 492px;
+    height: 492px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+#header-img
+{
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
 .need-help
 {
     margin-top: 10px;
@@ -101,4 +138,8 @@ body {
 {
     display: block;
     margin-top: 10px;
+}
+.align-left-points{
+    width: 20%;
+    margin-right: 100%;
 }

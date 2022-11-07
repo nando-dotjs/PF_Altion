@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
 
 import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 
@@ -66,7 +67,7 @@ const NewUserForm = () => {
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
-    
+
     const [role, setRole] = useState('')
 
     useEffect(() => {
@@ -75,7 +76,7 @@ const NewUserForm = () => {
 
     useEffect(() => {
         document.title = 'Registro de Usuario';
-      });
+    });
 
     useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
@@ -138,19 +139,46 @@ const NewUserForm = () => {
             > {role}</option >
         )
     })
-
+    // const date = new Date()
+    // const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+    
     const errClass = isError ? "errmsg" : "offscreen"
+
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+}
+    ;
+
 
 
     const content = (
         <>
-            <div className="account-wall" align="center">
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {/* <Container>
+                <section className="welcome">
+                    <div id="fechaDiv" className="">
+
+                        <p>{today}</p>
+
+                    </div>
+                </section>
+            </Container> */}
+            {/* <div className="account-wall" align="center"> */}
+
                 <Container fluid>
+
                     <section>
 
-                        <header>
+                        {/* <header>
                             <h1 id="cabezal">Registro de usuario</h1>
-                        </header>
+                        </header> */}
 
                         <main className='register'>
 
@@ -350,7 +378,7 @@ const NewUserForm = () => {
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
 
-                                <Form.Select 
+                                <Form.Select
                                     id="role"
                                     name="role"
                                     className={`formSelect`}
@@ -360,25 +388,35 @@ const NewUserForm = () => {
                                     {options}
                                 </Form.Select>
 
-                                <Col>
+                                {/* <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</Button>
                                     <Button className="btn btn-secondary" href="/">Volver</Button>
-                                </Col>
+                                </Col> */}
 
                             </form>
                             <br />
-                            <p>
+                            {/* <p>
                                 Ya estás registrado?<br />
                                 <span className="line">
-                                    {/*put router link here*/}
+                                   
                                     <a href="/">Ingresar</a>
                                 </span>
-                            </p>
+                            </p> */}
                         </main>
                     </section>
                 </Container>
-            </div>
+            {/* </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
+           Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 

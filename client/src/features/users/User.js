@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare} from "@fortawesome/free-solid-svg-icons"
+import { faArrowDown, faPenToSquare, faPersonWalkingWithCane, faToggleOn, faTrash} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
+
 
 import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
@@ -21,11 +22,18 @@ const User = ({ userId }) => {
                 <td className={`tableCell ${cellStatus}`}>{user.role}</td>
                 <td className={`tableCell ${cellStatus}`}>
                     <button
-                        className="icon-button tableButton"
+                        className="btn btn-primary"
                         onClick={handleEdit}
-                    >
+                    >                      
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
+                    
+                    <button className="btn btn-warning" onClick={handleEdit} >                      
+                        <FontAwesomeIcon icon={faToggleOn} /></button>
+                   
+               
+                 
+                       
                 </td>
             </tr>
         )

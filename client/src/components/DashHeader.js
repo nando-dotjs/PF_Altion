@@ -28,6 +28,7 @@ const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 const ZONES_REGEX = /^\/dash\/zones(\/)?$/
 const POINT_REGEX = /^\/dash\/points(\/)?$/
+const ROUTES_REGEX = /^\/dash\/users(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
@@ -368,38 +369,44 @@ const DashHeader = () => {
             <p className={errClass}>{error?.data?.message}</p>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="/dash">Unidos por la clasificación</Navbar.Brand>
+                <img id="header-img" src={require('../img/logoUC.PNG')} />
+                    <Navbar.Brand href="/dash"><strong>Unidos por la clasificación</strong></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/dash">Inicio</Nav.Link>
-                            {(isAdmin) && <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
-                                <NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Validar usuarios</NavDropdown.Item>
-                                <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item>
-                            </NavDropdown>}
+                        <Navbar.Brand><Nav.Link href="/dash">Inicio</Nav.Link></Navbar.Brand>
+                            {(isAdmin) && <Navbar.Brand>  <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
+                            <Navbar.Brand><NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand>  <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
 
-                            {(isAdmin) && <NavDropdown title="Choferes" id="basic-nav-dropdown" >
-                                <NavDropdown.Item onClick={sendLogout}>Crear chofer</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Listar choferes</NavDropdown.Item>
-                            </NavDropdown>}
+                            {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
 
-                            {(isAdmin) && <NavDropdown title="Zonas" id="basic-nav-dropdown" >
-                                <NavDropdown.Item onClick={sendLogout}>Crear Zona</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Listar Zonas</NavDropdown.Item>
-                            </NavDropdown>}
+                            {(isAdmin) && <Navbar.Brand><NavDropdown title="Zonas" id="basic-nav-dropdown" >
+                            <Navbar.Brand><NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
 
-                            <NavDropdown title="Puntos" id="basic-nav-dropdown" >
-                                <NavDropdown.Item onClick={sendLogout}>Crear Punto</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item>
-                                <NavDropdown.Item onClick={sendLogout}>Listar Puntos</NavDropdown.Item>
-                            </NavDropdown>
+                            <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item></Navbar.Brand>
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>
+
+                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>
 
                         </Nav>
                       
-                        <NavDropdown title={mail} id="basic-nav-dropdown" >
-                            <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
-                        </NavDropdown>
+                        <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
+                        <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item></Navbar.Brand>
+                        </NavDropdown></Navbar.Brand>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

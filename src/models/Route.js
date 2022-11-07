@@ -9,6 +9,11 @@ const routeSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        zones: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'Zone'
+        }],
         points: [{
             point: {
                 type: mongoose.Schema.Types.ObjectId,

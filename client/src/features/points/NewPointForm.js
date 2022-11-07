@@ -3,8 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { useAddNewPointMutation } from "./pointsApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
-import  useAuth  from '../../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 import MapPopup from '../maps/MapPopup'
+import '../users/register.css'
+import Swal from "sweetalert2"
+import Modal from 'react-bootstrap/Modal';
+
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 const PHONENUMBER_REGEX = /^\d{9}$/;
 // eslint-disable-next-line
@@ -18,7 +25,7 @@ const LONGITUDE_REGEX = /(.|\s)*\S(.|\s)*/
 
 const NewPointForm = ({ users }) => {
 
-    const {username, isAdmin, isCEV, isEmpresa} = useAuth()
+    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const [addNewPoint, {
         isLoading,
@@ -52,17 +59,18 @@ const NewPointForm = ({ users }) => {
     const [userId, setUserId] = useState(users[0].id)
 
     const [mapPopup, setMapPopup] = useState(false)
+    const [handleShow, setHandleShow] = useState(false)
 
     const [lat, setLat] = useState('')
     const [validLatitude, setValidLatitude] = useState(false)
     const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
 
-    
+
     const [lng, setLng] = useState('')
     const [validLongitude, setValidLongitude] = useState(false)
     const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
-    
+
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -112,13 +120,13 @@ const NewPointForm = ({ users }) => {
     const onNameChanged = e => setName(e.target.value)
     const onStreetChanged = e => setStreet(e.target.value)
     const onStreetNumberChanged = e => setStreetNumber(e.target.value)
-    
+
     const onLatChanged = e => setLat(e.target.value)
     const onLngChanged = e => setLng(e.target.value)
 
     const onUserIdChanged = e => setUserId(e.target.value)
 
-    let latlng = lat && lng ? {"lat":lat, "lng":lng} : null
+    let latlng = lat && lng ? { "lat": lat, "lng": lng } : null
 
 
     const canSave = [validPhoneNumber, validName, validStreet, validStreetNumber, validLatitude, validLongitude, userId].every(Boolean) && !isLoading
@@ -126,21 +134,21 @@ const NewPointForm = ({ users }) => {
     const onSavePointClicked = async (e) => {
         e.preventDefault()
         if (isAdmin && canSave) {
-                await addNewPoint({ user: userId, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
-                console.log(canSave);
-        } 
-        if((isCEV || isEmpresa)) {
-                let userIdLog = '';
-                users.map(user => {
-                    if (user.username === username) {
-                        userIdLog = user.id
-                    }
-                    return userIdLog
-                })
-                await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
+            await addNewPoint({ user: userId, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
+            console.log(canSave);
+        }
+        if ((isCEV || isEmpresa)) {
+            let userIdLog = '';
+            users.map(user => {
+                if (user.username === username) {
+                    userIdLog = user.id
+                }
+                return userIdLog
+            })
+            await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
         }
         <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
-                            Propietario:</label>
+            Propietario:</label>
     }
 
 
@@ -157,204 +165,264 @@ const NewPointForm = ({ users }) => {
     let selectorAdmin = null
     let input = null
     if (isAdmin) {
-        labelSelector = (<label>Propietario</label>)
-        selectorAdmin = (<select
-                id="username"
-                name="username"
-                className="formSelect"
-                value={userId}
-                onChange={onUserIdChanged}
-                >
-                {options}
-                </select>)
+        labelSelector = (<label>Asignar a: </label>)
+        selectorAdmin = (<Form.Select
+            id="username"
+            name="username"
+            className="formSelect"
+            value={userId}
+            onChange={onUserIdChanged}
+        >
+            {options}
+        </Form.Select>)
     } else if (isCEV || isEmpresa) {
         labelSelector = (<label>Propietario</label>)
         input = <input readOnly
-                className={`formInput`}
-                id="idUser"
-                name="idUser"
-                type="text"
-                autoComplete="off"
-                value={username}
-            />
+            className={`formInput`}
+            id="idUser"
+            name="idUser"
+            type="text"
+            autoComplete="off"
+            value={username}
+        />
     }
 
     const errClass = isError ? "errmsg" : "offscreen"
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+    setShow(true)
+    navigate('/dash');
+}
+    ;
     
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+         <Modal show={!show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title id="cabezal"><strong>Nuevo Punto</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        
+            {/* <div className="account-wall" align="center"> */}
+                <Container fluid>
+                    <p className={errClass}>{error?.data?.message}</p>
 
-            <form className="form" onSubmit={onSavePointClicked}>
-                <div className="formTitleRow">
-                    <h2>Nuevo Punto</h2>
-                    <div className="formActionButtons">
-                        {/* <button
+                    <form className="form" onSubmit={onSavePointClicked}>
+                        <div className="formTitleRow">
+                            {/* <h1 id="cabezal">Nuevo Punto</h1> */}
+                            <div className="formActionButtons">
+                                {/* <button
                             className="icon-button"
                             title="Save"
                             disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button> */}
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Nombre"
+                                        id="name"
+                                        name="name"
+                                        value={name}
+                                        onChange={onNameChanged}
+                                        required
+                                        aria-invalid={validName ? "false" : "true"}
+                                        aria-describedby="uidcev"
+                                        onFocus={() => setNameFocus(true)}
+                                        onBlur={() => setNameFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="name" id="iconito">
+                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidcev" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            10 a 50 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br/>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <input
+                                        className="form-control"
+                                        placeholder="Teléfono o celular"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        value={phoneNumber}
+                                        onChange={onPhoneNumberChanged}
+                                        required
+                                        aria-invalid={validPhoneNumber ? "false" : "true"}
+                                        aria-describedby="uidcev"
+                                        onFocus={() => setPhoneNumberFocus(true)}
+                                        onBlur={() => setPhoneNumberFocus(false)}
+                                    />
+                                </div>
+                                <label htmlFor="phoneNumber">
+                                    <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validPhoneNumber || !phoneNumber ? "hide" : "invalid"} />
+                                </label>
+                            </div>
+                        </div>
+                        <p id="uidcev" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            0 a 9 números.<br />
+                            No puedo contener otro tipo de carácteres.<br />
+                        </p>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                <br/>
+                        <input
+                            className="form-control"
+                            placeholder="Calle"
+                            id="street"
+                            name="street"
+                            value={street}
+                            onChange={onStreetChanged}
+                            required
+                            aria-invalid={validStreet ? "false" : "true"}
+                            aria-describedby="uidcev"
+                            onFocus={() => setStreetFocus(true)}
+                            onBlur={() => setStreetFocus(false)}
+                        />
+                        </div>
+                        <label htmlFor="street">
+                            <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
+                        </label>
+                        </div>
+                        </div>
+                        <p id="uidcev" className={streetFocus && street && !validStreet ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            3 a 20 caracteres.<br />
+                            Debe empezar y contener solo letras.<br />
+                        </p>
+                        <br/>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                        <input
+                            className="form-control"
+                            placeholder="Número de puerta"
+                            id="text"
+                            name="text"
+                            value={streetNumber}
+                            onChange={onStreetNumberChanged}
+                            required
+                            aria-invalid={validStreetNumber ? "false" : "true"}
+                            aria-describedby="uidcev"
+                            onFocus={() => setStreetNumberFocus(true)}
+                            onBlur={() => setStreetNumberFocus(false)}
+                        />
+                        </div>
+                          <label htmlFor="number">
+                            <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validStreetNumber || !streetNumber ? "hide" : "invalid"} />
+                        </label>
+                        </div>
+                        </div>
+                        <p id="uidcev" className={streetNumberFocus && streetNumber && !validStreetNumber ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            Solo números.<br />
+                            No puedo contener otro tipo de carácteres.<br />
+                        </p>
 
-                <label htmlFor="name">
-                    Nombre:
-                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput`}
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={onNameChanged}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setNameFocus(true)}
-                    onBlur={() => setNameFocus(false)}
-                />
-                <p id="uidcev" className={nameFocus && name && !validName? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    10 a 50 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                </p>
-
-                <label htmlFor="phoneNumber">
-                    Teléfono/Celular:
-                    <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validPhoneNumber || !phoneNumber ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput`}
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={onPhoneNumberChanged}
-                    required
-                    aria-invalid={validPhoneNumber ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setPhoneNumberFocus(true)}
-                    onBlur={() => setPhoneNumberFocus(false)}
-                />
-                <p id="uidcev" className={phoneNumberFocus && phoneNumber && !validPhoneNumber? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    0 a 9 números.<br />
-                    No puedo contener otro tipo de carácteres.<br />
-                </p>
-
-                <label htmlFor="street">
-                    Calle:
-                    <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput`}
-                    id="street"
-                    name="street"
-                    value={street}
-                    onChange={onStreetChanged}
-                    required
-                    aria-invalid={validStreet ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setStreetFocus(true)}
-                    onBlur={() => setStreetFocus(false)}
-                />
-                <p id="uidcev" className={streetFocus && street && !validStreet? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    3 a 20 caracteres.<br />
-                    Debe empezar y contener solo letras.<br />
-                </p>
-
-                <label htmlFor="number">
-                    Número:
-                    <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
-                    <FontAwesomeIcon icon={faTimes} className={validStreetNumber || !streetNumber ? "hide" : "invalid"} />
-                </label>
-                <textarea
-                    className={`formInput`}
-                    id="text"
-                    name="text"
-                    value={streetNumber}
-                    onChange={onStreetNumberChanged}
-                    required
-                    aria-invalid={validStreetNumber ? "false" : "true"}
-                    aria-describedby="uidcev"
-                    onFocus={() => setStreetNumberFocus(true)}
-                    onBlur={() => setStreetNumberFocus(false)}
-                />
-                <p id="uidcev" className={streetNumberFocus && streetNumber && !validStreetNumber? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    Solo números.<br />
-                    No puedo contener otro tipo de carácteres.<br />
-                </p>
-        
-                {/* <label htmlFor="latitud">
+                        {/* <label htmlFor="latitud">
                   
                     <FontAwesomeIcon icon={faCheck} className={validLatitude ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validLatitude || !lat ? "hide" : "invalid"} />
                 </label> */}
-                <textarea 
-                    className={`formInput`}
-                    id="lat"
-                    name="lat"
-                    value={lat}
-                    onChange={onLatChanged}
-                    hidden
-                    required
-                    aria-invalid={validLatitude ? "false" : "true"}
-                    aria-describedby="uidlat"
-                    onFocus={() => setLatitudeNumberFocus(true)}
-                    onBlur={() => setLatitudeNumberFocus(false)}
-                />
-                <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    No es una geo correcta<br />
-                </p>
-                {/* <label htmlFor="longitud">
+                        <input
+                            className="form-control"
+                            id="lat"
+                            name="lat"
+                            value={lat}
+                            onChange={onLatChanged}
+                            hidden
+                            required
+                            aria-invalid={validLatitude ? "false" : "true"}
+                            aria-describedby="uidlat"
+                            onFocus={() => setLatitudeNumberFocus(true)}
+                            onBlur={() => setLatitudeNumberFocus(false)}
+                        />
+                        <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            No es una geo correcta<br />
+                        </p>
+                        {/* <label htmlFor="longitud">
                     Longitud:
                     <FontAwesomeIcon icon={faCheck} className={validLongitude ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validLongitude || !lng ? "hide" : "invalid"} />
                 </label> */}
-                <textarea 
-                    className={`formInput`}
-                    id="lng"
-                    name="lng"
-                    value={lng}
-                    onChange={onLngChanged}
-                    required
-                    hidden
-                    aria-invalid={validLongitude? "false" : "true"}
-                    aria-describedby="uidlng"
-                    onFocus={() => setLongitudeNumberFocus(true)}
-                    onBlur={() => setLongitudeNumberFocus(false)}
-                />
-                <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    No es una geo correcta<br />
-                </p>
-                <label>
-                    Ubicación:
-                </label>
-                <button
-                    className="formSubmitButton"
-                    onClick={(e) => {
-                        e.preventDefault()
-                        setMapPopup(true)}}>
-                    Seleccionar dirección
-                </button>
-                <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng}/>
+                        <textarea
+                            className={`formInput`}
+                            id="lng"
+                            name="lng"
+                            value={lng}
+                            onChange={onLngChanged}
+                            required
+                            hidden
+                            aria-invalid={validLongitude ? "false" : "true"}
+                            aria-describedby="uidlng"
+                            onFocus={() => setLongitudeNumberFocus(true)}
+                            onBlur={() => setLongitudeNumberFocus(false)}
+                        />
+                        <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            No es una geo correcta<br />
+                        </p>
+                        <br/>
+                        {/* <label>
+                            Ubicación:
+                        </label> */}
+                        
+                        <Button
+                            className="formSubmitButton"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setMapPopup(true)
+                                setHandleShow(true)
+                            }}>
+                            Seleccionar dirección
+                        </Button>
+                        <br/>
+                        <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng} />
+                        <br/>
+                        <br/>
+                        {labelSelector}
+                        <br/>
+                        {selectorAdmin}
+                        {input}
+                        <br/>
+                        
+                        {/* <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>Registrar</Button> */}
 
-                    {labelSelector}
-                    {selectorAdmin}
-                    {input}
-                    <br></br>
-                    <button className="formSubmitButton" disabled={!validPhoneNumber||  !validName||  !validStreet||  !validStreetNumber ||  !validLatitude || !validLongitude ? true : false}>Registrar</button>
-
-
-            </form>
+                        <br/>
+                        <br/>
+                    </form>
+                </Container>
+            {/* </div> */}
+            </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+           Cancelar
+          </Button>
+          <Button variant="primary" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>
+           Registrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         </>
     )
 
