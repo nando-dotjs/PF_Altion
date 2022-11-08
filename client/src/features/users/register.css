@@ -44,11 +44,18 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: darkgray;
 }
+#regModal{
+ padding-right: 90%; 
+ 
+}
 #iconito{
     width: 1%;
 }
 #iconito2{
     width: 91%;
+}
+#combo1{
+  width:fit-content;
 }
 #fondoTabla{
   background-color: whitesmoke;

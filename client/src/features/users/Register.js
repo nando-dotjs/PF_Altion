@@ -11,6 +11,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
 
 import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 
@@ -24,12 +25,7 @@ const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const Register = () => {
 
-    const [createNewUser, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useCreateNewUserMutation()
+    const [createNewUser, {isLoading, isSuccess, isError, error}] = useCreateNewUserMutation()
 
     const navigate = useNavigate()
 
@@ -128,14 +124,14 @@ const Register = () => {
         try {
             if (canSave) {
                 await createNewUser({ name, surname, mail, password, role })
-                Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Usuario creado con éxito',
-                    showConfirmButton: false,
-                    timer: 2500
-                })
             }
+            //   Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
+            //         position: 'center',
+            //         icon: 'success',
+            //         title: 'Usuario creado con éxito',
+            //         showConfirmButton: false,
+            //         timer: 2500
+            //     })
 
         } catch (err) {
             if (!err.status) {
@@ -150,19 +146,49 @@ const Register = () => {
 
     }
     const errClass = isError ? "errmsg" : "offscreen"
+    
+    
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(true)
+        navigate('/');
+    };
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        iconColor: 'white',
+        customClass: {
+            popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+    })
+
+
+    
+       
+    
 
     return (
         <>
-            <div className="account-wall" align="center">
-                <Container fluid>
+            <Modal show={!show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* <div className="account-wall" align="center">
+                <Container fluid> */}
                     <section>
 
-                        <header>
+                        {/* <header>
                             <h1 id="cabezal">Registro de usuario</h1>
-                        </header>
+                        </header> */}
 
                         <main className='register'>
 
+                        
                             <p className={errClass}>{error?.data?.message}</p>
 
                             <form className="form" onSubmit={onSaveUserClicked}>
@@ -293,7 +319,6 @@ const Register = () => {
                                     Debe empezar con una letra.<br />
                                     Letras, números, guión bajo y guiones permitidos.
                                 </p> */}
-                                <br />
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -359,35 +384,53 @@ const Register = () => {
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
 
-                                <Form.Select 
-                                    id="role"
+                                <Form.Select
+                                    // id="role"
                                     name="role"
                                     className={`formSelect`}
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                >
+                                    id="combo1">
                                     {options}
                                 </Form.Select>
 
-                                <Col>
+                                {/* <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
+                                    &nbsp;
                                     <Button className="btn btn-secondary" href="/">Volver</Button>
-                                </Col>
+                                </Col> */}
 
                             </form>
                             <br />
-                            <p>
+                            {/* <p>
                                 Ya estás registrado?<br />
                                 <span className="line">
-                                    {/*put router link here*/}
+                                    
                                     <a href="/">Ingresar</a>
                                 </span>
-                            </p>
+                            </p> */}
                         </main>
                     </section>
-                </Container>
-            </div>
+                    {/* </Container>
+            </div> */}
+                </Modal.Body>
+                <Modal.Footer>
+                    Ya estás registrado?
+                    
+                    <span className="line">
+                        {/*put router link here*/}
+                        <a href="/">Ingresar</a>
+                    </span>
+
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    
+                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
+
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

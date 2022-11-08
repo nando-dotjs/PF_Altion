@@ -9,7 +9,7 @@ import {
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
 import useAuth from '../hooks/useAuth'
-
+import { useGetUsersQuery, usersApiSlice } from "../features/users/usersApiSlice"
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
 import Container from 'react-bootstrap/Container';
@@ -17,7 +17,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import Navbar from 'react-bootstrap';
-
+import Swal from 'sweetalert2'
 
 // import useAuth from '../hooks/useAuth'
 
@@ -38,7 +38,7 @@ const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
 
-    const { mail, role, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { name, mail,  surname, role, isAdmin, isCEV, isEmpresa } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -317,10 +317,12 @@ const DashHeader = () => {
     }
 
     const logoutButton = (
+        
         <button
             className="icon-button"
             title="Logout"
             onClick={sendLogout}
+            
         >
             <FontAwesomeIcon icon={faRightFromBracket} />
         </button>
@@ -375,8 +377,8 @@ const DashHeader = () => {
                         <Nav className="me-auto">
                         <Navbar.Brand><Nav.Link href="/dash">Inicio</Nav.Link></Navbar.Brand>
                             {(isAdmin) && <Navbar.Brand>  <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
-                            <Navbar.Brand><NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand>  <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item></Navbar.Brand>
+                           <NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item>
+                              <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >

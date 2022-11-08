@@ -15,12 +15,15 @@ const User = ({ userId }) => {
         const handleEdit = () => navigate(`/dash/users/${userId}`)
 
         const cellStatus = user.active ? '' : 'tableCell--inactive'
-
-        return (
+// console.log(user)
+       
+return (
             <tr className="tableRow user">
-                <td className={`tableCell ${cellStatus}`}>{user.mail}</td>
-                <td className={`tableCell ${cellStatus}`}>{user.role}</td>
-                <td className={`tableCell ${cellStatus}`}>
+                {/* <td className={`tableCell ${cellStatus}`}>{user.mail}</td>
+                <td className={`tableCell ${cellStatus}`}>{user.role}</td> */}
+                <td>{user.mail}</td>
+                <td>{user.role}</td>
+                <td>
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}

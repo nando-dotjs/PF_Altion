@@ -25,7 +25,7 @@ const getAllUsers = asyncHandler (async (req, res) => {
 
 const getUser = asyncHandler (async (req, res) => {
     const { mail } = req.body
-    const user = await User.find({"username":mail}).select('--password').lean()
+    const user = await User.find({"mail":mail}).select('--password').lean()
     if (!user) {
         return res.status(400).json({message: 'No se encontró el usuario'})
     } 

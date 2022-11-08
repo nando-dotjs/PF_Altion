@@ -63,7 +63,9 @@ const Login = () => {
                 Swal.fire('No Server Response')
             } else if (err.status === 400) {
                 setErrMsg('Missing Mail or Password');
-                Swal.fire('Missing Mail or Password')
+                Swal.fire({
+                    icon:"warning",
+                    text:'Debe ingresar Usuario y Contraseña'})
             } else if (err.status === 401) {
                 setErrMsg('El usuario y/o contraseña es incorrecto');
                
@@ -129,8 +131,10 @@ const Login = () => {
                         <Button className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button>
                         </Col>
                         <br/>
-                        <label htmlFor="registerLbl">¿No tiene cuenta? </label> 
-                    <Link to="/register">Cree una</Link>
+                        <label htmlFor="registerLbl">¿No tienes una cuenta? </label> 
+                        <br/>
+                        
+                    <Link to="/register">Regístrate</Link>
                     </Form >
                     <Col>
                    

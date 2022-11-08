@@ -24,8 +24,8 @@ const Point = ({ pointId }) => {
             <tr className="tableRow">
                 <td className="tableCell pointStatus">
                     {point.completed
-                        ? <span className="pointStatusCompleted">Completado</span>
-                        : <span className="pointStatusOpen">Abierto</span>
+                        ? <span className="pointStatusCompleted">Activo</span>
+                        : <span className="pointStatusOpen">Pendiente</span>
                     }
                 </td>
                 <td className="tableCell pointCreated">{created}</td>

@@ -57,8 +57,8 @@ const NewUserForm = () => {
     const [validMail, setValidMail] = useState(false)
     const [mailFocus, setMailFocus] = useState(false);
 
-    const [username, setUsername] = useState('');
-    const [validUsername, setValidUsername] = useState(false);
+    // const [username, setUsername] = useState('');
+    // const [validUsername, setValidUsername] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
 
     const [password, setPassword] = useState('');
@@ -91,9 +91,9 @@ const NewUserForm = () => {
         setValidMail(EMAIL_REGEX.test(mail))
     }, [mail])
 
-    useEffect(() => {
-        setValidUsername(USER_REGEX.test(username));
-    }, [username])
+    // useEffect(() => {
+    //     setValidUsername(USER_REGEX.test(username));
+    // }, [username])
 
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
@@ -102,13 +102,13 @@ const NewUserForm = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [name, surname, mail, username, password, matchPwd])
+    }, [name, surname, mail, password, matchPwd])
 
     useEffect(() => {
         if (isSuccess) {
             setName('')
             setSurname('')
-            setUsername('')
+            // setUsername('')
             setPassword('')
             setMail('')
             setRole('')
@@ -119,15 +119,15 @@ const NewUserForm = () => {
     const onNameChanged = e => setName(e.target.value)
     const onSurnameChanged = e => setSurname(e.target.value)
     const onMailChanged = e => setMail(e.target.value)
-    const onUsernameChanged = e => setUsername(e.target.value)
+    // const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
 
-    const canSave = [role, validUsername, validPassword, validMail, name, surname].every(Boolean) && !isLoading
+    const canSave = [role, validPassword, validMail, name, surname].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ name, surname, mail, username, password, role })
+            await addNewUser({ name, surname, mail, password, role })
         }
         Toast.fire({
             icon: 'success',
@@ -296,8 +296,8 @@ const Toast = Swal.mixin({
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     Ingrese un correo electrónico válido.<br />
                                 </p>
-                                <br />
-                                <div class="container-fluid">
+                                {/* <br /> */}
+                                {/* <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
                                             <input
@@ -327,7 +327,7 @@ const Toast = Swal.mixin({
                                     4 a 24 caracteres.<br />
                                     Debe empezar con una letra.<br />
                                     Letras, números, guión bajo y guiones permitidos.
-                                </p>
+                                </p> */}
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
@@ -428,7 +428,7 @@ const Toast = Swal.mixin({
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
+          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>
            Registrar
           </Button>
         </Modal.Footer>
