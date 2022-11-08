@@ -123,15 +123,21 @@ const Register = () => {
         const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
         try {
             if (canSave) {
-                await createNewUser({ name, surname, mail, password, role })
+                try{
+                    await createNewUser({ name, surname, mail, password, role })
+                    Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Usuario creado con éxito',
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
+                }catch(e){
+
+                }
+                    
             }
-            //   Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
-            //         position: 'center',
-            //         icon: 'success',
-            //         title: 'Usuario creado con éxito',
-            //         showConfirmButton: false,
-            //         timer: 2500
-            //     })
+             
 
         } catch (err) {
             if (!err.status) {
@@ -191,7 +197,7 @@ const Register = () => {
                         
                             <p className={errClass}>{error?.data?.message}</p>
 
-                            <form className="form" onSubmit={onSaveUserClicked}>
+                            <Form className="form" onSubmit={onSaveUserClicked}>
 
 
                                 <div class="container-fluid">
@@ -394,14 +400,14 @@ const Register = () => {
                                     {options}
                                 </Form.Select>
 
-                                {/* <Col>
+                                <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
                                     &nbsp;
                                     <Button className="btn btn-secondary" href="/">Volver</Button>
-                                </Col> */}
+                                </Col>
 
-                            </form>
+                            </Form>
                             <br />
                             {/* <p>
                                 Ya estás registrado?<br />
@@ -423,11 +429,11 @@ const Register = () => {
                         <a href="/">Ingresar</a>
                     </span>
 
-                    <Button variant="secondary" onClick={handleClose}>
+                    {/* <Button variant="secondary" onClick={handleClose}>
                         Cancelar
                     </Button>
                     
-                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
+                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button> */}
 
                 </Modal.Footer>
             </Modal>
