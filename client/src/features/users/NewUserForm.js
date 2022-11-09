@@ -127,14 +127,22 @@ const NewUserForm = () => {
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await addNewUser({ name, surname, mail, password, role })
-        }
-        Toast.fire({
-            icon: 'success',
-            title: 'Nuevo Usuario Creado'
-          })
+                await addNewUser({ name, surname, mail, password, role })
+                        .then((response) => {
+                            if(response.error) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.error.data.message
+                                    })
+                            } else {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.data.message
+                                    })
+                            }
+                        }) 
+         }
     }
-
     const options = Object.values(ROLES).map(role => {
         return (
             <option
@@ -146,8 +154,6 @@ const NewUserForm = () => {
     })
     // const date = new Date()
     // const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
-    
-    const errClass = isError ? "errmsg" : "offscreen"
 
 
     const [show, setShow] = useState(false);
@@ -197,8 +203,6 @@ const Toast = Swal.mixin({
                         </header> */}
 
                         <main className='register'>
-
-                            <p className={errClass}>{error?.data?.message}</p>
 
                             <form className="form" onSubmit={onSaveUserClicked}>
 

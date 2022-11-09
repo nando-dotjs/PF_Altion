@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 // import BootstrapTable from 'react-bootstrap-table-next';
-import axios from 'react-axios'
+// import axios from 'react-axios'
 import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
 
@@ -18,12 +18,12 @@ import { selectUserById } from './usersApiSlice'
 const UsersList = () => {
     // function UsersList(){
 
-    const [data, setData] = useState ([]);
-        const fetchUsers = async () => {
-            const res = await axios.get("http://localhost:5000/users");
-            setData(res.data);
-        }
-        console.log(data)
+    // const [data, setData] = useState ([]);
+    //     const fetchUsers = async () => {
+    //         const res = await axios.get("http://localhost:5000/users");
+    //         setData(res.data);
+    //     }
+    //     console.log(data)
 
     const [query, setQuery] = useState('');
     const [show, setShow] = useState(false);

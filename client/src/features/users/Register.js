@@ -121,37 +121,31 @@ const Register = () => {
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
-        try {
             if (canSave) {
-                try{
                     await createNewUser({ name, surname, mail, password, role })
-                    Swal.fire({ //Ventana de login exitoso con Lib Sweetalert2
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Usuario creado con éxito',
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                }catch(e){
-
-                }
-                    
+                        .then((response) => {
+                            if (response.error) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: response.error.data.message,
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                })
+                            } else {
+                                Swal.fire({ 
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: response.data.message,
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                })
+                        
+                            }
+                        })
             }
-             
-
-        } catch (err) {
-            if (!err.status) {
-                setErrMsg('No Server Response');
-            } else if (err.status === 409) {
-                setErrMsg('Mail asociado');
-            } else {
-                setErrMsg('Failed');
-            }
-            //errRef.current.focus();
-        }
 
     }
-    const errClass = isError ? "errmsg" : "offscreen"
     
     
     const [show, setShow] = useState(false);
@@ -193,10 +187,6 @@ const Register = () => {
                         </header> */}
 
                         <main className='register'>
-
-                        
-                            <p className={errClass}>{error?.data?.message}</p>
-
                             <Form className="form" onSubmit={onSaveUserClicked}>
 
 
