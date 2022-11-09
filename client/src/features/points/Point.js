@@ -19,7 +19,7 @@ const Point = ({ pointId }) => {
         const handleEdit = () => navigate(`/dash/points/${pointId}`)
         
 
-
+        console.log(point);
         return (
             <tr className="tableRow">
                 <td className="tableCell pointStatus">
@@ -31,8 +31,8 @@ const Point = ({ pointId }) => {
                 <td className="tableCell pointCreated">{created}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
                 <td className="tableCell pointTitle">{point.name}</td>
-                <td className="tableCell pointUsername">{point.username}</td>
-
+                <td className="tableCell pointMail">{point.mail}</td>
+                
                 <td className="tableCell">
                     <button
                         className="btn btn-primary"

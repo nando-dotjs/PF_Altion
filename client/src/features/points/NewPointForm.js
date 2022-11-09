@@ -13,9 +13,9 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-const PHONENUMBER_REGEX = /^\d{9}$/;
+const PHONENUMBER_REGEX = /^\d{8,9}$/;
 // eslint-disable-next-line
-const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
+const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{7,20}$/;
 // eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
@@ -25,7 +25,7 @@ const LONGITUDE_REGEX = /(.|\s)*\S(.|\s)*/
 
 const NewPointForm = ({ users }) => {
 
-    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { mail, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const [addNewPoint, {
         isLoading,
@@ -141,10 +141,10 @@ const NewPointForm = ({ users }) => {
             icon: 'success',
             title: 'Nuevo Punto Creado'
           })
-        if ((isCEV || isEmpresa)) {
+        if ((isAdmin || isCEV || isEmpresa)) {
             let userIdLog = '';
             users.map(user => {
-                if (user.username === username) {
+                if (user.mail === mail) {
                     userIdLog = user.id
                 }
                 return userIdLog
@@ -152,39 +152,17 @@ const NewPointForm = ({ users }) => {
             await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
             Toast.fire({
                 icon: 'success',
-                title: 'Nuevo usuario creado'
+                title: 'Nuevo Punto Creado'
               })
         }
         
-        <label className="formLabel formCheckboxContainer" htmlFor="cev-username">
+        <label className="formLabel formCheckboxContainer" htmlFor="cev-mail">
             Propietario:</label>
     }
 
-
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
-            > {user.username}</option >
-        )
-    })
-
     let labelSelector = null
-    let selectorAdmin = null
     let input = null
-    if (isAdmin) {
-        labelSelector = (<label>Asignar a: </label>)
-        selectorAdmin = (<Form.Select
-            id="username"
-            name="username"
-            className="formSelect"
-            value={userId}
-            onChange={onUserIdChanged}
-        >
-            {options}
-        </Form.Select>)
-    } else if (isCEV || isEmpresa) {
+    if (isAdmin || isCEV || isEmpresa) {
         labelSelector = (<label>Propietario</label>)
         input = <input readOnly
             className={`formInput`}
@@ -192,7 +170,7 @@ const NewPointForm = ({ users }) => {
             name="idUser"
             type="text"
             autoComplete="off"
-            value={username}
+            value={mail}
         />
     }
 
@@ -267,7 +245,7 @@ const Toast = Swal.mixin({
                         </div>
                         <p id="uidcev" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            10 a 50 caracteres.<br />
+                            7 a 20 caracteres.<br />
                             Debe empezar y contener solo letras.<br />
                         </p>
                         <br/>
@@ -296,7 +274,7 @@ const Toast = Swal.mixin({
                         </div>
                         <p id="uidcev" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            0 a 9 números.<br />
+                            Mínimo 8 caracteres, máximo 9.<br />
                             No puedo contener otro tipo de carácteres.<br />
                         </p>
                         <div class="container-fluid">
@@ -420,10 +398,9 @@ const Toast = Swal.mixin({
                         <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng} />
                         <br/>
                         <br/>
-                        {labelSelector}
+                        
                         <br/>
-                        {selectorAdmin}
-                        {input}
+                        
                         <br/>
                         
                         {/* <Button className="formSubmitButton" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>Registrar</Button> */}

@@ -15,7 +15,7 @@ const PointsList = () => {
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
 
-    const { username, isAdmin } = useAuth()
+    const { mail, isAdmin } = useAuth()
     const {
         data: points,
         isLoading,
@@ -47,7 +47,7 @@ const PointsList = () => {
         if (isAdmin) {
             filteredIds = [...ids]
         } else {
-            filteredIds = ids.filter(pointId => entities[pointId].username === username)
+            filteredIds = ids.filter(pointId => entities[pointId].mail === mail)
         }
 
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
