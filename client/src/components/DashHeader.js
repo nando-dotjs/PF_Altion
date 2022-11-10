@@ -28,6 +28,7 @@ const DRIVERS_REGEX = /^\/dash\/drivers(\/)?$/
 const COMPANY_REGEX = /^\/dash\/companys(\/)?$/
 const ZONES_REGEX = /^\/dash\/zones(\/)?$/
 const POINT_REGEX = /^\/dash\/points(\/)?$/
+const ROUTES_REGEX = /^\/dash\/users(\/)?$/
 
 const USERS_EDIT_REGEX = /^\/dash\/users(\/.+)?$/
 const DRIVERS_EDIT_REGEX = /^\/dash\/drivers(\/.+)?$/
@@ -394,6 +395,12 @@ const DashHeader = () => {
                             <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
                             <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item>
                             <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item>
+                            </NavDropdown></Navbar.Brand>
+
+                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
+                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
                             </NavDropdown></Navbar.Brand>
 
                         </Nav>
