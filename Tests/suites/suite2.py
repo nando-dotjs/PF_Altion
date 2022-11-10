@@ -4,7 +4,7 @@ from funciones import AuxiliarFunctions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
-def Register(name,surname,mail,username,password,type):
+def Register(name,surname,mail,password,type):
     # Ingreso a login
     AuxiliarFunctions.driver.get("http://192.168.1.100:3000/register")
     AuxiliarFunctions.waitFiveSeconds()
@@ -25,12 +25,6 @@ def Register(name,surname,mail,username,password,type):
     cpoMail = AuxiliarFunctions.driver.find_element(By.ID, "mail")
     cpoMail.clear()
     cpoMail.send_keys(mail)
-    AuxiliarFunctions.waitFiveSeconds()
-
-    # Limpio y tipeo campo Usuario.
-    cpoSurname = AuxiliarFunctions.driver.find_element(By.ID, "username")
-    cpoSurname.clear()
-    cpoSurname.send_keys(username)
     AuxiliarFunctions.waitFiveSeconds()
 
     # Limpio y tipeo campo contraseña.
@@ -54,6 +48,6 @@ def Register(name,surname,mail,username,password,type):
 
 
     # Presiono Botón Sign Up
-    btnConfirmar = AuxiliarFunctions.driver.find_element(By.XPATH,"/html/body/div/section/main/form/button")
+    btnConfirmar = AuxiliarFunctions.driver.find_element(By.XPATH,"/html/body/div/div/div/section/main/form/div[6]")
     btnConfirmar.click()
     AuxiliarFunctions.waitFiveSeconds()
