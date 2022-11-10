@@ -16,7 +16,7 @@ const getAllPoints = asyncHandler(async (req, res) => {
 
     const pointsWithUser = await Promise.all(points.map(async (point) => {
         const user = await User.findById(point.user).lean().exec()
-        return { ...point, username: user.username }
+        return { ...point, mail: user.mail }
     }))
 
     console.log(points)
@@ -35,12 +35,7 @@ const createNewPoint = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
-    // Check for duplicate title
-    const duplicate = await Point.findOne({ user }).lean().exec()
-
-    if (duplicate) {
-        return res.status(409).json({ message: 'Ya existe un punto asociado a este usuario' })
-    }
+    
 
     // Create and store the new user 
     const point = await Point.create({ user, name, phoneNumber, street, streetNumber, lat, long })

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
 import Modal from 'react-bootstrap/Modal';
+import Swal from "sweetalert2";
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -75,6 +76,10 @@ const NewZoneForm = () => {
         if (canSave) {
             await addNewZone({ name, details })
         }
+        Toast.fire({
+            icon: 'success',
+            title: 'Nueva zona creada'
+          })
     }
 
     const errClass = isError ? "errmsg" : "offscreen"
@@ -83,8 +88,19 @@ const NewZoneForm = () => {
     const handleClose = () => {
     setShow(true)
     navigate('/dash');
-}
-    ;
+};
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  })
 
     const content = (
         <>

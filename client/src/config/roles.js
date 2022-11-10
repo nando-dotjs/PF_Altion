@@ -6,6 +6,6 @@ export const ROLES = {
 }
 
 export const ROLES_PUBLICOS = {
-    CEV: 'CEV',
+    CEV: 'Centro de Entrega Voluntaria',
     Empresa: 'Empresa'
 }

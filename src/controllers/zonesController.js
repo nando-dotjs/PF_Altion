@@ -27,6 +27,12 @@ const createNewZone = asyncHandler (async (req, res) => {
         return res.status(400).json({ message: 'Debe ingresar un nombre' })
     }
 
+    const duplicate = await Zone.findOne({ name }).lean().exec()
+
+    if (duplicate) {
+        return res.status(409).json({ message: 'Ya existe una zona con este nombre' })
+    }
+
     const zoneObject = { name, details }
 
     const zone = await (Zone.create(zoneObject))

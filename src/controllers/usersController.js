@@ -25,7 +25,7 @@ const getAllUsers = asyncHandler (async (req, res) => {
 
 const getUser = asyncHandler (async (req, res) => {
     const { mail } = req.body
-    const user = await User.find({"username":mail}).select('--password').lean()
+    const user = await User.find({"mail":mail}).select('--password').lean()
     if (!user) {
         return res.status(400).json({message: 'No se encontró el usuario'})
     } 
@@ -77,7 +77,7 @@ const createNewUser = asyncHandler (async (req, res) => {
     const user = await (User.create(userObject))
 
     if (user) { // Si el usuario se creó
-        res.status(201).json({ message: `El usuario ${mail} ha sido creado`})
+        res.status(201).json({ message: 'El usuario ha sido creado'})
     } else {
         res.status(400).json({ message: 'Datos recibidos del usuario inválidos'})
     }

@@ -7,13 +7,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const PointsList = () => {
 
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
 
-    const { username, isAdmin } = useAuth()
+    const { mail, isAdmin } = useAuth()
     const {
         data: points,
         isLoading,
@@ -45,7 +47,7 @@ const PointsList = () => {
         if (isAdmin) {
             filteredIds = [...ids]
         } else {
-            filteredIds = ids.filter(pointId => entities[pointId].username === username)
+            filteredIds = ids.filter(pointId => entities[pointId].mail === mail)
         }
 
         const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
@@ -57,42 +59,39 @@ const PointsList = () => {
 
         content = (
             <>
-                <Modal show={!show} onHide={handleClose}>
+                <Modal 
+                show={!show} 
+                onHide={handleClose}
+                size="lg"
+                >
                     <Modal.Header closeButton>
                         <Modal.Title id="cabezal"><strong>Lista de Puntos</strong></Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-            <Container>
-            {/* <section className="welcome">
-                   <div id="fechaDiv" className="">
+                    <Modal.Body className="show-grid">
+                        <Container>                        
+                       
+                            <div id="fondoTabla">
 
-                       <p>{today}</p>
+                                <Table responsive className="table tableUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>Estado</th>
+                                            <th>Creado</th>
+                                            <th>Zona</th>
+                                            <th>Nombre</th>
+                                            <th>Propietario</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {tableContent}
+                                    </tbody>
+                                </Table>
 
-                   </div>
-               </section> */}
-           <br />
-           <div id="fondoTabla">
+                            </div>
 
-               <Table striped bordered hover size="sm" className="table tableUsers">
-                   <thead>
-                       <tr>
-                           <th>Estado</th>
-                           <th>Creado</th>
-                           <th>Zona</th>
-                           <th>Nombre</th>
-                           <th>Propietario</th>
-                           <th>Acciones</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       {tableContent}
-                   </tbody>
-               </Table>
-               
-           </div>
-          
-       </Container>
-       </Modal.Body>
+                        </Container>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
                             Cancelar
@@ -103,7 +102,7 @@ const PointsList = () => {
                     </Modal.Footer>
                 </Modal>
             </>
-          
+
         )
     }
 
