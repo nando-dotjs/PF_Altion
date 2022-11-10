@@ -15,9 +15,9 @@ import Button from 'react-bootstrap/Button';
 import Swal from "sweetalert2"
 
 // eslint-disable-next-line
-const PHONENUMBER_REGEX = /^\d{9}$/;
+const PHONENUMBER_REGEX = /^\d{8,9}$/;
 // eslint-disable-next-line
-const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{10,50}$/;
+const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{7,20}$/;
 // eslint-disable-next-line
 const STREET_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{3,20}$/;
 const STREET_NUMBER_REGEX = /^[0-9]+$/;
@@ -65,6 +65,7 @@ const EditPointForm = ({ point, users }) => {
     const [completed, setCompleted] = useState(point.completed)
     const [userId, setUserId] = useState(point.user)
 
+
     const [lat, setLat] = useState(+point.lat)
     const [validLatitude, setValidLatitude] = useState(false)
     const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
@@ -79,7 +80,7 @@ const EditPointForm = ({ point, users }) => {
     }, [])
 
     const [values, setValues] = useState([])
-    const [optionsZone, setOptions] = useState()
+    const [optionsZone, setOptions] = useState(point.zone)
     useEffect(() => {
         fetch("http://localhost:5000/zones")
             .then((data) => data.json()).then((val) => { setValues(val) })
@@ -145,11 +146,21 @@ const EditPointForm = ({ point, users }) => {
     const onSavePointClicked = async (e) => {
         if (canSave) {
             await updatePoint({ id: point.id, user: userId, name, phoneNumber, street, streetNumber, completed, zone: optionsZone })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'info',
+                            title: response.data.message
+                          })
+                    }
+                })
         }
-        Toast.fire({
-            icon: 'info',
-            title: 'Punto Modificado'
-          })
+       
     }
 
     const created = new Date(point.createdAt).toLocaleString('es-UY', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -163,11 +174,10 @@ const EditPointForm = ({ point, users }) => {
                 key={user.id}
                 value={user.id}
 
-            > {user.username}</option >
+            > {user.name+' '+user.surname}</option >
         )
     })
 
-    const errClass = (isError) ? "errmsg" : "offscreen"
     // const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
 
     // const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
@@ -210,7 +220,7 @@ const EditPointForm = ({ point, users }) => {
                 value={optionsZone}
                 onChange={onZoneNameChanged}
             >
-                <option disabled="disabled" value=""> -- Elige zona -- </option>
+                <option > -- Elige zona -- </option>
                 {
                     optionsToChoose
                 }
@@ -266,7 +276,7 @@ const EditPointForm = ({ point, users }) => {
                     <Modal.Title id="cabezal"><strong>Editar Punto</strong></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p className={errClass}>{errContent}</p>
+                   
 
                     <Form className="form" onSubmit={e => e.preventDefault()}>
                         <div className="formTitleRow">

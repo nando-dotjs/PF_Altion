@@ -77,10 +77,21 @@ const EditDriverForm = ({ driver }) => {
 
     const onSaveDriverClicked = async (e) => {
         await updateDriver({ id: driver.id, name, surname, active })
-        Toast.fire({
-            icon: 'info',
-            title: 'Chofer modificado'
-          })
+            .then((response) => {
+                if(response.error){
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.error.data.message
+                      })
+                } else {
+                    Toast.fire({
+                        icon: 'info',
+                        title: response.data.message
+                      })
+                }
+               
+            })
+        
     }
 
     // const onDeleteDriverClicked = async () => {

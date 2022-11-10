@@ -133,15 +133,8 @@ const NewPointForm = ({ users }) => {
 
     const onSavePointClicked = async (e) => {
         e.preventDefault()
-        if (isAdmin && canSave) {
-            await addNewPoint({ user: userId, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
-            console.log(canSave);
-        }
-        Toast.fire({
-            icon: 'success',
-            title: 'Nuevo Punto Creado'
-          })
-        if ((isAdmin || isCEV || isEmpresa)) {
+
+        if((isAdmin || isCEV || isEmpresa) && canSave) {
             let userIdLog = '';
             users.map(user => {
                 if (user.mail === mail) {
@@ -149,11 +142,20 @@ const NewPointForm = ({ users }) => {
                 }
                 return userIdLog
             })
-            await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userIdLog })
-            Toast.fire({
-                icon: 'success',
-                title: 'Nuevo Punto Creado'
-              })
+            await addNewPoint({ user: userIdLog, name, phoneNumber, street, streetNumber, lat, long: lng, userId })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                          })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                          })
+                    }
+                })
         }
         
         <label className="formLabel formCheckboxContainer" htmlFor="cev-mail">
@@ -174,7 +176,7 @@ const NewPointForm = ({ users }) => {
         />
     }
 
-    const errClass = isError ? "errmsg" : "offscreen"
+  
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -204,7 +206,7 @@ const Toast = Swal.mixin({
         
             {/* <div className="account-wall" align="center"> */}
                 <Container fluid>
-                    <p className={errClass}>{error?.data?.message}</p>
+                   
 
                     <form className="form" onSubmit={onSavePointClicked}>
                         <div className="formTitleRow">
@@ -266,7 +268,7 @@ const Toast = Swal.mixin({
                                         onBlur={() => setPhoneNumberFocus(false)}
                                     />
                                 </div>
-                                <label htmlFor="phoneNumber">
+                                <label htmlFor="phoneNumber" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
                                     <FontAwesomeIcon icon={faTimes} className={validPhoneNumber || !phoneNumber ? "hide" : "invalid"} />
                                 </label>
@@ -295,7 +297,7 @@ const Toast = Swal.mixin({
                             onBlur={() => setStreetFocus(false)}
                         />
                         </div>
-                        <label htmlFor="street">
+                        <label htmlFor="street" >
                             <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validStreet || !street ? "hide" : "invalid"} />
                         </label>

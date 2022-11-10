@@ -63,6 +63,12 @@ const updateZone = asyncHandler (async (req, res) => {
         return res.status(400).json({ message: 'Zona no encontrada'})
     }
 
+    const duplicate = await Zone.findOne({ name }).lean().exec()
+
+    if (duplicate && duplicate?._id.toString() !== id) {
+        return res.status(409).json({ message: 'Ya existe una zona con este nombre' })
+    }
+
     zone.name = name
     zone.details = details
     zone.active = active

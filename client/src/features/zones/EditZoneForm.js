@@ -76,10 +76,19 @@ const EditZoneForm = ({ zone }) => {
 
     const onSaveZoneClicked = async (e) => {
         await updateZone({ id: zone.id, name, details, active })
-        Toast.fire({
-            icon: 'info',
-            title: 'Zona modificada'
-          })
+            .then((response) => {
+                if(response.error){
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.error.data.message
+                        })
+                }else{
+                    Toast.fire({
+                        icon: 'info',
+                        title: response.data.message
+                        })
+                }
+            })
     }
     
 
@@ -91,7 +100,7 @@ const EditZoneForm = ({ zone }) => {
 
     const errClass = (isError) ? "errmsg" : "offscreen"
 
-    const errContent = (error?.data?.message) ?? ''
+    // const errContent = (error?.data?.message) ?? ''
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -121,7 +130,7 @@ const EditZoneForm = ({ zone }) => {
             {/* <div className="account-wall" align="center">
 
                 <Container fluid> */}
-                    <p className={errClass}>{errContent}</p>
+                
                     <main className='editZone'>
 
                         <form className="form" onSubmit={e => e.preventDefault()}>

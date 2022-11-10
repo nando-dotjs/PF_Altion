@@ -75,14 +75,23 @@ const NewZoneForm = () => {
         e.preventDefault()
         if (canSave) {
             await addNewZone({ name, details })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                            })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                            })
+                    }
+                })
         }
-        Toast.fire({
-            icon: 'success',
-            title: 'Nueva zona creada'
-          })
     }
 
-    const errClass = isError ? "errmsg" : "offscreen"
+    // const errClass = isError ? "errmsg" : "offscreen"
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -112,8 +121,7 @@ const Toast = Swal.mixin({
             {/* <div className="account-wall" align="center"> */}
 
                 <Container fluid>
-                    <p className={errClass}>{error?.data?.message}</p>
-
+                   
                     <form className="form" onSubmit={onSaveZoneClicked}>
                         <div className="formTitleRow">
                             {/* <h1 id="cabezal">Registro de Zona</h1> */}

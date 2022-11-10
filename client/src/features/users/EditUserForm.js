@@ -115,13 +115,39 @@ const EditUserForm = ({ user }) => {
 
         if (password) {
             await updateUser({ id: user.id, name, surname, mail, password, role, active })
+                .then((response) => {
+                        if(response.error){
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error.data.message
+                                })
+                        } else{
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.data.message
+                                })
+                        }
+                })
         } else {
             await updateUser({ id: user.id, name, surname, mail, role, active })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                            })
+                    } else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                            })
+                    }
+                })
         }
-        Toast.fire({
-            icon: 'info',
-            title: 'Usuario Actualizado'
-          })
+        // Toast.fire({
+        //     icon: 'info',
+        //     title: 'Usuario Actualizado'
+        //   })
     }
 
     // const onDeleteUserClicked = async () => {
@@ -148,7 +174,7 @@ const EditUserForm = ({ user }) => {
     const errClass = isError ? "errmsg" : "offscreen"
 
 
-    const errContent = (error?.data?.message) ?? ''
+    
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
@@ -176,7 +202,6 @@ const Toast = Swal.mixin({
         <Modal.Body>
             {/* <div className="account-wall" align="center">
                 <Container fluid> */}
-                    <p className={errClass}>{errContent}</p>
 
                     <form className="form" onSubmit={e => e.preventDefault()}>
                         <div className="formTitleRow">

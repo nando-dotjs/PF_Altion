@@ -63,15 +63,7 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     if (!point) {
         return res.status(400).json({ message: 'No se ha encontrado punto' })
-    }
-
-    // Check for duplicate title
-    const duplicate = await Point.findOne({ user }).lean().exec()
-
-    // Allow renaming of the original point 
-    if (duplicate && duplicate?._id.toString() !== id) {
-        return res.status(409).json({ message: 'Ya existe un punto asociado a este usuario' })
-    }
+    } 
 
     point.user = user
     point.name = name
@@ -83,7 +75,7 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     const updatedPoint = await point.save()
 
-    res.json(`'${updatedPoint.name}' actualizado`)
+    res.json({ message:`Punto ${updatedPoint.name} actualizado`})
 })
 
 // @desc Delete a point

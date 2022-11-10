@@ -382,25 +382,24 @@ const DashHeader = () => {
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item></Navbar.Brand>
+                             <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item>
+                             <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Zonas" id="basic-nav-dropdown" >
-                            <Navbar.Brand><NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item></Navbar.Brand>
+                            <NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item>
+                            <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                             <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
+                            <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item>
+                            <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>
 
                         </Nav>
                       
                         <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
-                        <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item></Navbar.Brand>
+                         <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
                         </NavDropdown></Navbar.Brand>
                     </Navbar.Collapse>
                 </Container>

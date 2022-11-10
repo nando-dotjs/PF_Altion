@@ -74,11 +74,21 @@ const NewDriverForm = () => {
         e.preventDefault()
         if (canSave) {
             await addNewDriver({ name, surname })
+                .then((response) =>{
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                          })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                          })
+                    }
+                })
         }
-        Toast.fire({
-            icon: 'info',
-            title: 'Chofer modificado'
-          })
+        
     }
 
     const [show, setShow] = useState(false);

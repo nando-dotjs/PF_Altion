@@ -65,7 +65,7 @@ const Login = () => {
                 setErrMsg('Missing Mail or Password');
                 Swal.fire({
                     icon:"warning",
-                    text:'Debe ingresar Usuario y Contraseña'})
+                    text:'Debe ingresar Correo y Contraseña'})
             } else if (err.status === 401) {
                 setErrMsg('El usuario y/o contraseña es incorrecto');
                
