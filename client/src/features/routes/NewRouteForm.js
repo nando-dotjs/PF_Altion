@@ -12,7 +12,6 @@ import useTitle from "../../hooks/useTitle"
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
 import Zone from "./Zone"
 import { useGetDriversQuery } from "../drivers/driversApiSlice"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragList from "./DragList";
 import {useGetPointsQuery} from '../points/pointsApiSlice'
 
