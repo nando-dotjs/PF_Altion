@@ -4,90 +4,90 @@ import {
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
-const usersAdapter = createEntityAdapter({})
+const routesAdapter = createEntityAdapter({})
 
-const initialState = usersAdapter.getInitialState()
+const initialState = routesAdapter.getInitialState()
 
-export const usersApiSlice = apiSlice.injectEndpoints({
+export const routesApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getUsers: builder.query({
-            query: () => '/users',
+        getRoutes: builder.query({
+            query: () => '/routes',
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
             transformResponse: responseData => {
-                const loadedUsers = responseData.map(user => {
-                    user.id = user._id
-                    return user
+                const loadedRoutes = responseData.map(route => {
+                    route.id = route._id
+                    return route
                 });
-                return usersAdapter.setAll(initialState, loadedUsers)
+                return routesAdapter.setAll(initialState, loadedRoutes)
             },
             providesTags: (result, error, arg) => {
                 if (result?.ids) {
                     return [
-                        { type: 'User', id: 'LIST' },
-                        ...result.ids.map(id => ({ type: 'User', id }))
+                        { type: 'Route', id: 'LIST' },
+                        ...result.ids.map(id => ({ type: 'Route', id }))
                     ]
-                } else return [{ type: 'User', id: 'LIST' }]
+                } else return [{ type: 'Route', id: 'LIST' }]
             }
         }),
-        addNewUser: builder.mutation({
-            query: initialUserData => ({
-                url: '/users',
+        addNewRoute: builder.mutation({
+            query: initialRouteData => ({
+                url: '/routes',
                 method: 'POST',
                 body: {
-                    ...initialUserData,
+                    ...initialRouteData,
                 }
             }),
             invalidatesTags: [
-                { type: 'User', id: "LIST" }
+                { type: 'Route', id: "LIST" }
             ]
         }),
-        updateUser: builder.mutation({
-            query: initialUserData => ({
-                url: '/users',
+        updateRoute: builder.mutation({
+            query: initialRouteData => ({
+                url: '/routes',
                 method: 'PATCH',
                 body: {
-                    ...initialUserData,
+                    ...initialRouteData,
                 }
             }),
             invalidatesTags: (result, error, arg) => [
-                { type: 'User', id: arg.id }
+                { type: 'Route', id: arg.id }
             ]
         }),
-        deleteUser: builder.mutation({
+        deleteRoute: builder.mutation({
             query: ({ id }) => ({
-                url: `/users`,
+                url: `/routes`,
                 method: 'DELETE',
                 body: { id }
             }),
             invalidatesTags: (result, error, arg) => [
-                { type: 'User', id: arg.id }
+                { type: 'Route', id: arg.id }
             ]
         }),
     }),
 })
 
 export const {
-    useGetUsersQuery,
-    useAddNewUserMutation,
-    useUpdateUserMutation,
-    useDeleteUserMutation,
-} = usersApiSlice
+    useGetRoutesQuery,
+    useAddNewRouteMutation,
+    useUpdateRouteMutation,
+    useDeleteRouteMutation,
+} = routesApiSlice
 
 // returns the query result object
-export const selectUsersResult = usersApiSlice.endpoints.getUsers.select()
+export const selectRoutesResult = routesApiSlice.endpoints.getRoutes.select()
 
 // creates memoized selector
-const selectUsersData = createSelector(
-    selectUsersResult,
-    usersResult => usersResult.data // normalized state object with ids & entities
+const selectRoutesData = createSelector(
+    selectRoutesResult,
+    routesResult => routesResult.data // normalized state object with ids & entities
 )
 
 //getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
-    selectAll: selectAllUsers,
-    selectById: selectUserById,
-    selectIds: selectUserIds
-    // Pass in a selector that returns the users slice of state
-} = usersAdapter.getSelectors(state => selectUsersData(state) ?? initialState)
+    selectAll: selectAllRoutes,
+    selectById: selectRouteById,
+    selectIds: selectRouteIds
+    // Pass in a selector that returns the routes slice of state
+} = routesAdapter.getSelectors(state => selectRoutesData(state) ?? initialState)

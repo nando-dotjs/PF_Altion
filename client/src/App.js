@@ -9,6 +9,7 @@ import PersistLogin from './features/auth/PersistLogin';
 import RequireAuth from './features/auth/RequireAuth';
 
 import RoutesList from './features/routes/RoutesList'
+import NewRouteForm from './features/routes/NewRouteForm'
 
 import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
@@ -43,7 +44,7 @@ function App() {
   return (
     
     <Routes>
-    
+                              
       <Route path="/" element={<Layout />}>
         {/* public routes */ }
         <Route index element={<Login />} />
@@ -97,6 +98,7 @@ function App() {
 
             <Route path="routes">
               <Route index element={<RoutesList />} />
+              <Route path="new" element={<NewRouteForm />} />
             </Route>
 
             <Route path="maps">

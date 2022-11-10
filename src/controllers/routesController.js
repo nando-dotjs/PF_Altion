@@ -16,22 +16,22 @@ const getAllRoutes = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'No hay recorridos disponibles' })
     }
 
-    const routesWithUser = await Promise.all(routes.map(async (route) => {
-        const user = await User.findById(route.user).lean().exec()
-        return { ...route, username: user.username }
-    }))
+    // const routesWithUser = await Promise.all(routes.map(async (route) => {
+    //     const user = await User.findById(route.user).lean().exec()
+    //     return { ...route, username: user.username }
+    // }))
 
-    res.json(routesWithUser)
+    res.json(routes)
 })
 
 // @desc Create new route
 // @route POST /routes
 // @access Private
 const createNewRoute = asyncHandler(async (req, res) => {
-    const { date, time, points, collectors, driver, createdBy} = req.body
+    const { date, time, zones, points, collectors, driver, createdBy} = req.body
 
     // Confirm data
-    if (!date || !time || !points || !driver || !collectors || !createdBy) {
+    if (!date || !time || !zones || !points || !createdBy) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -43,7 +43,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     // }
 
     // Create and store the new user 
-    const route = await Route.create({ date, time, points, collectors, driver, createdBy })
+    const route = await Route.create({ date, time, zones, points, collectors, driver, createdBy })
     if (route) { // Created 
         return res.status(201).json({ message: 'Nuevo recorrido creado' })
     } else {
@@ -56,10 +56,10 @@ const createNewRoute = asyncHandler(async (req, res) => {
 // @route PATCH /routes
 // @access Private
 const updateRoute = asyncHandler(async (req, res) => {
-    const { id, date, points, driver, collectors, state } = req.body
+    const { id, date, time, zones, points, collectors, driver, state } = req.body
 
     // Confirm data
-    if (!id || !date || !points || !driver || !collectors || !state) {
+    if (!id || !date || !time || !zones || !points || !state) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -78,8 +78,10 @@ const updateRoute = asyncHandler(async (req, res) => {
     //     return res.status(409).json({ message: 'Ya existe un ROUTE asociado a este usuario' })
     // }
 
-    route.user = user
+    route.createdBy = createdBy
     route.date = date
+    route.time = time
+    route.zones = zones
     route.points = points
     route.driver = driver
     route.collectors = collectors
