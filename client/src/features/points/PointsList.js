@@ -59,20 +59,10 @@ const PointsList = () => {
 
         content = (
             <>
-                <Modal 
-                show={!show} 
-                onHide={handleClose}
-                size="lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="cabezal"><strong>Lista de Puntos</strong></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="show-grid">
+                <br />
                         <Container>                        
-                       
                             <div id="fondoTabla">
-
-                                <Table responsive className="table tableUsers">
+                                <Table  striped bordered hover size="sm" className="table tableUsers">
                                     <thead>
                                         <tr>
                                             <th>Estado</th>
@@ -87,20 +77,9 @@ const PointsList = () => {
                                         {tableContent}
                                     </tbody>
                                 </Table>
-
                             </div>
-
                         </Container>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancelar
-                        </Button>
-                        {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button> */}
-                    </Modal.Footer>
-                </Modal>
+                   
             </>
 
         )
