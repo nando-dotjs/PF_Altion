@@ -25,7 +25,7 @@ const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const Register = () => {
 
-    const [createNewUser, {isLoading, isSuccess, isError, error}] = useCreateNewUserMutation()
+    const [createNewUser, { isLoading, isSuccess, isError, error }] = useCreateNewUserMutation()
 
     const navigate = useNavigate()
 
@@ -121,33 +121,64 @@ const Register = () => {
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
         const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
-            if (canSave) {
-                    await createNewUser({ name, surname, mail, password, role })
-                        .then((response) => {
-                            if (response.error) {
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'error',
-                                    title: response.error.data.message,
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                })
-                            } else {
-                                Swal.fire({ 
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: response.data.message,
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                })
-                        
-                            }
+
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+        } else if (surname == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el apellido'
+            })
+        } else if (mail == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el correo electrónico'
+            })
+        } else if (password == "") {  //COMPRUEBA CAMPOS VACIOS
+
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar la contraseña'
+            })
+
+            // alert("Los campos no pueden quedar vacios");
+            // return true;
+        } else if (canSave) {
+            await createNewUser({ name, surname, mail, password, role })
+                .then((response) => {
+                    if (response.error) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: response.error.data.message,
+                            showConfirmButton: false,
+                            timer: 2500
                         })
-            }
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+
+                    }
+                })
+        }
 
     }
-    
-    
+
+
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
@@ -166,10 +197,12 @@ const Register = () => {
         timerProgressBar: true
     })
 
-
-    
-       
-    
+    function validarCampos() {
+        if ((name == "") || (surname == "") || (mail == "") || password == "") {  //COMPRUEBA CAMPOS VACIOS
+            alert("Los campos no pueden quedar vacios");
+            // return true;
+        }
+    }
 
     return (
         <>
@@ -284,37 +317,6 @@ const Register = () => {
                                     Ingrese un correo electrónico válido.<br />
                                 </p>
                                 <br />
-                                {/* <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Nombre de usuario"
-                                                type="text"
-                                                id="username"
-                                                ref={userRef}
-                                                autoComplete="off"
-                                                onChange={(e) => setUsername(e.target.value)}
-                                                value={username}
-                                                required
-                                                aria-invalid={validUsername ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setUserFocus(true)}
-                                                onBlur={() => setUserFocus(false)}
-                                            />
-                                        </div>
-                                        <label htmlFor="username" id="iconito">
-                                            <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                                            <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                                        </label>
-                                    </div>
-                                </div>
-                                <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    4 a 24 caracteres.<br />
-                                    Debe empezar con una letra.<br />
-                                    Letras, números, guión bajo y guiones permitidos.
-                                </p> */}
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -327,7 +329,7 @@ const Register = () => {
                                                 value={password}
                                                 required
                                                 aria-invalid={validPassword ? "false" : "true"}
-                                                aria-describedby="pwdnote"
+                                                aria-describedby="uidnote"
                                                 onFocus={() => setPwdFocus(true)}
                                                 onBlur={() => setPwdFocus(false)}
                                             />
@@ -338,7 +340,8 @@ const Register = () => {
                                         </label>
                                     </div>
                                 </div>
-                                <p id="pwdnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
+                                {/* id="pwdnote" */}
+                                <p id="uidnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     8 a 24 caracteres.<br />
                                     Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
@@ -392,7 +395,10 @@ const Register = () => {
 
                                 <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button>
+                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} 
+                                    // disabled={!validPassword || !validMatch ? true : false}
+                                    >Registrar
+                                    </Button>
                                     &nbsp;
                                     <Button className="btn btn-secondary" href="/">Volver</Button>
                                 </Col>
@@ -413,7 +419,7 @@ const Register = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     Ya estás registrado?
-                    
+
                     <span className="line">
                         {/*put router link here*/}
                         <a href="/">Ingresar</a>

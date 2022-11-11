@@ -39,7 +39,7 @@ const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
 
-    const { name, mail,  surname, role, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { name, mail,  surname, role, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -392,16 +392,16 @@ const DashHeader = () => {
                             <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
-                            <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
+                            {(isAdmin || isEmpresa || isCEV) &&<Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
                             <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item>
                             <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item>
-                            </NavDropdown></Navbar.Brand>
+                            </NavDropdown></Navbar.Brand>}
 
-                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {(isAdmin || isRecolector ) && <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                          <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item>
                             {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
-                            </NavDropdown></Navbar.Brand>
+                          <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item>
+                            </NavDropdown></Navbar.Brand>}
 
                         </Nav>
                       
