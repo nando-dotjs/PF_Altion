@@ -12,9 +12,9 @@ import useTitle from "../../hooks/useTitle"
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
 import Zone from "./Zone"
 import { useGetDriversQuery } from "../drivers/driversApiSlice"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragList from "./DragList";
 import {useGetPointsQuery} from '../points/pointsApiSlice'
+import RouteMapContainer from '../maps/RouteMapContainer'
 
 
 
@@ -49,7 +49,8 @@ const NewRouteForm = () => {
     const [time, setTime] = useState('');
     const [driver, setDriver] = useState({_id:'', name: '', surname: ''});
     const [chargedList, setChargedList] = useState('');
-
+    const [selectedPoints, setSelectedPoints] = useState([]);
+    const [routeMap, setRouteMap] = useState('');
 
     const onDriverChanged = e => setDriver(e)
 
@@ -151,8 +152,9 @@ const NewRouteForm = () => {
     
     let filteredPoints = []
 
-    const filterPoints = () => {
+    const filterPoints = (e) => {
 
+        e.preventDefault()
         filteredPoints = []
         for(var z in zoneList){
             for(var p in pointsJSON){
@@ -163,12 +165,18 @@ const NewRouteForm = () => {
         }
         
         setChargedList(
-            <DragList points={filteredPoints}/>
+            <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
         )
-        console.log(chargedList)
 
     }
 
+    
+
+    const prepareMap = () => {
+        setRouteMap(
+            <RouteMapContainer points={selectedPoints}/>
+        )
+    }
 
 
     const content = (
@@ -208,8 +216,8 @@ const NewRouteForm = () => {
                                     {zonesList}
                                 </div>
 
-                                <button type="button" className="btn btn-primary" onClick={filterPoints}>
-                                        Launch modal
+                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                        Seleccionar Rutas
                                 </button>
 
                                 <div className="row">
@@ -228,189 +236,17 @@ const NewRouteForm = () => {
                                     >
                                     </Select>
                                 </div>
-
+                                <br/>
                                 <div className="scrollableList">
                                     {chargedList}
                                 </div>
+
+                                <button className={'btn btn-success'} onClick={() => prepareMap()}>
+                                Confirmar Ruta
+                                </button>
                                 
 
-                                {/* <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Nombre"
-                                            type="text"
-                                            id="name"
-                                            autoComplete="off"
-                                            onChange={(e) => setName(e.target.value)}
-                                            value={name}
-                                            required
-                                            aria-invalid={validName ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setNameFocus(true)}
-                                            onBlur={() => setNameFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="name" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-
-                                        <input
-                                            className="form-control"
-                                            placeholder="Apellido"
-                                            type="text"
-                                            id="surname"
-                                            autoComplete="off"
-                                            onChange={(e) => setSurname(e.target.value)}
-                                            value={surname}
-                                            required
-                                            aria-invalid={validSurname ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setSurnameFocus(true)}
-                                            onBlur={() => setSurnameFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="surname" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
-                                    </label>
-
-                                </div>
-                            </div>
-                            <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Correo Electrónico"
-                                            type="text"
-                                            id="mail"
-                                            autoComplete="off"
-                                            onChange={(e) => setMail(e.target.value)}
-                                            value={mail}
-                                            required
-                                            aria-invalid={validMail ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setMailFocus(true)}
-                                            onBlur={() => setMailFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="mail" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
-                                    </label>
-
-                                </div>
-                            </div>
-                            <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                Ingrese un correo electrónico válido.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Nombre de usuario"
-                                            type="text"
-                                            id="username"
-                                            ref={userRef}
-                                            autoComplete="off"
-                                            onChange={(e) => setUsername(e.target.value)}
-                                            value={username}
-                                            required
-                                            aria-invalid={validUsername ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setUserFocus(true)}
-                                            onBlur={() => setUserFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="username" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                4 a 24 caracteres.<br />
-                                Debe empezar con una letra.<br />
-                                Letras, números, guión bajo y guiones permitidos.
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Contraseña"
-                                            type="password"
-                                            id="password"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            value={password}
-                                            required
-                                            aria-invalid={validPassword ? "false" : "true"}
-                                            aria-describedby="pwdnote"
-                                            onFocus={() => setPwdFocus(true)}
-                                            onBlur={() => setPwdFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="password" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} id="pass" className={validPassword || !password ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="pwdnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                8 a 24 caracteres.<br />
-                                Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
-                                Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                            </p>
-
-
-
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Confirmar contraseña"
-                                            type="password"
-                                            id="confirm_pwd"
-                                            onChange={(e) => setMatchPwd(e.target.value)}
-                                            value={matchPwd}
-                                            required
-                                            aria-invalid={validMatch ? "false" : "true"}
-                                            aria-describedby="confirmnote"
-                                            onFocus={() => setMatchFocus(true)}
-                                            onBlur={() => setMatchFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="confirm_pwd" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                                    </label> */}
+                                {routeMap}
                             </div>
                         </form>
                     </main>
