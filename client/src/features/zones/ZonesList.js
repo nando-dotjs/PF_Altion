@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Container from "react-bootstrap/esm/Container";
 
 const ZonesList = () => {
     
@@ -47,11 +48,8 @@ const ZonesList = () => {
 
         content = (
             <>
-            <Modal show={!show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title id="cabezal"><strong>Lista de Zonas</strong></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          <br/>
+          <Container>
         <div id="fondoTabla">
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead className="tableThead">
@@ -66,16 +64,7 @@ const ZonesList = () => {
                 </tbody>
             </Table>
             </div>
-            </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-           Cancelar
-          </Button>
-          {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button> */}
-        </Modal.Footer>
-      </Modal>
+            </Container>
         </>
         )
     }
