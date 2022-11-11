@@ -1,5 +1,4 @@
 export const ROLES = {
-    Default:'-- Seleccione --',
     Admin: 'Admin',
     CEV: 'CEV',
     Empresa: 'Empresa',

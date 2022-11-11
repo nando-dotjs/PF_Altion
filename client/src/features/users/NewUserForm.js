@@ -199,6 +199,26 @@ const Toast = Swal.mixin({
   })
 
 
+  let selectRol = null 
+  selectRol = (
+
+    <Form.Select
+            id="role"
+            name="role"
+            className="formSelect"
+            value={role}
+            
+            onChange={(e) => setRole(e.target.value)}
+        >
+            <option selected  > -- Elige usuario -- </option>
+            {
+                options
+            }
+        </Form.Select>
+
+
+  )
+
 
     const content = (
         <>
@@ -376,15 +396,22 @@ const Toast = Swal.mixin({
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
 
-                                <Form.Select
+                                {selectRol}
+                                {/* <Form.Select
                                     id="role"
                                     name="role"
                                     className={`formSelect`}
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
                                 >
-                                    {options}
-                                </Form.Select>
+                                    <option selected disabled hidden > -- Elige usuario -- </option>
+
+                                    {
+                                    
+                                    options
+                                    
+                                    }
+                                </Form.Select> */}
 
                                 {/* <Col>
                                     <br />
