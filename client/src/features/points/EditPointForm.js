@@ -240,16 +240,17 @@ const EditPointForm = ({ point, users }) => {
                 onChange={onCompletedChanged}
             />
         )
-    } else if (isCEV || isEmpresa) {
-        input = <Form.Check readOnly
-            className={`formInput`}
-            id="idUser"
-            name="idUser"
-            type="text"
-            autoComplete="off"
-            value={username}
-        />
-    }
+    } 
+    // else if (isCEV || isEmpresa) {
+    //     input = <Form.Check readOnly
+    //         className={`formInput`}
+    //         id="idUser"
+    //         name="idUser"
+    //         type="text"
+    //         autoComplete="off"
+    //         value={username}
+    //     />
+    // }
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -420,16 +421,16 @@ const EditPointForm = ({ point, users }) => {
                             <div className="container">
                                 <div className="row">
                                     <div className="col">
-                                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                                            Asigando a:</label>
+                                    {(isAdmin) &&<label className="formLabel formCheckboxContainer" htmlFor="point-username">
+                                            Asigando a:</label>}
                                         <br />
                                         {selector}
                                         {input}
                                     </div>
                                     <br />
                                     <div className="col">
-                                        <label className="formLabel formCheckboxContainer" htmlFor="point-username">
-                                            Zona:</label>
+                                    {(isAdmin) && <label className="formLabel formCheckboxContainer" htmlFor="point-username">
+                                            Zona:</label>}
                                         {selectorZone}
                                     </div>
                                 </div>
