@@ -126,7 +126,14 @@ const NewUserForm = () => {
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (name == ""){
+        if (role == "-- Seleccione --"){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe seleccionar un tipo de usuario'
+            })
+        }
+    else if (name == ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
@@ -198,26 +205,6 @@ const Toast = Swal.mixin({
     timerProgressBar: true
   })
 
-
-  let selectRol = null 
-  selectRol = (
-
-    <Form.Select
-            id="role"
-            name="role"
-            className="formSelect"
-            value={role}
-            
-            onChange={(e) => setRole(e.target.value)}
-        >
-            <option selected  > -- Elige usuario -- </option>
-            {
-                options
-            }
-        </Form.Select>
-
-
-  )
 
 
     const content = (
@@ -396,22 +383,15 @@ const Toast = Swal.mixin({
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
 
-                                {selectRol}
-                                {/* <Form.Select
+                                <Form.Select
                                     id="role"
                                     name="role"
                                     className={`formSelect`}
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
                                 >
-                                    <option selected disabled hidden > -- Elige usuario -- </option>
-
-                                    {
-                                    
-                                    options
-                                    
-                                    }
-                                </Form.Select> */}
+                                    {options}
+                                </Form.Select>
 
                                 {/* <Col>
                                     <br />
