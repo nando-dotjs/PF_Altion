@@ -9,11 +9,6 @@ const asyncHandler = require('express-async-handler')
 const getAllPoints = asyncHandler(async (req, res) => {
     // Get all points from MongoDB
     const points = await Point.find().lean()
-    const zones = await Zone.find().select().lean()
-    
-    if (!zones?.length) {
-        return res.status(400).json({message: 'No puedes editar un punto porque no hay zonas creadas'})
-    } 
     // If no points 
     if (!points?.length) {
         return res.status(400).json({ message: 'No hay puntos disponibles' })
