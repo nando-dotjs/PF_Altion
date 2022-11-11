@@ -405,7 +405,7 @@ const DashHeader = () => {
 
                         </Nav>
                       
-                        <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
+                        <Navbar.Brand><NavDropdown title={name+' '+surname} id="basic-nav-dropdown" >
                          <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
                         </NavDropdown></Navbar.Brand>
                     </Navbar.Collapse>
