@@ -126,7 +126,35 @@ const NewUserForm = () => {
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+        } else if (surname == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el apellido'
+            })
+        } else if (mail == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el correo electrónico'
+            })
+        } else if (password == "") {  //COMPRUEBA CAMPOS VACIOS
+
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar la contraseña'
+            })
+            
+        }else if (canSave) {
                 await addNewUser({ name, surname, mail, password, role })
                         .then((response) => {
                             if(response.error) {
@@ -416,25 +444,17 @@ const Toast = Swal.mixin({
 
                             </form>
                             <br />
-                            {/* <p>
-                                Ya estás registrado?<br />
-                                <span className="line">
-                                   
-                                    <a href="/">Ingresar</a>
-                                </span>
-                            </p> */}
                         </main>
                     </section>
                 </Container>
-            {/* </div> */}
             </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button>
+          <Button variant="primary" onClick={onSaveUserClicked} 
+        //   disabled={!validPassword || !validMatch ? true : false}
+          >Registrar</Button>
         </Modal.Footer>
       </Modal>
         </>

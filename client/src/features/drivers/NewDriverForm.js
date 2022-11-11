@@ -72,7 +72,21 @@ const NewDriverForm = () => {
 
     const onSaveDriverClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+        } else if (surname == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el apellido'
+            })
+        }else if (canSave) {
             await addNewDriver({ name, surname })
                 .then((response) =>{
                     if(response.error){
@@ -122,20 +136,9 @@ const NewDriverForm = () => {
         </Modal.Header>
         <Modal.Body>
             <p className={errClass}>{error?.data?.message}</p>
-
-            {/* <div className="account-wall" align="center"> */}
-
                 <form className="form" onSubmit={onSaveDriverClicked}>
                     <div className="formTitleRow">
-                        {/* <h1 id="cabezal">Registro de Chofer</h1> */}
                         <div className="formActionButtons">
-                            {/* <button
-                            className="icon-button"
-                            title="Save"
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button> */}
                         </div>
                     </div>
                     <br/> 
@@ -215,8 +218,9 @@ const NewDriverForm = () => {
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>
-           Registrar
+          <Button variant="primary" onClick={onSaveDriverClicked} 
+        //   disabled={!validName || !validSurname ? true : false}
+          >Registrar
           </Button>
         </Modal.Footer>
       </Modal>

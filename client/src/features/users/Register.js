@@ -211,18 +211,9 @@ const Register = () => {
                     <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* <div className="account-wall" align="center">
-                <Container fluid> */}
                     <section>
-
-                        {/* <header>
-                            <h1 id="cabezal">Registro de usuario</h1>
-                        </header> */}
-
                         <main className='register'>
                             <Form className="form" onSubmit={onSaveUserClicked}>
-
-
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -347,9 +338,6 @@ const Register = () => {
                                     Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
                                     Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                                 </p>
-
-
-
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
@@ -405,13 +393,6 @@ const Register = () => {
 
                             </Form>
                             <br />
-                            {/* <p>
-                                Ya estás registrado?<br />
-                                <span className="line">
-                                    
-                                    <a href="/">Ingresar</a>
-                                </span>
-                            </p> */}
                         </main>
                     </section>
                     {/* </Container>

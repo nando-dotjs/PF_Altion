@@ -133,8 +133,33 @@ const NewPointForm = ({ users }) => {
 
     const onSavePointClicked = async (e) => {
         e.preventDefault()
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
 
-        if ((isAdmin || isCEV || isEmpresa) && canSave) {
+
+        } else if (phoneNumber == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el teléfono o celular'
+            })
+        } else if (street == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar calle'
+            })
+        } else if (streetNumber == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar número de puerta'
+            })
+         }else if ((isAdmin || isCEV || isEmpresa) && canSave) {
             let userIdLog = '';
             users.map(user => {
                 if (user.mail === mail) {
@@ -405,8 +430,9 @@ const NewPointForm = ({ users }) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancelar
                     </Button>
-                    <Button variant="primary" onClick={onSavePointClicked} disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}>
-                        Registrar
+                    <Button variant="primary" onClick={onSavePointClicked} 
+                    // disabled={!validPhoneNumber || !validName || !validStreet || !validStreetNumber || !validLatitude || !validLongitude ? true : false}
+                    >Registrar
                     </Button>
                 </Modal.Footer>
             </Modal>

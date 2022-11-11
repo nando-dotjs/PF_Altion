@@ -73,7 +73,21 @@ const NewZoneForm = () => {
 
     const onSaveZoneClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+        } else if (details == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar detalle de zona'
+            })
+        }else if (canSave) {
             await addNewZone({ name, details })
                 .then((response) => {
                     if(response.error){
@@ -211,8 +225,9 @@ const Toast = Swal.mixin({
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked}  disabled={!validName ? true : false}>
-           Registrar
+          <Button variant="primary" onClick={onSaveZoneClicked}  
+        //   disabled={!validName ? true : false}
+          >Registrar
           </Button>
         </Modal.Footer>
       </Modal>
