@@ -80,13 +80,6 @@ const NewZoneForm = () => {
                 title: 'Debe completar el nombre'
             })
 
-
-        } else if (details == "") {
-            Toast.fire({
-                icon: 'error',
-                position:"top",
-                title: 'Debe completar detalle de zona'
-            })
         }else if (canSave) {
             await addNewZone({ name, details })
                 .then((response) => {

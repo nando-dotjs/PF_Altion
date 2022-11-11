@@ -1,4 +1,5 @@
 const Point = require('../models/Point')
+const Zone = require ('../models/Zone')
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
 
@@ -8,7 +9,11 @@ const asyncHandler = require('express-async-handler')
 const getAllPoints = asyncHandler(async (req, res) => {
     // Get all points from MongoDB
     const points = await Point.find().lean()
-
+    const zones = await Zone.find().select().lean()
+    
+    if (!zones?.length) {
+        return res.status(400).json({message: 'No puedes editar un punto porque no hay zonas creadas'})
+    } 
     // If no points 
     if (!points?.length) {
         return res.status(400).json({ message: 'No hay puntos disponibles' })
@@ -60,10 +65,10 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     // Confirm point exists to update
     const point = await Point.findById(id).exec()
-
-    if (!point) {
+    if (!point ) {
         return res.status(400).json({ message: 'No se ha encontrado punto' })
-    } 
+    }
+
 
     point.user = user
     point.name = name
