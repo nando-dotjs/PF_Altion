@@ -75,19 +75,9 @@ const UsersList = () => {
 
         content = (
             <>
-                {/* <Modal show={!show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="cabezal"><strong>Lista de Usuarios</strong></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body> */}
+               
                 <Container>
-                    {/* <section className="welcome">
-                                <div id="fechaDiv" className="">
-
-                                    <p>{today}</p>
-
-                                </div>
-                            </section> */}
+                   
                     <br />
                     <div id="fondoTabla">
 
@@ -116,16 +106,7 @@ const UsersList = () => {
                     </div>
 
                 </Container>
-                {/* </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancelar
-                        </Button> */}
-                {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button> */}
-                {/* </Modal.Footer>
-                </Modal> */}
+                
             </>
         )
     }
