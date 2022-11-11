@@ -75,11 +75,21 @@ const EditZoneForm = ({ zone }) => {
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveZoneClicked = async (e) => {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+       }
         await updateZone({ id: zone.id, name, details, active })
             .then((response) => {
                 if(response.error){
                     Toast.fire({
                         icon: 'error',
+                        position: 'top',
                         title: response.error.data.message
                         })
                 }else{
@@ -231,7 +241,9 @@ const EditZoneForm = ({ zone }) => {
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button>
+          <Button variant="primary" onClick={onSaveZoneClicked} 
+        //   disabled={!validName ? true : false}
+          >Guardar cambios</Button>
           
         </Modal.Footer>
       </Modal>

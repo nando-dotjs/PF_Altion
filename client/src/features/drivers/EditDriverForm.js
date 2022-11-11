@@ -76,11 +76,13 @@ const EditDriverForm = ({ driver }) => {
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveDriverClicked = async (e) => {
+       
         await updateDriver({ id: driver.id, name, surname, active })
             .then((response) => {
                 if(response.error){
                     Toast.fire({
                         icon: 'error',
+                        position:'top',
                         title: response.error.data.message
                       })
                 } else {
@@ -132,7 +134,7 @@ const EditDriverForm = ({ driver }) => {
         <Modal.Body>
             {/* <div className="account-wall" align="center">
                 <Container fluid> */}
-                    <p className={errClass}>{errContent}</p>
+                    {/* <p className={errClass}>{errContent}</p> */}
                     <main className='editDriver'>
 
                         <form className="form" onSubmit={e => e.preventDefault()}>
@@ -242,7 +244,9 @@ const EditDriverForm = ({ driver }) => {
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</Button>
+          <Button variant="primary" onClick={onSaveDriverClicked} 
+        //   disabled={!validName || !validSurname ? true : false}
+          >Guardar cambios</Button>
           
         </Modal.Footer>
       </Modal>
