@@ -98,8 +98,6 @@ const NewZoneForm = () => {
         }
     }
 
-    // const errClass = isError ? "errmsg" : "offscreen"
-
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
