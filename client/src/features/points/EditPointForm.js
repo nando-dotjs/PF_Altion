@@ -220,7 +220,7 @@ const EditPointForm = ({ point, users }) => {
                 value={optionsZone}
                 onChange={onZoneNameChanged}
             >
-                <option > -- Elige zona -- </option>
+                <option selected disabled hidden > -- Elige zona -- </option>
                 {
                     optionsToChoose
                 }
