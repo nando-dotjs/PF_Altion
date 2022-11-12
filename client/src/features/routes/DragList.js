@@ -36,7 +36,6 @@ const DragList = (props) => {
 		dragItem.current = null
 		dragOverItem.current = null
 
-		console.log(_points)
 		//update the actual array
 		setPoints(_points)
 	}
@@ -63,7 +62,7 @@ const DragList = (props) => {
 						onDragEnd={handleSort}
 						onDragOver={(e) => e.preventDefault()}>
 						<i className="fa-solid fa-bars"></i>
-						<h3>{item.name}</h3>
+						<p>{`${item.name} - ${item.street} ${item.streetNumber}`}</p>
 						<button className={'btn btn-danger'} onClick={() => deletePoint(item)}>
 							X
 						</button>

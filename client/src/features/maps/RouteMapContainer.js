@@ -32,8 +32,6 @@ const RouteMap = (props) => {
     let routePointList = []
     const [routePoints, setRoutePoints] = useState(props.points?.map(point => routePointList.push({location:{"lat":+point.lat, "lng":+point.long}})))
 
-    console.log(routePointList)
-
     /** @type React.MutableRefObject<HTMLInputElement> */
     const originRef = useRef()
     /** @type React.MutableRefObject<HTMLInputElement> */
