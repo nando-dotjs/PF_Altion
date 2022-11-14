@@ -49,10 +49,12 @@ const NewRouteForm = () => {
     const [time, setTime] = useState('');
     const [driver, setDriver] = useState({_id:'', name: '', surname: ''});
     const [chargedList, setChargedList] = useState('');
+    const [selectedZones, setSelectedZones] = useState([]);
     const [selectedPoints, setSelectedPoints] = useState([]);
     const [routeMap, setRouteMap] = useState('');
 
     const onDriverChanged = e => setDriver(e)
+    const onZoneChanged = e => setSelectedZones(e)
 
 
     const onSaveRouteClicked = async (e) => {
@@ -65,48 +67,58 @@ const NewRouteForm = () => {
     }
     const errClass = isError ? "errmsg" : "offscreen"
     
-    let zonesList
-    let zoneList = []
+    // let zonesList
+    // let zoneList = []
 
-    const loadZones = (zone) => {
-        if (zoneList?.length > 0) {
-            let z = zoneList.findIndex(e => e._id === zone._id)
-            if (z === -1){
-                zoneList.push(zone)
-            }else{
-                zoneList.splice(z, 1)
-            } 
-        }else{
-            zoneList.push(zone)
-        }
-        console.log(zoneList)
-    }
+    // const loadZones = (zone) => {
+    //     if (zoneList?.length > 0) {
+    //         let z = zoneList.findIndex(e => e._id === zone._id)
+    //         if (z === -1){
+    //             zoneList.push(zone)
+    //         }else{
+    //             zoneList.splice(z, 1)
+    //         } 
+    //     }else{
+    //         zoneList.push(zone)
+    //     }
+    //     console.log(zoneList)
+    // }
 
-    if (zonesisLoading) zonesList = <p>Cargando...</p>
+    // if (zonesisLoading) zonesList = <p>Cargando...</p>
 
-    if (zonesisError) {
-        zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
-    }
+    // if (zonesisError) {
+    //     zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
+    // }
 
-    if (zonesisSuccess) {
+    // if (zonesisSuccess) {
 
-        const { ids } = zones
+    //     const { ids } = zones
 
-        const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
-        zonesList = (
-            <Table className="table tableZones" bordered hover>
-                <thead className="tableThead">
-                    <tr>
-                        <th scope="col" className="tableTh zoneCheck">Selec.</th>
-                        <th scope="col" className="tableTh zoneName">Zona</th>
-                        <th scope="col" className="tableTh zoneDetails">Detalles</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </Table>
-        )
+    //     const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
+    //     zonesList = (
+    //         <Table className="table tableZones" bordered hover>
+    //             <thead className="tableThead">
+    //                 <tr>
+    //                     <th scope="col" className="tableTh zoneCheck">Selec.</th>
+    //                     <th scope="col" className="tableTh zoneName">Zona</th>
+    //                     <th scope="col" className="tableTh zoneDetails">Detalles</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 {tableContent}
+    //             </tbody>
+    //         </Table>
+    //     )
+    // }
+
+    //Nueva lógica de Zonas para react-select
+
+    let zonesJSON = {}
+    zonesisSuccess ? zonesJSON = zones.entities : zonesJSON = {}
+
+    let zonesList = []
+    for(var i in zonesJSON){
+        zonesList.push(zonesJSON [i]);
     }
 
     const {
@@ -155,10 +167,11 @@ const NewRouteForm = () => {
     const filterPoints = (e) => {
 
         e.preventDefault()
+
         filteredPoints = []
-        for(var z in zoneList){
+        for(var z in selectedZones){
             for(var p in pointsJSON){
-               if(pointsJSON[p].zone === zoneList[z].name){
+               if(pointsJSON[p].zone === selectedZones[z].name){
                     filteredPoints.push(pointsJSON[p])
                }
             }
@@ -212,14 +225,7 @@ const NewRouteForm = () => {
                                         <option>Noche</option>
                                     </Form.Select>
                                 </div>
-                                <div className="row">
-                                    {zonesList}
-                                </div>
-
-                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
-                                        Seleccionar Rutas
-                                </button>
-
+                                <br/>
                                 <div className="row">
                                     <Form.Label>Chofer del Recorrido</Form.Label>
                                 </div>
@@ -237,6 +243,29 @@ const NewRouteForm = () => {
                                     </Select>
                                 </div>
                                 <br/>
+                                <div className="row">
+                                    <Form.Label>Zona/s del Recorrido</Form.Label>
+                                </div>
+                                <div className="row">
+                                    <Select
+                                        id="zone"
+                                        name="zone"
+                                        options={zonesList}
+                                        className="formSelect"
+                                        value={selectedZones}
+                                        onChange={onZoneChanged}
+                                        getOptionLabel={(option) => option.name + ' - ' + option.details}
+                                        getOptionValue={(option) => option._id}
+                                        isMulti
+                                    >
+                                    </Select>
+
+                                </div>
+
+                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                        Seleccionar Zonas
+                                </button>
+
                                 <div className="scrollableList">
                                     {chargedList}
                                 </div>
