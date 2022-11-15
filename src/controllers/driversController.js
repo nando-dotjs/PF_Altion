@@ -15,6 +15,20 @@ const getAllDrivers = asyncHandler (async (req, res) => {
     res.json(drivers)
 })
 
+// @desc Obtener un chofer
+// @route GET /drivers/driver
+// @access Privada
+const getDriver = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const driver = await Driver.find({"name":name}).select().lean()
+    if(!driver){
+        return res.status(400).json({message: 'No se encontró el Conductor'})
+    }
+    res.json(driver)
+})
+
+
+
 // @desc Crear nuevo chofer
 // @route POST /drivers
 // @access Privada
@@ -91,6 +105,7 @@ const deleteDriver = asyncHandler (async (req, res) => {
 
 module.exports = {
     getAllDrivers,
+    getDriver,
     createNewDriver,
     updateDriver,
     deleteDriver

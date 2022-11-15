@@ -15,6 +15,18 @@ const getAllZones = asyncHandler (async (req, res) => {
     res.json(zones)
 })
 
+// @desc Obtener una zona
+// @route GET /zones/zone
+// @access Privada
+const getZone = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const zone = await Zone.find({"name":name}).select().lean()
+    if(!zone){
+        return res.status(400).json({message: 'No se encontró la Zona'})
+    }
+    res.json(zone)
+})
+
 // @desc Crear nuevo Zona
 // @route POST /zones
 // @access Privada
@@ -103,6 +115,7 @@ const deleteZone = asyncHandler (async (req, res) => {
 
 module.exports = {
     getAllZones,
+    getZone,
     createNewZone,
     updateZone,
     deleteZone
