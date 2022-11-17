@@ -26,12 +26,14 @@ const UsersList = () => {
     //     console.log(data)
 
     const [filtroTexto, setTexto] = useState('');
+    const [viewInactives,setViewInactives] = useState(false);
     const [query, setQuery] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Usuarios')
 
     const onChangeText = e => setTexto(e.target.value)
+    const onActiveChanged = e => setViewInactives(!viewInactives)
 
     const {
         data: users,
@@ -60,11 +62,20 @@ const UsersList = () => {
         const { ids, name, mail, role, entities } = users
         // console.log(users)
 
+    
         let filteredIds
-        filteredIds = [...ids]
-        if (filtroTexto !==  ''){
-            filteredIds = ids.filter(userId => (entities[userId].name+' '+entities[userId].surname+' '+entities[userId].role).includes(filtroTexto))
-        }   
+        if (viewInactives){
+            filteredIds = [...ids]
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()))
+            }  
+        }else {
+            filteredIds = ids.filter(userId => (entities[userId].active===true))
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()) && entities[userId].active ===true)
+            }  
+        }
+        
 
         const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
         //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
@@ -90,7 +101,19 @@ const UsersList = () => {
                    
                     <br />
                     <div id="fondoTabla">
+                        <label>Filtrar: </label>
                         <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
+                        &nbsp;
+                        &nbsp;
+                        <label>Mostrar usuarios inactivos: </label>
+                        <input
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewInactives}
+                                onChange={onActiveChanged}
+                            />
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">

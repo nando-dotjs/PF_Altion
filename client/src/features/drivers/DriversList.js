@@ -12,12 +12,13 @@ import Button from 'react-bootstrap/Button';
 const DriversList = () => {
 
     const [filtroTexto, setTexto] = useState('');
+    const [viewInactives,setViewInactives] = useState(false);
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Choferes')
 
     const onChangeText = e => setTexto(e.target.value)
-
+    const onActiveChanged = e => setViewInactives(!viewInactives)
     const {
         data: drivers,
         isLoading,
@@ -46,10 +47,17 @@ const DriversList = () => {
         const { ids, entities } = drivers
 
         let filteredIds
-        filteredIds = [...ids]
-        if (filtroTexto !=  ''){
-            filteredIds = ids.filter(driverId => entities[driverId].name.includes(filtroTexto))
-        }   
+        if(viewInactives){
+            filteredIds = [...ids]
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(driverId => (entities[driverId].name.toUpperCase()+' '+entities[driverId].surname.toUpperCase()).includes(filtroTexto.toUpperCase()))
+            }   
+        }else{
+            filteredIds = ids.filter(driverId => (entities[driverId].active===true))
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(driverId => (entities[driverId].name.toUpperCase()+' '+entities[driverId].surname.toUpperCase()).includes(filtroTexto.toUpperCase())&& entities[driverId].active ===true)
+            } 
+        }
 
         const tableContent = ids?.length && filteredIds.map(driverId => <Driver key={driverId} driverId={driverId} />)
        
@@ -68,7 +76,19 @@ const DriversList = () => {
               
                 <br />
             <div id="fondoTabla">
+            <label>Filtrar: </label>
             <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
+            &nbsp;
+            &nbsp;
+            <label>Mostrar choferes inactivos: </label>
+            <input
+                    className="filterActives"
+                    id="user-active"
+                    name="user-active"
+                    type="checkbox"
+                    value={viewInactives}
+                    onChange={onActiveChanged}
+                />
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead>
                     <tr>
