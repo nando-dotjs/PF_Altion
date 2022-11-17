@@ -10,10 +10,12 @@ import Container from "react-bootstrap/esm/Container";
 
 const ZonesList = () => {
     
+    const [filtroTexto, setTexto] = useState('')
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Zonas')
 
+    const onChangeText = e => setTexto(e.target.value)
     const {
         data: zones,
         isLoading,
@@ -36,9 +38,15 @@ const ZonesList = () => {
 
     if (isSuccess) {
 
-        const { ids } = zones
+        const { ids, entities } = zones
 
-        const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} />)
+        let filteredIds
+        filteredIds = [...ids]
+        if (filtroTexto !=  ''){
+            filteredIds = ids.filter(zoneId => entities[zoneId].name.includes(filtroTexto))
+        }    
+
+        const tableContent = ids?.length && filteredIds.map(zoneId => <Zone key={zoneId} zoneId={zoneId} />)
          
         const handleClose = () => {
             setShow(true)
@@ -51,6 +59,7 @@ const ZonesList = () => {
           <br/>
           <Container>
         <div id="fondoTabla">
+        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead className="tableThead">
                     <tr>

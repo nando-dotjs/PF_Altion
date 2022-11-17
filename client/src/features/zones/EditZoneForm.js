@@ -47,6 +47,10 @@ const EditZoneForm = ({ zone }) => {
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
+    
+    useEffect(() => {
+        document.title = 'Modificación de Zona';
+    });
 
     useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));

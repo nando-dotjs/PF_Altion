@@ -10,22 +10,15 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { ChangeEvent } from "react";
+import useTitle from "../../hooks/useTitle"
 
 const PointsList = () => {
 
-    const [filtrotexto, setTexto] = useState('');
-    const [filtro, setFiltro] = useState("");
+    const [filtroTexto, setTexto] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
-
+    useTitle('Lista de Puntos')
     const onChangeText = e => setTexto(e.target.value)
-
-  
-    useEffect(() => {
-        console.log(filtrotexto)
-    }, [filtrotexto]);
-
-
 
 
     const { mail, isAdmin } = useAuth()
@@ -52,20 +45,20 @@ const PointsList = () => {
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>
     }
-    console.log(points)
+    
     if (isSuccess) {
         const { ids, entities } = points
 
         let filteredIds
         if (isAdmin) {
             filteredIds = [...ids]
-            if (filtrotexto !=  ''){
-                filteredIds = ids.filter(pointId => entities[pointId].name.includes(filtrotexto))
+            if (filtroTexto !=  ''){
+                filteredIds = ids.filter(pointId => entities[pointId].name.includes(filtroTexto))
             }    
         } else {
             filteredIds = ids.filter(pointId => entities[pointId].mail === mail)
-            if (filtrotexto !=  ''){
-                filteredIds = ids.filter(pointId => entities[pointId].name.includes(filtrotexto) && entities[pointId].mail === mail)
+            if (filtroTexto !=  ''){
+                filteredIds = ids.filter(pointId => entities[pointId].name.includes(filtroTexto) && entities[pointId].mail === mail)
             }
         }
 
@@ -83,15 +76,13 @@ const PointsList = () => {
                         <Container>     
                                                
                             <div id="fondoTabla">
-                            <input className="filterPoint" value={filtrotexto} onChange={onChangeText} type="text"/>
+                            <input className="filterPoint" value={filtroTexto} onChange={onChangeText} type="text"/>
                                 <Table  striped bordered hover size="sm" className="table tableUsers">
                                     <thead>
                                         <tr>
-                                            <th>Estado</th>
-                                            <th>Creado</th>
-                                            <th>Zona</th>
+                                            <th>Estado</th>                                    
                                             <th>Nombre</th>
-                                            <th>Propietario</th>
+                                            <th>Zona</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>

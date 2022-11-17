@@ -50,6 +50,10 @@ const EditDriverForm = ({ driver }) => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Modificación de Chofer';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 

@@ -73,6 +73,10 @@ const EditUserForm = ({ user }) => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Modificación de Usuario';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 

@@ -76,6 +76,10 @@ const NewPointForm = ({ users }) => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Punto';
+    });
+
+    useEffect(() => {
         setValidPhoneNumber(PHONENUMBER_REGEX.test(phoneNumber));
     }, [phoneNumber])
 

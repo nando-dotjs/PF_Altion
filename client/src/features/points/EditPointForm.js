@@ -79,6 +79,10 @@ const EditPointForm = ({ point, users }) => {
         userRef?.current?.focus();
     }, [])
 
+    useEffect(() => {
+        document.title = 'Modificación de Punto';
+    });
+
     const [values, setValues] = useState([])
     const [optionsZone, setOptions] = useState(point.zone)
     useEffect(() => {

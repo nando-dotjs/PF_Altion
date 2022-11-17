@@ -10,9 +10,13 @@ import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 
 const DriversList = () => {
+
+    const [filtroTexto, setTexto] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Choferes')
+
+    const onChangeText = e => setTexto(e.target.value)
 
     const {
         data: drivers,
@@ -39,9 +43,15 @@ const DriversList = () => {
 
     if (isSuccess) {
 
-        const { ids } = drivers
+        const { ids, entities } = drivers
 
-        const tableContent = ids?.length && ids.map(driverId => <Driver key={driverId} driverId={driverId} />)
+        let filteredIds
+        filteredIds = [...ids]
+        if (filtroTexto !=  ''){
+            filteredIds = ids.filter(driverId => entities[driverId].name.includes(filtroTexto))
+        }   
+
+        const tableContent = ids?.length && filteredIds.map(driverId => <Driver key={driverId} driverId={driverId} />)
        
         const handleClose = () => {
             setShow(true)
@@ -58,7 +68,7 @@ const DriversList = () => {
               
                 <br />
             <div id="fondoTabla">
-
+            <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead>
                     <tr>

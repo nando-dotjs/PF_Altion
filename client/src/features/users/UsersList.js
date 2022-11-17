@@ -25,10 +25,14 @@ const UsersList = () => {
     //     }
     //     console.log(data)
 
+    const [filtroTexto, setTexto] = useState('');
     const [query, setQuery] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Usuarios')
+
+    const onChangeText = e => setTexto(e.target.value)
+
     const {
         data: users,
         isLoading,
@@ -53,10 +57,16 @@ const UsersList = () => {
 
     if (isSuccess) {
 
-        const { ids, name, mail, role } = users
+        const { ids, name, mail, role, entities } = users
         // console.log(users)
 
-        const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
+        let filteredIds
+        filteredIds = [...ids]
+        if (filtroTexto !=  ''){
+            filteredIds = ids.filter(userId => entities[userId].mail.includes(filtroTexto))
+        }   
+
+        const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
         //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
         const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
         const handleClose = () => {
@@ -80,19 +90,14 @@ const UsersList = () => {
                    
                     <br />
                     <div id="fondoTabla">
-
+                        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
-                                    <th>Usuario <input id="filterByEmail"
-                                        placeholder="Buscar..."
-                                        onChange={e => setQuery(e.target.value)} />
-                                    </th>
-
-                                    <th>Roles<input id="filterByEmail" placeholder="Buscar..." />
-                                    </th>
+                                    <th>Usuario</th>
+                                    <th>Roles</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>

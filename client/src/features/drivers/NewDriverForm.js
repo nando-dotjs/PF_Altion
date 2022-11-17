@@ -46,6 +46,10 @@ const NewDriverForm = () => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Chofer';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
