@@ -17,7 +17,7 @@ const Point = ({ pointId }) => {
         const updated = new Date(point.updatedAt).toLocaleString('es-UY', { day: 'numeric', month: 'long' })
 
         const handleEdit = () => navigate(`/dash/points/${pointId}`)
-        
+        const handleView = () => navigate(`/dash/point/${pointId}`)
 
         console.log(point);
         return (
@@ -34,7 +34,7 @@ const Point = ({ pointId }) => {
                 <td className="tableCell">
                     <button 
                         className="btn btn-primary"
-                        onClick={handleEdit} 
+                        onClick={handleView} 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>

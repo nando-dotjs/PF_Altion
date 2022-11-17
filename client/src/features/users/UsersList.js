@@ -63,7 +63,7 @@ const UsersList = () => {
         let filteredIds
         filteredIds = [...ids]
         if (filtroTexto !==  ''){
-            filteredIds = ids.filter(userId => (entities[userId].name+' '+entities[userId].surname).includes(filtroTexto))
+            filteredIds = ids.filter(userId => (entities[userId].name+' '+entities[userId].surname+' '+entities[userId].role).includes(filtroTexto))
         }   
 
         const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)

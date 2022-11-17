@@ -21,6 +21,7 @@ import ViewUserForm from './features/users/ViewUserForm';
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
 import EditDriver from './features/drivers/EditDriver';
+import ViewDriverForm from './features/drivers/ViewDriverForm';
 
 import CevsList from './features/cevs/CevsList';
 import EditCev from './features/cevs/EditCev';
@@ -33,10 +34,12 @@ import NewCompany from './features/companys/NewCompany';
 import ZonesList from './features/zones/ZonesList';
 import EditZone from './features/zones/EditZone';
 import NewZone from './features/zones/NewZone';
+import ViewZoneForm from './features/zones/ViewZoneForm';
 
 import PointsList from './features/points/PointsList';
 import EditPoint from './features/points/EditPoint';
 import NewPoint from './features/points/NewPoint';
+import ViewPointForm from './features/points/ViewPointForm';
 
 import MapContainer from './features/maps/MapContainer';
 
@@ -76,11 +79,19 @@ function App() {
               <Route path="new" element={<NewDriverForm />} />
             </Route>
 
+            <Route path="driver" >
+             <Route path=":id" element={<ViewDriverForm />} />
+            </Route>
+
             <Route path="zones">
               <Route index element={<ZonesList />} />
               <Route path=":id" element={<EditZone />} />
               <Route path="new" element={<NewZone />} />
             </Route>
+            </Route>
+
+            <Route path="zone" >
+             <Route path=":id" element={<ViewZoneForm />} />
             </Route>
 
             <Route path="cevs">
@@ -99,6 +110,10 @@ function App() {
               <Route index element={<PointsList />} />
               <Route path=":id" element={<EditPoint />} />
               <Route path="new" element={<NewPoint />} />
+            </Route>
+
+            <Route path="point" >
+             <Route path=":id" element={<ViewPointForm />} />
             </Route>
 
             <Route path="routes">

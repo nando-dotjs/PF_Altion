@@ -39,6 +39,7 @@ const Driver = ({ driverId }) => {
     if (driver) {
         
         const handleEdit = () => navigate(`/dash/drivers/${driverId}`)
+        const handleView = () => navigate(`/dash/driver/${driverId}`)
         const updateDriverByClick = async () => {
             await updateDriverState({ id: driverId })
               .then((response) => {
@@ -65,7 +66,7 @@ const Driver = ({ driverId }) => {
                 <td className={`tableCell ${cellStatus}`}>
                     <button 
                         className="btn btn-primary"
-                        onClick={updateDriverByClick} 
+                        onClick={handleView} 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>

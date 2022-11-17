@@ -63,13 +63,15 @@ const PointsList = () => {
         }
 
         const tableContent = ids?.length && filteredIds.map(pointId =>  <Point key={pointId} pointId={pointId} />)
-
+        
         const handleClose = () => {
             setShow(true)
             navigate('/dash');
         };
 
-
+        if (filteredIds.length === 0) {
+            content = <p className="errmsg">No se encontraron puntos para este usuario.</p>
+        }else{
         content = (
             <>
                 <br />
@@ -95,7 +97,7 @@ const PointsList = () => {
                    
             </>
 
-        )
+        )}
     }
 
     return content

@@ -37,6 +37,7 @@ const Zone = ({ zoneId }) => {
     if (zone) {
         
         const handleEdit = () => navigate(`/dash/zones/${zoneId}`)
+        const handleView = () => navigate(`/dash/zone/${zoneId}`)
         const updateZoneByClick = async () => {
             await updateZoneState({ id: zoneId })
               .then((response) => {
@@ -63,7 +64,7 @@ const Zone = ({ zoneId }) => {
                 <td className={`tableCell ${cellStatus}`}>
                     <button 
                         className="btn btn-primary"
-                        onClick={updateZoneByClick} 
+                        onClick={handleView} 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
