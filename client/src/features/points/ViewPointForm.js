@@ -311,7 +311,7 @@ const ViewPointForm = () => {
                                     <input
                                         disabled
                                         className="form-control"
-                                        placeholder="Asignado a"
+                                        placeholder="Sin Asignar"
                                         id="point-username"
                                         name="text"
                                         value={user.name +' '+user.surname}
@@ -329,7 +329,7 @@ const ViewPointForm = () => {
                                     <input
                                         disabled
                                         className="form-control"
-                                        placeholder="Asignado a"
+                                        placeholder="Sin Asignar"
                                         id="point-zone"
                                         name="text"
                                         value={point.zone}

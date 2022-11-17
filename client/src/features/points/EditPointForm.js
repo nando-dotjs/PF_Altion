@@ -90,7 +90,7 @@ const EditPointForm = ({ point, users }) => {
             .then((data) => data.json()).then((val) => { setValues(val) })
     }, []);
 
-    const optionsToChoose = values?.map((options, i) => (<option key={i}>{options.active ? options.name : 'No asignar'}</option>))
+    const optionsToChoose = values?.map((options, i) => ( options.active && <option key={i}> {options.name}</option>))
 
     useEffect(() => {
         setValidPhoneNumber(PHONENUMBER_REGEX.test(phoneNumber));
