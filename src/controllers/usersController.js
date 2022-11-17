@@ -143,6 +143,34 @@ const updateUser = asyncHandler (async (req, res) => {
     res.json({ message: `${updatedUser.mail} actualizado`})
 })
 
+// @desc Actualizar el estado del usuario
+// @route PATCH /users
+// @access Privada
+const updateUserState = asyncHandler (async (req, res) => {
+    const {id} = req.body
+
+    // Confirmamos los valores
+    if (!id ){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+
+    const user = await User.findById(id).exec()
+
+    if (!user) {
+        return res.status(400).json({ message: 'Usuario no encontrado'})
+    }
+
+    user.active =  !user.active
+
+    const updatedUser = await user.save()
+    if (user.active){
+        res.json({ message: `${updatedUser.name} ${updatedUser.surname} Activado`})
+    }else{
+        res.json({ message: `${updatedUser.name} ${updatedUser.surname} Desactivado`})
+    }
+   
+})
+
 // @desc Eliminar un usuario
 // @route DELETE /users
 // @access Privada
@@ -171,6 +199,7 @@ module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
+    updateUserState,
     deleteUser,
     getUser
 }
