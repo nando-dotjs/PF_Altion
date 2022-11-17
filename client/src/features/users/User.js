@@ -33,6 +33,7 @@ const User = ({ userId }) => {
 
     if (user) {
         const handleEdit = () => navigate(`/dash/users/${userId}`)
+        const handleView = () => navigate(`/dash/user/${userId}`)
         const updateUserByClick = async () => {
               await updateUserState({ id: userId })
                 .then((response) => {
@@ -56,12 +57,12 @@ return (
             <tr className="tableRow user">
                 {/* <td className={`tableCell ${cellStatus}`}>{user.mail}</td>
                 <td className={`tableCell ${cellStatus}`}>{user.role}</td> */}
-                <td>{user.mail}</td>
+                <td>{user.name +' '+user.surname}</td>
                 <td>{user.role}</td>
                 <td>
                     <button 
                         className="btn btn-primary"
-                        onClick={updateUserByClick} 
+                        onClick={handleView} 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>

@@ -16,6 +16,7 @@ import EditUser from './features/users/EditUser'
 import NewUserForm from './features/users/NewUserForm'
 import { ROLES } from './config/roles';
 import Register from './features/users/Register';
+import ViewUserForm from './features/users/ViewUserForm';
 
 import DriversList from './features/drivers/DriversList';
 import NewDriverForm from './features/drivers/NewDriverForm';
@@ -65,6 +66,10 @@ function App() {
               <Route path="new" element={<NewUserForm />} />
             </Route>
 
+            <Route path="user" >
+             <Route path=":id" element={<ViewUserForm />} />
+            </Route>
+            
             <Route path="drivers">
               <Route index element={<DriversList />} />
               <Route path=":id" element={<EditDriver />} />

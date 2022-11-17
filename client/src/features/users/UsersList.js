@@ -62,13 +62,13 @@ const UsersList = () => {
 
         let filteredIds
         filteredIds = [...ids]
-        if (filtroTexto !=  ''){
-            filteredIds = ids.filter(userId => entities[userId].mail.includes(filtroTexto))
+        if (filtroTexto !==  ''){
+            filteredIds = ids.filter(userId => (entities[userId].name+' '+entities[userId].surname).includes(filtroTexto))
         }   
 
         const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
         //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
-        const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
+        // const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
         const handleClose = () => {
             setShow(true)
             navigate('/dash');

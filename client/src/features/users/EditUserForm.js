@@ -182,7 +182,7 @@ const EditUserForm = ({ user }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
-    navigate('/dash');
+    navigate('/dash/users');
 };
 
 const Toast = Swal.mixin({
