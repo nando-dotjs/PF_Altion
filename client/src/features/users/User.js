@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faPenToSquare, faPersonWalkingWithCane, faToggleOn, faTrash} from "@fortawesome/free-solid-svg-icons"
+import { faArrowDown,faEye, faPenToSquare, faPersonWalkingWithCane, faToggleOn,faToggleOff, faTrash} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 import { useUpdateUserStateMutation } from "./usersApiSlice"
 
@@ -59,18 +59,25 @@ return (
                 <td>{user.mail}</td>
                 <td>{user.role}</td>
                 <td>
+                    <button 
+                        className="btn btn-primary"
+                        onClick={updateUserByClick} 
+                    >  
+                        <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    &nbsp;
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
                     >                      
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
-                    
+                    &nbsp;
                     <button 
-                        className="btn btn-warning"
+                        className={user.active ? "btn btn-success" : "btn btn-secondary"}
                         onClick={updateUserByClick} 
                     >  
-                        <FontAwesomeIcon icon={faToggleOn} />
+                        <FontAwesomeIcon icon={user.active ? faToggleOn : faToggleOff} />
                     </button>
      
                 </td>

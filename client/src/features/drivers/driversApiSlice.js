@@ -67,6 +67,16 @@ export const driversApiSlice = apiSlice.injectEndpoints({
                 { type: 'Driver', id: arg.id }
             ]
         }),
+        updateDriverState: builder.mutation({
+            query: ({ id }) => ({
+                url: '/drivers/driver',
+                method: 'PATCH',
+                body: { id }       
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Driver', id: arg.id }
+            ]
+        }),
         deleteDriver: builder.mutation({
             query: ({ id }) => ({
                 url: `/drivers`,
@@ -85,6 +95,7 @@ export const {
     useAddNewDriverMutation,
     useCreateNewDriverMutation,
     useUpdateDriverMutation,
+    useUpdateDriverStateMutation,
     useDeleteDriverMutation,
 } = driversApiSlice
 

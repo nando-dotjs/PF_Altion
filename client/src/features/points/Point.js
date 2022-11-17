@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare,faEye } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
@@ -30,10 +30,15 @@ const Point = ({ pointId }) => {
                 </td>
                 <td className="tableCell pointTitle">{point.name}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
-                
-                
-                
+
                 <td className="tableCell">
+                    <button 
+                        className="btn btn-primary"
+                        onClick={handleEdit} 
+                    >  
+                        <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    &nbsp;
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}

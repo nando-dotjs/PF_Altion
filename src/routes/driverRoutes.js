@@ -13,5 +13,6 @@ router.route('/')
 
 router.route('/driver')
     .get(driversController.getDriver)
+    .patch(driversController.updateDriverState)
 
 module.exports = router

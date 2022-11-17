@@ -2,6 +2,7 @@ const Zone = require('../models/Zone')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const { restart } = require('nodemon')
+const Driver = require('../models/Driver')
 
 // @desc Obtener todos los zonas
 // @route GET /zones
@@ -89,6 +90,34 @@ const updateZone = asyncHandler (async (req, res) => {
     res.json({ message: `Zona ${updatedZone.name} actualizada`})
 })
 
+// @desc Actualizar estado de una Zona
+// @route PATCH /zones
+// @access Privada
+
+const updateZoneState = asyncHandler (async (req, res) => {
+    const {id} = req.body
+
+    // Confirmamos los valores
+    if (!id){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+
+    const zone = await Zone.findById(id).exec()
+
+    if (!zone) {
+        return res.status(400).json({ message: 'Zona no encontrada'})
+    }
+
+    zone.active = !zone.active
+
+    const updatedZone = await zone.save()
+    if(zone.active){
+        res.json({ message: `Zona ${updatedZone.name} Activado`})
+    }else{
+        res.json({ message: `Zona ${updatedZone.name} Desactivado`})
+    }
+})
+
 // @desc Eliminar un Zona
 // @route DELETE /zones
 // @access Privada
@@ -118,5 +147,6 @@ module.exports = {
     getZone,
     createNewZone,
     updateZone,
+    updateZoneState,
     deleteZone
 }
