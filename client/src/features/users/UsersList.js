@@ -17,14 +17,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 
 const UsersList = () => {
-    // function UsersList(){
-
-    // const [data, setData] = useState ([]);
-    //     const fetchUsers = async () => {
-    //         const res = await axios.get("http://localhost:5000/users");
-    //         setData(res.data);
-    //     }
-    //     console.log(data)
 
     const [filtroTexto, setTexto] = useState('');
     const [viewInactives, setViewInactives] = useState(false);

@@ -79,7 +79,7 @@ const EditCevForm = ({ cev, users }) => {
     const [values, setValues] = useState([])
     const [optionsZone, setOptions] = useState()
     useEffect(() => {
-        fetch("http://localhost:5000/zones")
+        fetch("https://unidosporlaclasificacion-api.onrender.com/zones")
         .then((data) => data.json()).then((val) => setValues(val))
     }, []);
 
