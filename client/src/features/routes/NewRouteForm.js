@@ -1,26 +1,25 @@
-import { useRef, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { useAddNewRouteMutation } from "./routesApiSlice"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form, ProgressBar, Label, Table } from "react-bootstrap"
+import {Container, Form } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import useTitle from "../../hooks/useTitle"
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
-import Zone from "./Zone"
 import { useGetDriversQuery } from "../drivers/driversApiSlice"
 import DragList from "./DragList";
 import {useGetPointsQuery} from '../points/pointsApiSlice'
 import RouteMapContainer from '../maps/RouteMapContainer'
-
+import Swal from 'sweetalert2'
+import {useGetUsersQuery} from '../users/usersApiSlice'
 
 
 const NewRouteForm = () => {
 
-    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { mail, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const [addNewRoute, {
         isLoading,
@@ -52,21 +51,27 @@ const NewRouteForm = () => {
     const [selectedZones, setSelectedZones] = useState([]);
     const [selectedPoints, setSelectedPoints] = useState([]);
     const [routeMap, setRouteMap] = useState('');
-
+    const [activeUser, setActiveUser] = useState('');
+    const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
+ 
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
+    const onTimeChanged = e => setTime(e)
 
-
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-    let labelSelector = null
-    let selectorAdmin = null
-    let input = null
-
-    }
     const errClass = isError ? "errmsg" : "offscreen"
     
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+    })
+
     // let zonesList
     // let zoneList = []
 
@@ -118,7 +123,7 @@ const NewRouteForm = () => {
 
     let zonesList = []
     for(var i in zonesJSON){
-        zonesList.push(zonesJSON [i]);
+        zonesList.push(zonesJSON[i]);
     }
 
     const {
@@ -137,8 +142,8 @@ const NewRouteForm = () => {
     driversisSuccess ? driversJSON = driversList.entities : driversJSON = {}
 
     let drivers = []
-    for(var i in driversJSON){
-        drivers.push(driversJSON [i]);
+    for(var d in driversJSON){
+        drivers.push(driversJSON[d]);
     }
 
 
@@ -158,8 +163,8 @@ const NewRouteForm = () => {
     pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
 
     let points = []
-    for(var i in pointsJSON){
-        points.push(pointsJSON [i]);
+    for(var o in pointsJSON){
+        points.push(pointsJSON[o]);
     }
     
     let filteredPoints = []
@@ -185,10 +190,58 @@ const NewRouteForm = () => {
 
     
 
-    const prepareMap = () => {
+    const prepareMap = (e) => {
+        e.preventDefault()
         setRouteMap(
             <RouteMapContainer points={selectedPoints}/>
         )
+    }
+
+    const {
+        data: users,
+        isLoading: usersisLoading,
+        isSuccess: usersisSuccess,
+        isError: usersisError,
+        error: userserror
+    } = useGetUsersQuery('usersList', {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
+    const onSaveRouteClicked = async (e) => {
+        e.preventDefault()
+
+        if((isAdmin || isCEV || isEmpresa)) {
+            for(var u in users.entities) {
+                if (users.entities[u].mail === mail) {
+                    setActiveUser(users.entities[u])
+                }
+
+            }
+            let pointlist = []
+            
+            for(var k in selectedPoints){
+                pointlist.push({"point":selectedPoints[k]});
+            } 
+
+            let selectedTime = time.name
+
+            await addNewRoute({ "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver, "createdBy":activeUser })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                          })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                          })
+                    }
+                })
+        }
     }
 
 
@@ -203,7 +256,7 @@ const NewRouteForm = () => {
                     <main className='newRoute'>
 
                         {/* <p className={errClass}>{error?.data?.message}</p> */}
-                        <form className="form" onSubmit={onSaveRouteClicked}>
+                        <form className="form">
 
                             
                             <div className="container-fluid">
@@ -213,17 +266,15 @@ const NewRouteForm = () => {
                                 </div>
                                 <div className="row">
                                     <Form.Label>Hora del Recorrido</Form.Label>
-                                    <Form.Select
+                                    <Select
                                     id="time"
                                     name="horario"
                                     className={`formSelect`}
                                     value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    >
-                                        <option>Mañana</option>
-                                        <option>Tarde</option>
-                                        <option>Noche</option>
-                                    </Form.Select>
+                                    options={horas}
+                                    onChange={onTimeChanged}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.name}/>
                                 </div>
                                 <br/>
                                 <div className="row">
@@ -270,12 +321,16 @@ const NewRouteForm = () => {
                                     {chargedList}
                                 </div>
 
-                                <button className={'btn btn-success'} onClick={() => prepareMap()}>
-                                Confirmar Ruta
+                                <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
+                                Visualizar Recorrido
                                 </button>
                                 
 
                                 {routeMap}
+
+                                <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
+                                    Confirmar Recorrido
+                                </button>
                             </div>
                         </form>
                     </main>

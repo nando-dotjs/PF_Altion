@@ -11,4 +11,7 @@ router.route('/')
     .patch(routesController.updateRoute)
     .delete(routesController.deleteRoute)
 
+router.route('/points')
+    .patch(routesController.updatePoints)
+
 module.exports = router

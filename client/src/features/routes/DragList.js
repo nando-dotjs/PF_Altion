@@ -69,7 +69,7 @@ const DragList = (props) => {
 					</div>
 				))}
 			</div>
-			<button className={'btn btn-success'} onClick={e => props.setSelectedPoints(points)}>
+			<button className={'btn btn-success'} onClick={e => {e.preventDefault(); props.setSelectedPoints(points)}}>
 			Seleccionar Puntos
 			</button>
 		</div>

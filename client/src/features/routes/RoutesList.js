@@ -28,14 +28,15 @@ const RoutesList = () => {
     if (isSuccess) {
 
         const { ids } = routes
-
+    	
         const tableContent = ids?.length && ids.map(routeId => <Route key={routeId} routeId={routeId} />)  
         content = (
             <Table className="table tableRoutes">
                 <thead className="tableThead">
                     <tr>
-                        <th scope="col" className="tableTh routeRoutename">Usuario</th>
-                        <th scope="col" className="tableTh routeRoles">Roles</th>
+                        <th scope="col" className="tableTh routeDate">Fecha</th>
+                        <th scope="col" className="tableTh routeTime">Hora</th>
+                        <th scope="col" className="tableTh routeState">Estado</th>
                         <th scope="col" className="tableTh routeEdit">Editar</th>
                     </tr>
                 </thead>

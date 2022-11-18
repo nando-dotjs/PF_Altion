@@ -10,6 +10,7 @@ import RequireAuth from './features/auth/RequireAuth';
 
 import RoutesList from './features/routes/RoutesList'
 import NewRouteForm from './features/routes/NewRouteForm'
+import InitRoute from './features/routes/InitRoute'
 
 import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
@@ -99,6 +100,7 @@ function App() {
             <Route path="routes">
               <Route index element={<RoutesList />} />
               <Route path="new" element={<NewRouteForm />} />
+              <Route path="init/:id" element={<InitRoute />} />
             </Route>
 
             <Route path="maps">
