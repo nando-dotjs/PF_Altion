@@ -11,6 +11,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { ChangeEvent } from "react";
 import useTitle from "../../hooks/useTitle"
+import InputGroup from 'react-bootstrap/InputGroup';
+
 
 const PointsList = () => {
 
@@ -88,9 +90,28 @@ const PointsList = () => {
             <>
                 <br />
                         <Container>     
-                                               
+                        <br />
+                    <div id="fondoTabla">
+                        <br />
+                        <InputGroup.Text>
+                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                        &nbsp;
+                        &nbsp;
+                        {(isAdmin) &&<strong>Mostrar puntos pendientes: </strong>}
+                        {(isAdmin) && <InputGroup.Checkbox
+                                placeholder="Mostrar usuarios inactivos"
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewInactives}
+                                onChange={onActiveChanged}
+                            />}</InputGroup.Text>
+                        <br />
+                    </div>
+                    <br />      
                             <div id="fondoTabla">
-                            <label>Filtrar: </label>
+                            {/* <label>Filtrar: </label>
                             <input className="filterPoint" value={filtroTexto} onChange={onChangeText} type="text"/>
                             &nbsp;
                             &nbsp;
@@ -102,7 +123,7 @@ const PointsList = () => {
                                     type="checkbox"
                                     value={viewInactives}
                                     onChange={onActiveChanged}
-                                />}
+                                />} */}
                                 <Table  striped bordered hover size="sm" className="table tableUsers">
                                     <thead>
                                         <tr>

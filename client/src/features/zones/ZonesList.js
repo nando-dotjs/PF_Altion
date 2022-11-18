@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const ZonesList = () => {
     
@@ -67,20 +68,29 @@ const ZonesList = () => {
             <>
           <br/>
           <Container>
+          <br />
+                    <div id="fondoTabla">
+                        <br />
+                        <InputGroup.Text>
+                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                        &nbsp;
+                        &nbsp;
+                       <strong>Mostrar zonas inactivas: </strong>
+                            <InputGroup.Checkbox
+                                placeholder="Mostrar usuarios inactivos"
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewInactives}
+                                onChange={onActiveChanged}
+                            /></InputGroup.Text>
+                        <br />
+                    </div>
+                    <br />
+
         <div id="fondoTabla">
-        <label>Filtrar: </label>
-        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
-        &nbsp;
-        &nbsp;
-        <label>Mostrar zonas inactivas: </label>
-        <input
-                className="filterActives"
-                id="user-active"
-                name="user-active"
-                type="checkbox"
-                value={viewInactives}
-                onChange={onActiveChanged}
-            />
+        
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead className="tableThead">
                     <tr>
