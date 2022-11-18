@@ -66,10 +66,8 @@ const PointsList = () => {
                                     <thead>
                                         <tr>
                                             <th>Estado</th>
-                                            <th>Creado</th>
-                                            <th>Zona</th>
                                             <th>Nombre</th>
-                                            <th>Propietario</th>
+                                            <th>Zona</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -79,7 +77,7 @@ const PointsList = () => {
                                 </Table>
                             </div>
                         </Container>
-                   
+                        
             </>
 
         )

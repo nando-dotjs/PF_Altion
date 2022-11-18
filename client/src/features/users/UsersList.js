@@ -86,13 +86,9 @@ const UsersList = () => {
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
-                                    <th>Usuario <input id="filterByEmail"
-                                        placeholder="Buscar..."
-                                        onChange={e => setQuery(e.target.value)} />
-                                    </th>
+                                    <th>Usuario</th>
 
-                                    <th>Roles<input id="filterByEmail" placeholder="Buscar..." />
-                                    </th>
+                                    <th>Role</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
