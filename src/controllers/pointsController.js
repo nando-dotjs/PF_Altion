@@ -1,4 +1,5 @@
 const Point = require('../models/Point')
+const Zone = require ('../models/Zone')
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
 
@@ -8,7 +9,6 @@ const asyncHandler = require('express-async-handler')
 const getAllPoints = asyncHandler(async (req, res) => {
     // Get all points from MongoDB
     const points = await Point.find().lean()
-
     // If no points 
     if (!points?.length) {
         return res.status(400).json({ message: 'No hay puntos disponibles' })
@@ -16,12 +16,24 @@ const getAllPoints = asyncHandler(async (req, res) => {
 
     const pointsWithUser = await Promise.all(points.map(async (point) => {
         const user = await User.findById(point.user).lean().exec()
-        return { ...point, username: user.username }
+        return { ...point, mail: user.mail }
     }))
 
     console.log(points)
 
     res.json(pointsWithUser)
+})
+
+// @desc Obtener un punto
+// @route GET /points/point
+// @access Privada
+const getPoint = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const point = await Point.find({"name":name}).select().lean()
+    if(!point){
+        return res.status(400).json({message: 'No se encontró el Punto'})
+    }
+    res.json(point)
 })
 
 // @desc Create new point
@@ -35,12 +47,7 @@ const createNewPoint = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
-    // Check for duplicate title
-    const duplicate = await Point.findOne({ user }).lean().exec()
-
-    if (duplicate) {
-        return res.status(409).json({ message: 'Ya existe un punto asociado a este usuario' })
-    }
+    
 
     // Create and store the new user 
     const point = await Point.create({ user, name, phoneNumber, street, streetNumber, lat, long })
@@ -65,18 +72,10 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     // Confirm point exists to update
     const point = await Point.findById(id).exec()
-
-    if (!point) {
+    if (!point ) {
         return res.status(400).json({ message: 'No se ha encontrado punto' })
     }
 
-    // Check for duplicate title
-    const duplicate = await Point.findOne({ user }).lean().exec()
-
-    // Allow renaming of the original point 
-    if (duplicate && duplicate?._id.toString() !== id) {
-        return res.status(409).json({ message: 'Ya existe un punto asociado a este usuario' })
-    }
 
     point.user = user
     point.name = name
@@ -88,7 +87,7 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     const updatedPoint = await point.save()
 
-    res.json(`'${updatedPoint.name}' actualizado`)
+    res.json({ message:`Punto ${updatedPoint.name} actualizado`})
 })
 
 // @desc Delete a point
@@ -118,6 +117,7 @@ const deletePoint = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAllPoints,
+    getPoint,
     createNewPoint,
     updatePoint,
     deletePoint

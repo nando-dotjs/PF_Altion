@@ -2,6 +2,7 @@ const Zone = require('../models/Zone')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 const { restart } = require('nodemon')
+const Driver = require('../models/Driver')
 
 // @desc Obtener todos los zonas
 // @route GET /zones
@@ -15,6 +16,18 @@ const getAllZones = asyncHandler (async (req, res) => {
     res.json(zones)
 })
 
+// @desc Obtener una zona
+// @route GET /zones/zone
+// @access Privada
+const getZone = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const zone = await Zone.find({"name":name}).select().lean()
+    if(!zone){
+        return res.status(400).json({message: 'No se encontró la Zona'})
+    }
+    res.json(zone)
+})
+
 // @desc Crear nuevo Zona
 // @route POST /zones
 // @access Privada
@@ -25,6 +38,12 @@ const createNewZone = asyncHandler (async (req, res) => {
     // Confirm values
     if (!name) {
         return res.status(400).json({ message: 'Debe ingresar un nombre' })
+    }
+
+    const duplicate = await Zone.findOne({ name }).lean().exec()
+
+    if (duplicate) {
+        return res.status(409).json({ message: 'Ya existe una zona con este nombre' })
     }
 
     const zoneObject = { name, details }
@@ -57,12 +76,46 @@ const updateZone = asyncHandler (async (req, res) => {
         return res.status(400).json({ message: 'Zona no encontrada'})
     }
 
+    const duplicate = await Zone.findOne({ name }).lean().exec()
+
+    if (duplicate && duplicate?._id.toString() !== id) {
+        return res.status(409).json({ message: 'Ya existe una zona con este nombre' })
+    }
+
     zone.name = name
     zone.details = details
     zone.active = active
 
     const updatedZone = await zone.save()
     res.json({ message: `Zona ${updatedZone.name} actualizada`})
+})
+
+// @desc Actualizar estado de una Zona
+// @route PATCH /zones
+// @access Privada
+
+const updateZoneState = asyncHandler (async (req, res) => {
+    const {id} = req.body
+
+    // Confirmamos los valores
+    if (!id){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+
+    const zone = await Zone.findById(id).exec()
+
+    if (!zone) {
+        return res.status(400).json({ message: 'Zona no encontrada'})
+    }
+
+    zone.active = !zone.active
+
+    const updatedZone = await zone.save()
+    if(zone.active){
+        res.json({ message: `Zona ${updatedZone.name} Activado`})
+    }else{
+        res.json({ message: `Zona ${updatedZone.name} Desactivado`})
+    }
 })
 
 // @desc Eliminar un Zona
@@ -91,7 +144,9 @@ const deleteZone = asyncHandler (async (req, res) => {
 
 module.exports = {
     getAllZones,
+    getZone,
     createNewZone,
     updateZone,
+    updateZoneState,
     deleteZone
 }

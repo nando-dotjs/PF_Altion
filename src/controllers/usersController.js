@@ -25,7 +25,7 @@ const getAllUsers = asyncHandler (async (req, res) => {
 
 const getUser = asyncHandler (async (req, res) => {
     const { mail } = req.body
-    const user = await User.find({"username":mail}).select('--password').lean()
+    const user = await User.find({"mail":mail}).select('--password').lean()
     if (!user) {
         return res.status(400).json({message: 'No se encontró el usuario'})
     } 
@@ -77,7 +77,7 @@ const createNewUser = asyncHandler (async (req, res) => {
     const user = await (User.create(userObject))
 
     if (user) { // Si el usuario se creó
-        res.status(201).json({ message: `El usuario ${mail} ha sido creado`})
+        res.status(201).json({ message: 'El usuario ha sido creado'})
     } else {
         res.status(400).json({ message: 'Datos recibidos del usuario inválidos'})
     }
@@ -143,6 +143,34 @@ const updateUser = asyncHandler (async (req, res) => {
     res.json({ message: `${updatedUser.mail} actualizado`})
 })
 
+// @desc Actualizar el estado del usuario
+// @route PATCH /users
+// @access Privada
+const updateUserState = asyncHandler (async (req, res) => {
+    const {id} = req.body
+
+    // Confirmamos los valores
+    if (!id ){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+
+    const user = await User.findById(id).exec()
+
+    if (!user) {
+        return res.status(400).json({ message: 'Usuario no encontrado'})
+    }
+
+    user.active =  !user.active
+
+    const updatedUser = await user.save()
+    if (user.active){
+        res.json({ message: `${updatedUser.name} ${updatedUser.surname} Activado`})
+    }else{
+        res.json({ message: `${updatedUser.name} ${updatedUser.surname} Desactivado`})
+    }
+   
+})
+
 // @desc Eliminar un usuario
 // @route DELETE /users
 // @access Privada
@@ -171,6 +199,7 @@ module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
+    updateUserState,
     deleteUser,
     getUser
 }

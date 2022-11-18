@@ -15,6 +15,20 @@ const getAllDrivers = asyncHandler (async (req, res) => {
     res.json(drivers)
 })
 
+// @desc Obtener un chofer
+// @route GET /drivers/driver
+// @access Privada
+const getDriver = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const driver = await Driver.find({"name":name}).select().lean()
+    if(!driver){
+        return res.status(400).json({message: 'No se encontró el Conductor'})
+    }
+    res.json(driver)
+})
+
+
+
 // @desc Crear nuevo chofer
 // @route POST /drivers
 // @access Privada
@@ -65,6 +79,36 @@ const updateDriver = asyncHandler (async (req, res) => {
     res.json({ message: `Chofer ${updatedDriver.name} ${updatedDriver.surname} actualizado`})
 })
 
+// @desc Actualizar estado del chofer
+// @route PATCH /drivers
+// @access Privada
+
+const updateDriverState = asyncHandler (async (req, res) => {
+    const {id} = req.body
+
+    // Confirmamos los valores
+    if (!id){
+        return res.status(400).json({ message: 'Todos los campos son requeridos'})
+    }
+    
+
+    const driver = await Driver.findById(id).exec()
+
+    if (!driver) {
+        return res.status(400).json({ message: 'Chofer no encontrado'})
+    }
+
+    driver.active = !driver.active
+
+    const updatedDriver = await driver.save()
+    if(driver.active){
+        res.json({ message: `Chofer ${updatedDriver.name} ${updatedDriver.surname} Activado`})
+    }else{
+        res.json({ message: `Chofer ${updatedDriver.name} ${updatedDriver.surname} Desactivado`})
+    }
+    
+})
+
 // @desc Eliminar un chofer
 // @route DELETE /drivers
 // @access Privada
@@ -91,7 +135,9 @@ const deleteDriver = asyncHandler (async (req, res) => {
 
 module.exports = {
     getAllDrivers,
+    getDriver,
     createNewDriver,
     updateDriver,
+    updateDriverState,
     deleteDriver
 }

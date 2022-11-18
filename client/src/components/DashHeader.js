@@ -9,7 +9,7 @@ import {
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 
 import useAuth from '../hooks/useAuth'
-
+import { useGetUsersQuery, usersApiSlice } from "../features/users/usersApiSlice"
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
 import Container from 'react-bootstrap/Container';
@@ -17,7 +17,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import Navbar from 'react-bootstrap';
-
+import Swal from 'sweetalert2'
 
 // import useAuth from '../hooks/useAuth'
 
@@ -39,7 +39,7 @@ const POINT_EDIT_REGEX = /^\/dash\/points(\/.+)?$/
 
 const DashHeader = () => {
 
-    const { mail, role, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { name, mail,  surname, role, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
     // const { isAdmin } = useAuth()
 
@@ -318,10 +318,12 @@ const DashHeader = () => {
     }
 
     const logoutButton = (
+        
         <button
             className="icon-button"
             title="Logout"
             onClick={sendLogout}
+            
         >
             <FontAwesomeIcon icon={faRightFromBracket} />
         </button>
@@ -376,36 +378,35 @@ const DashHeader = () => {
                         <Nav className="me-auto">
                         <Navbar.Brand><Nav.Link href="/dash">Inicio</Nav.Link></Navbar.Brand>
                             {(isAdmin) && <Navbar.Brand>  <NavDropdown title="Usuarios" id="basic-nav-dropdown" >
-                            <Navbar.Brand><NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand>  <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item></Navbar.Brand>
+                           <NavDropdown.Item href="/dash/users/new">Crear usuario</NavDropdown.Item>
+                              <NavDropdown.Item href="/dash/users">Listar usuarios</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Choferes" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item></Navbar.Brand>
+                             <NavDropdown.Item href="/dash/drivers/new">Crear chofer</NavDropdown.Item>
+                             <NavDropdown.Item href="/dash/drivers">Listar choferes</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                             {(isAdmin) && <Navbar.Brand><NavDropdown title="Zonas" id="basic-nav-dropdown" >
-                            <Navbar.Brand><NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item></Navbar.Brand>
+                            <NavDropdown.Item href="/dash/zones/new">Crear Zona</NavDropdown.Item>
+                            <NavDropdown.Item href="/dash/zones">Listar Zonas</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
-                            <Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Puntos</NavDropdown.Item></Navbar.Brand>
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item></Navbar.Brand>
-                            </NavDropdown></Navbar.Brand>
+                            {(isAdmin || isEmpresa || isCEV) &&<Navbar.Brand><NavDropdown title="Puntos" id="basic-nav-dropdown" >
+                            <NavDropdown.Item href="/dash/points/new">Crear Punto</NavDropdown.Item>
+                            <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item>
+                            </NavDropdown></Navbar.Brand>}
 
-                            <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item></Navbar.Brand>
+                            {(isAdmin || isRecolector ) && <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
+                          <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item>
                             {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
-                            <Navbar.Brand> <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item></Navbar.Brand>
-                            </NavDropdown></Navbar.Brand>
+                          <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item>
+                            </NavDropdown></Navbar.Brand>}
 
                         </Nav>
                       
-                        <Navbar.Brand><NavDropdown title={mail} id="basic-nav-dropdown" >
-                        <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item></Navbar.Brand>
+                        <Navbar.Brand><NavDropdown title={name+' '+surname} id="basic-nav-dropdown" >
+                         <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
                         </NavDropdown></Navbar.Brand>
                     </Navbar.Collapse>
                 </Container>

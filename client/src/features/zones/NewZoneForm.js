@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
 import Modal from 'react-bootstrap/Modal';
+import Swal from "sweetalert2";
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -46,6 +47,10 @@ const NewZoneForm = () => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Zona';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
@@ -72,19 +77,48 @@ const NewZoneForm = () => {
 
     const onSaveZoneClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+        }else if (canSave) {
             await addNewZone({ name, details })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                            })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                            })
+                    }
+                })
         }
     }
-
-    const errClass = isError ? "errmsg" : "offscreen"
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
     navigate('/dash');
-}
-    ;
+};
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+  })
 
     const content = (
         <>
@@ -96,8 +130,7 @@ const NewZoneForm = () => {
             {/* <div className="account-wall" align="center"> */}
 
                 <Container fluid>
-                    <p className={errClass}>{error?.data?.message}</p>
-
+                   
                     <form className="form" onSubmit={onSaveZoneClicked}>
                         <div className="formTitleRow">
                             {/* <h1 id="cabezal">Registro de Zona</h1> */}
@@ -187,8 +220,9 @@ const NewZoneForm = () => {
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked}  disabled={!validName ? true : false}>
-           Registrar
+          <Button variant="primary" onClick={onSaveZoneClicked}  
+        //   disabled={!validName ? true : false}
+          >Registrar
           </Button>
         </Modal.Footer>
       </Modal>

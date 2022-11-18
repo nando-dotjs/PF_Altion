@@ -4,7 +4,7 @@ import useTitle from "../../hooks/useTitle"
 import Table from 'react-bootstrap/Table';
 
 const RoutesList = () => {
-    useTitle('Lista de Recorridoss')
+    useTitle('Lista de Recorridos')
     const {
         data: routes,
         isLoading,
