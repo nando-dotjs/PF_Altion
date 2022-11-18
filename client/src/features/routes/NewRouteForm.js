@@ -1,25 +1,25 @@
-import { useRef, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { useAddNewRouteMutation } from "./routesApiSlice"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form, ProgressBar, Label, Table } from "react-bootstrap"
+import {Container, Form } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import useTitle from "../../hooks/useTitle"
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
-import Zone from "./Zone"
 import { useGetDriversQuery } from "../drivers/driversApiSlice"
 import DragList from "./DragList";
 import {useGetPointsQuery} from '../points/pointsApiSlice'
-
+import RouteMapContainer from '../maps/RouteMapContainer'
+import Swal from 'sweetalert2'
+import {useGetUsersQuery} from '../users/usersApiSlice'
 
 
 const NewRouteForm = () => {
 
-    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { mail, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const [addNewRoute, {
         isLoading,
@@ -48,63 +48,82 @@ const NewRouteForm = () => {
     const [time, setTime] = useState('');
     const [driver, setDriver] = useState({_id:'', name: '', surname: ''});
     const [chargedList, setChargedList] = useState('');
-
-
+    const [selectedZones, setSelectedZones] = useState([]);
+    const [selectedPoints, setSelectedPoints] = useState([]);
+    const [routeMap, setRouteMap] = useState('');
+    const [activeUser, setActiveUser] = useState('');
+    const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
+ 
     const onDriverChanged = e => setDriver(e)
+    const onZoneChanged = e => setSelectedZones(e)
+    const onTimeChanged = e => setTime(e)
 
-
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-    let labelSelector = null
-    let selectorAdmin = null
-    let input = null
-
-    }
     const errClass = isError ? "errmsg" : "offscreen"
     
-    let zonesList
-    let zoneList = []
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+    })
 
-    const loadZones = (zone) => {
-        if (zoneList?.length > 0) {
-            let z = zoneList.findIndex(e => e._id === zone._id)
-            if (z === -1){
-                zoneList.push(zone)
-            }else{
-                zoneList.splice(z, 1)
-            } 
-        }else{
-            zoneList.push(zone)
-        }
-        console.log(zoneList)
-    }
+    // let zonesList
+    // let zoneList = []
 
-    if (zonesisLoading) zonesList = <p>Cargando...</p>
+    // const loadZones = (zone) => {
+    //     if (zoneList?.length > 0) {
+    //         let z = zoneList.findIndex(e => e._id === zone._id)
+    //         if (z === -1){
+    //             zoneList.push(zone)
+    //         }else{
+    //             zoneList.splice(z, 1)
+    //         } 
+    //     }else{
+    //         zoneList.push(zone)
+    //     }
+    //     console.log(zoneList)
+    // }
 
-    if (zonesisError) {
-        zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
-    }
+    // if (zonesisLoading) zonesList = <p>Cargando...</p>
 
-    if (zonesisSuccess) {
+    // if (zonesisError) {
+    //     zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
+    // }
 
-        const { ids } = zones
+    // if (zonesisSuccess) {
 
-        const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
-        zonesList = (
-            <Table className="table tableZones" bordered hover>
-                <thead className="tableThead">
-                    <tr>
-                        <th scope="col" className="tableTh zoneCheck">Selec.</th>
-                        <th scope="col" className="tableTh zoneName">Zona</th>
-                        <th scope="col" className="tableTh zoneDetails">Detalles</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </Table>
-        )
+    //     const { ids } = zones
+
+    //     const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
+    //     zonesList = (
+    //         <Table className="table tableZones" bordered hover>
+    //             <thead className="tableThead">
+    //                 <tr>
+    //                     <th scope="col" className="tableTh zoneCheck">Selec.</th>
+    //                     <th scope="col" className="tableTh zoneName">Zona</th>
+    //                     <th scope="col" className="tableTh zoneDetails">Detalles</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 {tableContent}
+    //             </tbody>
+    //         </Table>
+    //     )
+    // }
+
+    //Nueva lógica de Zonas para react-select
+
+    let zonesJSON = {}
+    zonesisSuccess ? zonesJSON = zones.entities : zonesJSON = {}
+
+    let zonesList = []
+    for(var i in zonesJSON){
+        zonesList.push(zonesJSON[i]);
     }
 
     const {
@@ -123,8 +142,8 @@ const NewRouteForm = () => {
     driversisSuccess ? driversJSON = driversList.entities : driversJSON = {}
 
     let drivers = []
-    for(var i in driversJSON){
-        drivers.push(driversJSON [i]);
+    for(var d in driversJSON){
+        drivers.push(driversJSON[d]);
     }
 
 
@@ -144,30 +163,86 @@ const NewRouteForm = () => {
     pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
 
     let points = []
-    for(var i in pointsJSON){
-        points.push(pointsJSON [i]);
+    for(var o in pointsJSON){
+        points.push(pointsJSON[o]);
     }
     
     let filteredPoints = []
 
-    const filterPoints = () => {
+    const filterPoints = (e) => {
+
+        e.preventDefault()
 
         filteredPoints = []
-        for(var z in zoneList){
+        for(var z in selectedZones){
             for(var p in pointsJSON){
-               if(pointsJSON[p].zone === zoneList[z].name){
+               if(pointsJSON[p].zone === selectedZones[z].name){
                     filteredPoints.push(pointsJSON[p])
                }
             }
         }
         
         setChargedList(
-            <DragList points={filteredPoints}/>
+            <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
         )
-        console.log(chargedList)
 
     }
 
+    
+
+    const prepareMap = (e) => {
+        e.preventDefault()
+        setRouteMap(
+            <RouteMapContainer points={selectedPoints}/>
+        )
+    }
+
+    const {
+        data: users,
+        isLoading: usersisLoading,
+        isSuccess: usersisSuccess,
+        isError: usersisError,
+        error: userserror
+    } = useGetUsersQuery('usersList', {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
+    const onSaveRouteClicked = async (e) => {
+        e.preventDefault()
+
+        if((isAdmin || isCEV || isEmpresa)) {
+            for(var u in users.entities) {
+                if (users.entities[u].mail === mail) {
+                    setActiveUser(users.entities[u])
+                }
+
+            }
+            let pointlist = []
+            
+            for(var k in selectedPoints){
+                pointlist.push({"point":selectedPoints[k]});
+            } 
+
+            let selectedTime = time.name
+
+            await addNewRoute({ "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver, "createdBy":activeUser })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                          })
+                    }else{
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                          })
+                    }
+                })
+        }
+    }
 
 
     const content = (
@@ -181,7 +256,7 @@ const NewRouteForm = () => {
                     <main className='newRoute'>
 
                         {/* <p className={errClass}>{error?.data?.message}</p> */}
-                        <form className="form" onSubmit={onSaveRouteClicked}>
+                        <form className="form">
 
                             
                             <div className="container-fluid">
@@ -191,26 +266,17 @@ const NewRouteForm = () => {
                                 </div>
                                 <div className="row">
                                     <Form.Label>Hora del Recorrido</Form.Label>
-                                    <Form.Select
+                                    <Select
                                     id="time"
                                     name="horario"
                                     className={`formSelect`}
                                     value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    >
-                                        <option>Mañana</option>
-                                        <option>Tarde</option>
-                                        <option>Noche</option>
-                                    </Form.Select>
+                                    options={horas}
+                                    onChange={onTimeChanged}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.name}/>
                                 </div>
-                                <div className="row">
-                                    {zonesList}
-                                </div>
-
-                                <button type="button" className="btn btn-primary" onClick={filterPoints}>
-                                        Launch modal
-                                </button>
-
+                                <br/>
                                 <div className="row">
                                     <Form.Label>Chofer del Recorrido</Form.Label>
                                 </div>
@@ -227,189 +293,44 @@ const NewRouteForm = () => {
                                     >
                                     </Select>
                                 </div>
+                                <br/>
+                                <div className="row">
+                                    <Form.Label>Zona/s del Recorrido</Form.Label>
+                                </div>
+                                <div className="row">
+                                    <Select
+                                        id="zone"
+                                        name="zone"
+                                        options={zonesList}
+                                        className="formSelect"
+                                        value={selectedZones}
+                                        onChange={onZoneChanged}
+                                        getOptionLabel={(option) => option.name + ' - ' + option.details}
+                                        getOptionValue={(option) => option._id}
+                                        isMulti
+                                    >
+                                    </Select>
+
+                                </div>
+
+                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                        Seleccionar Zonas
+                                </button>
 
                                 <div className="scrollableList">
                                     {chargedList}
                                 </div>
+
+                                <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
+                                Visualizar Recorrido
+                                </button>
                                 
 
-                                {/* <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Nombre"
-                                            type="text"
-                                            id="name"
-                                            autoComplete="off"
-                                            onChange={(e) => setName(e.target.value)}
-                                            value={name}
-                                            required
-                                            aria-invalid={validName ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setNameFocus(true)}
-                                            onBlur={() => setNameFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="name" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
+                                {routeMap}
 
-                                        <input
-                                            className="form-control"
-                                            placeholder="Apellido"
-                                            type="text"
-                                            id="surname"
-                                            autoComplete="off"
-                                            onChange={(e) => setSurname(e.target.value)}
-                                            value={surname}
-                                            required
-                                            aria-invalid={validSurname ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setSurnameFocus(true)}
-                                            onBlur={() => setSurnameFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="surname" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validSurname || !surname ? "hide" : "invalid"} />
-                                    </label>
-
-                                </div>
-                            </div>
-                            <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Correo Electrónico"
-                                            type="text"
-                                            id="mail"
-                                            autoComplete="off"
-                                            onChange={(e) => setMail(e.target.value)}
-                                            value={mail}
-                                            required
-                                            aria-invalid={validMail ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setMailFocus(true)}
-                                            onBlur={() => setMailFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="mail" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validMail || !mail ? "hide" : "invalid"} />
-                                    </label>
-
-                                </div>
-                            </div>
-                            <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                Ingrese un correo electrónico válido.<br />
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Nombre de usuario"
-                                            type="text"
-                                            id="username"
-                                            ref={userRef}
-                                            autoComplete="off"
-                                            onChange={(e) => setUsername(e.target.value)}
-                                            value={username}
-                                            required
-                                            aria-invalid={validUsername ? "false" : "true"}
-                                            aria-describedby="uidnote"
-                                            onFocus={() => setUserFocus(true)}
-                                            onBlur={() => setUserFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="username" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                4 a 24 caracteres.<br />
-                                Debe empezar con una letra.<br />
-                                Letras, números, guión bajo y guiones permitidos.
-                            </p>
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Contraseña"
-                                            type="password"
-                                            id="password"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            value={password}
-                                            required
-                                            aria-invalid={validPassword ? "false" : "true"}
-                                            aria-describedby="pwdnote"
-                                            onFocus={() => setPwdFocus(true)}
-                                            onBlur={() => setPwdFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="password" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} id="pass" className={validPassword || !password ? "hide" : "invalid"} />
-                                    </label>
-                                </div>
-                            </div>
-                            <p id="pwdnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                8 a 24 caracteres.<br />
-                                Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
-                                Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                            </p>
-
-
-
-                            <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Confirmar contraseña"
-                                            type="password"
-                                            id="confirm_pwd"
-                                            onChange={(e) => setMatchPwd(e.target.value)}
-                                            value={matchPwd}
-                                            required
-                                            aria-invalid={validMatch ? "false" : "true"}
-                                            aria-describedby="confirmnote"
-                                            onFocus={() => setMatchFocus(true)}
-                                            onBlur={() => setMatchFocus(false)}
-                                        />
-                                    </div>
-                                    <label htmlFor="confirm_pwd" id="iconito">
-                                        <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                                        <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                                    </label> */}
+                                <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
+                                    Confirmar Recorrido
+                                </button>
                             </div>
                         </form>
                     </main>

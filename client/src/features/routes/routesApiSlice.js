@@ -65,6 +65,16 @@ export const routesApiSlice = apiSlice.injectEndpoints({
                 { type: 'Route', id: arg.id }
             ]
         }),
+        updatePoints: builder.mutation({
+            query: ({ id, points }) => ({
+                url: `/routes/points`,
+                method: 'PATCH',
+                body: { id, points }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Route', id: arg.id, points: arg.points }
+            ]
+        }),
     }),
 })
 
@@ -72,6 +82,7 @@ export const {
     useGetRoutesQuery,
     useAddNewRouteMutation,
     useUpdateRouteMutation,
+    useUpdatePointsMutation,
     useDeleteRouteMutation,
 } = routesApiSlice
 

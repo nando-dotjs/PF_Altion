@@ -19,7 +19,6 @@ const getAllPoints = asyncHandler(async (req, res) => {
         return { ...point, mail: user.mail }
     }))
 
-    console.log(points)
 
     res.json(pointsWithUser)
 })
