@@ -24,6 +24,18 @@ const getAllPoints = asyncHandler(async (req, res) => {
     res.json(pointsWithUser)
 })
 
+// @desc Obtener un punto
+// @route GET /points/point
+// @access Privada
+const getPoint = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const point = await Point.find({"name":name}).select().lean()
+    if(!point){
+        return res.status(400).json({message: 'No se encontró el Punto'})
+    }
+    res.json(point)
+})
+
 // @desc Create new point
 // @route POST /points
 // @access Private
@@ -105,6 +117,7 @@ const deletePoint = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAllPoints,
+    getPoint,
     createNewPoint,
     updatePoint,
     deletePoint

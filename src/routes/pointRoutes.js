@@ -11,4 +11,7 @@ router.route('/')
     .patch(pointsController.updatePoint)
     .delete(pointsController.deletePoint)
 
+router.route('/point')
+    .get(pointsController.getPoint)
+
 module.exports = router

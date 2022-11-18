@@ -11,4 +11,8 @@ router.route('/')
     .patch(zonesController.updateZone)
     .delete(zonesController.deleteZone)
 
+router.route('/zone')
+    .get(zonesController.getZone)
+    .patch(zonesController.updateZoneState)
+
 module.exports = router

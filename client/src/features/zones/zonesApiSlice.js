@@ -67,6 +67,16 @@ export const zonesApiSlice = apiSlice.injectEndpoints({
                 { type: 'Zone', id: arg.id }
             ]
         }),
+        updateZoneState: builder.mutation({
+            query: ({ id }) => ({
+                url: '/zones/zone',
+                method: 'PATCH',
+                body: { id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Zone', id: arg.id }
+            ]
+        }),
         deleteZone: builder.mutation({
             query: ({ id }) => ({
                 url: `/zones`,
@@ -85,6 +95,7 @@ export const {
     useAddNewZoneMutation,
     useCreateNewZoneMutation,
     useUpdateZoneMutation,
+    useUpdateZoneStateMutation,
     useDeleteZoneMutation,
 } = zonesApiSlice
 

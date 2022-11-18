@@ -47,6 +47,10 @@ const NewZoneForm = () => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Zona';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
