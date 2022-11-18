@@ -8,10 +8,11 @@ router.use(verifyJWT)
 router.route('/')
     .get(usersController.getAllUsers)                          
     .post(usersController.createNewUser)
-    .patch(usersController.updateUser)
+    .patch(usersController.updateUser)    
     .delete(usersController.deleteUser)
 
 router.route('/user')
     .get(usersController.getUser)
+    .patch(usersController.updateUserState)
 
 module.exports = router

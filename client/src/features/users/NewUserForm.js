@@ -126,7 +126,42 @@ const NewUserForm = () => {
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (role == "-- Seleccione --"){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe seleccionar un tipo de usuario'
+            })
+        }
+    else if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+
+        } else if (surname == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el apellido'
+            })
+        } else if (mail == "") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el correo electrónico'
+            })
+        } else if (password == "") {  //COMPRUEBA CAMPOS VACIOS
+
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar la contraseña'
+            })
+            
+        }else if (canSave) {
                 await addNewUser({ name, surname, mail, password, role })
                         .then((response) => {
                             if(response.error) {
@@ -152,10 +187,6 @@ const NewUserForm = () => {
             > {role}</option >
         )
     })
-    // const date = new Date()
-    // const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
-
-
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
@@ -183,17 +214,6 @@ const Toast = Swal.mixin({
           <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {/* <Container>
-                <section className="welcome">
-                    <div id="fechaDiv" className="">
-
-                        <p>{today}</p>
-
-                    </div>
-                </section>
-            </Container> */}
-            {/* <div className="account-wall" align="center"> */}
-
                 <Container fluid>
 
                     <section>
@@ -300,38 +320,6 @@ const Toast = Swal.mixin({
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     Ingrese un correo electrónico válido.<br />
                                 </p>
-                                {/* <br /> */}
-                                {/* <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Nombre de usuario"
-                                                type="text"
-                                                id="username"
-                                                ref={userRef}
-                                                autoComplete="off"
-                                                onChange={(e) => setUsername(e.target.value)}
-                                                value={username}
-                                                required
-                                                aria-invalid={validUsername ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setUserFocus(true)}
-                                                onBlur={() => setUserFocus(false)}
-                                            />
-                                        </div>
-                                        <label htmlFor="username" id="iconito">
-                                            <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                                            <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                                        </label>
-                                    </div>
-                                </div>
-                                <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    4 a 24 caracteres.<br />
-                                    Debe empezar con una letra.<br />
-                                    Letras, números, guión bajo y guiones permitidos.
-                                </p> */}
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
@@ -362,9 +350,6 @@ const Toast = Swal.mixin({
                                     Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
                                     Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                                 </p>
-
-
-
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
@@ -416,25 +401,17 @@ const Toast = Swal.mixin({
 
                             </form>
                             <br />
-                            {/* <p>
-                                Ya estás registrado?<br />
-                                <span className="line">
-                                   
-                                    <a href="/">Ingresar</a>
-                                </span>
-                            </p> */}
                         </main>
                     </section>
                 </Container>
-            {/* </div> */}
             </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button>
+          <Button variant="primary" onClick={onSaveUserClicked} 
+        //   disabled={!validPassword || !validMatch ? true : false}
+          >Registrar</Button>
         </Modal.Footer>
       </Modal>
         </>

@@ -9,11 +9,18 @@ import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { ChangeEvent } from "react";
+import useTitle from "../../hooks/useTitle"
 
 const PointsList = () => {
 
+    const [filtroTexto, setTexto] = useState('');
+    const [viewInactives,setViewInactives] = useState(false);
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
+    useTitle('Lista de Puntos')
+    const onChangeText = e => setTexto(e.target.value)
+    const onActiveChanged = e => setViewInactives(!viewInactives)
 
     const { mail, isAdmin } = useAuth()
     const {
@@ -39,47 +46,69 @@ const PointsList = () => {
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>
     }
-
+    
     if (isSuccess) {
         const { ids, entities } = points
 
         let filteredIds
+        let filtroPrendido
         if (isAdmin) {
-            filteredIds = [...ids]
+            if (viewInactives){
+                filteredIds = [...ids]
+                if (filtroTexto !==  ''){
+                    filteredIds = ids.filter(pointId => (entities[pointId].name.toUpperCase()+' '+entities[pointId].zone?.toUpperCase()).includes(filtroTexto.toLocaleUpperCase()))
+                    filtroPrendido = true
+                } 
+            }else{
+                filteredIds = ids.filter(userId => (entities[userId].completed===true))
+                if (filtroTexto !==  ''){
+                    filteredIds = ids.filter(pointId => (entities[pointId].name.toUpperCase()+' '+entities[pointId].zone?.toUpperCase()).includes(filtroTexto.toLocaleUpperCase())&& entities[pointId].completed ===true)
+                    filtroPrendido = true
+                } 
+            }   
         } else {
             filteredIds = ids.filter(pointId => entities[pointId].mail === mail)
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(pointId => (entities[pointId].name.toUpperCase()+' '+entities[pointId].zone?.toUpperCase()).includes(filtroTexto.toLocaleUpperCase()) && entities[pointId].mail === mail)
+                filtroPrendido = true
+            }
         }
 
-        const tableContent = ids?.length && filteredIds.map(pointId => <Point key={pointId} pointId={pointId} />)
+        const tableContent = ids?.length && filteredIds.map(pointId =>  <Point key={pointId} pointId={pointId} />)
+        
         const handleClose = () => {
             setShow(true)
             navigate('/dash');
         };
 
-
+        if (!filtroPrendido && filteredIds.length === 0) {
+            content = <p className="errmsg">No se encontraron puntos para este usuario.</p>
+        }else{
         content = (
             <>
-                <Modal 
-                show={!show} 
-                onHide={handleClose}
-                size="lg"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="cabezal"><strong>Lista de Puntos</strong></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="show-grid">
-                        <Container>                        
-                       
+                <br />
+                        <Container>     
+                                               
                             <div id="fondoTabla">
-
-                                <Table responsive className="table tableUsers">
+                            <label>Filtrar: </label>
+                            <input className="filterPoint" value={filtroTexto} onChange={onChangeText} type="text"/>
+                            &nbsp;
+                            &nbsp;
+                            {(isAdmin) && <label>Mostrar puntos pendientes: </label>}
+                            {(isAdmin) && <input
+                                    className="filterActives"
+                                    id="user-active"
+                                    name="user-active"
+                                    type="checkbox"
+                                    value={viewInactives}
+                                    onChange={onActiveChanged}
+                                />}
+                                <Table  striped bordered hover size="sm" className="table tableUsers">
                                     <thead>
                                         <tr>
-                                            <th>Estado</th>
-                                            <th>Creado</th>
-                                            <th>Zona</th>
+                                            <th>Estado</th>                                    
                                             <th>Nombre</th>
-                                            <th>Propietario</th>
+                                            <th>Zona</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -87,23 +116,12 @@ const PointsList = () => {
                                         {tableContent}
                                     </tbody>
                                 </Table>
-
                             </div>
-
                         </Container>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancelar
-                        </Button>
-                        {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button> */}
-                    </Modal.Footer>
-                </Modal>
+                   
             </>
 
-        )
+        )}
     }
 
     return content

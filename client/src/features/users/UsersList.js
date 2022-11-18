@@ -25,10 +25,16 @@ const UsersList = () => {
     //     }
     //     console.log(data)
 
+    const [filtroTexto, setTexto] = useState('');
+    const [viewInactives,setViewInactives] = useState(false);
     const [query, setQuery] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
     useTitle('Lista de Usuarios')
+
+    const onChangeText = e => setTexto(e.target.value)
+    const onActiveChanged = e => setViewInactives(!viewInactives)
+
     const {
         data: users,
         isLoading,
@@ -53,12 +59,27 @@ const UsersList = () => {
 
     if (isSuccess) {
 
-        const { ids, name, mail, role } = users
+        const { ids, name, mail, role, entities } = users
         // console.log(users)
 
-        const tableContent = ids?.length && ids.map(userId => <User key={userId} userId={userId} />)
+    
+        let filteredIds
+        if (viewInactives){
+            filteredIds = [...ids]
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()))
+            }  
+        }else {
+            filteredIds = ids.filter(userId => (entities[userId].active===true))
+            if (filtroTexto !==  ''){
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()) && entities[userId].active ===true)
+            }  
+        }
+        
+
+        const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
         //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
-        const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
+        // const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
         const handleClose = () => {
             setShow(true)
             navigate('/dash');
@@ -75,34 +96,31 @@ const UsersList = () => {
 
         content = (
             <>
-                {/* <Modal show={!show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="cabezal"><strong>Lista de Usuarios</strong></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body> */}
+               
                 <Container>
-                    {/* <section className="welcome">
-                                <div id="fechaDiv" className="">
-
-                                    <p>{today}</p>
-
-                                </div>
-                            </section> */}
+                   
                     <br />
                     <div id="fondoTabla">
-
+                        <label>Filtrar: </label>
+                        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
+                        &nbsp;
+                        &nbsp;
+                        <label>Mostrar usuarios inactivos: </label>
+                        <input
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewInactives}
+                                onChange={onActiveChanged}
+                            />
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
-                                    <th>Usuario <input id="filterByEmail"
-                                        placeholder="Buscar..."
-                                        onChange={e => setQuery(e.target.value)} />
-                                    </th>
-
-                                    <th>Roles<input id="filterByEmail" placeholder="Buscar..." />
-                                    </th>
+                                    <th>Usuario</th>
+                                    <th>Roles</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -116,16 +134,7 @@ const UsersList = () => {
                     </div>
 
                 </Container>
-                {/* </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancelar
-                        </Button> */}
-                {/* <Button variant="primary" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>
-           Registrar
-          </Button> */}
-                {/* </Modal.Footer>
-                </Modal> */}
+                
             </>
         )
     }

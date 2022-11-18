@@ -1,4 +1,5 @@
 const Point = require('../models/Point')
+const Zone = require ('../models/Zone')
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
 
@@ -8,7 +9,6 @@ const asyncHandler = require('express-async-handler')
 const getAllPoints = asyncHandler(async (req, res) => {
     // Get all points from MongoDB
     const points = await Point.find().lean()
-
     // If no points 
     if (!points?.length) {
         return res.status(400).json({ message: 'No hay puntos disponibles' })
@@ -21,6 +21,18 @@ const getAllPoints = asyncHandler(async (req, res) => {
 
 
     res.json(pointsWithUser)
+})
+
+// @desc Obtener un punto
+// @route GET /points/point
+// @access Privada
+const getPoint = asyncHandler (async (req,res)=> {
+    const {name} = req.body
+    const point = await Point.find({"name":name}).select().lean()
+    if(!point){
+        return res.status(400).json({message: 'No se encontró el Punto'})
+    }
+    res.json(point)
 })
 
 // @desc Create new point
@@ -59,10 +71,10 @@ const updatePoint = asyncHandler(async (req, res) => {
 
     // Confirm point exists to update
     const point = await Point.findById(id).exec()
-
-    if (!point) {
+    if (!point ) {
         return res.status(400).json({ message: 'No se ha encontrado punto' })
-    } 
+    }
+
 
     point.user = user
     point.name = name
@@ -104,6 +116,7 @@ const deletePoint = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAllPoints,
+    getPoint,
     createNewPoint,
     updatePoint,
     deletePoint

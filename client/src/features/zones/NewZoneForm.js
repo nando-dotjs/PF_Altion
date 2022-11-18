@@ -47,6 +47,10 @@ const NewZoneForm = () => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Registro de Zona';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
@@ -73,7 +77,14 @@ const NewZoneForm = () => {
 
     const onSaveZoneClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
+        if (name == ""){
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe completar el nombre'
+            })
+
+        }else if (canSave) {
             await addNewZone({ name, details })
                 .then((response) => {
                     if(response.error){
@@ -90,8 +101,6 @@ const NewZoneForm = () => {
                 })
         }
     }
-
-    // const errClass = isError ? "errmsg" : "offscreen"
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -211,8 +220,9 @@ const Toast = Swal.mixin({
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked}  disabled={!validName ? true : false}>
-           Registrar
+          <Button variant="primary" onClick={onSaveZoneClicked}  
+        //   disabled={!validName ? true : false}
+          >Registrar
           </Button>
         </Modal.Footer>
       </Modal>

@@ -73,6 +73,10 @@ const EditUserForm = ({ user }) => {
     }, [])
 
     useEffect(() => {
+        document.title = 'Modificación de Usuario';
+    });
+
+    useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
     }, [name])
 
@@ -178,7 +182,7 @@ const EditUserForm = ({ user }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
-    navigate('/dash');
+    navigate('/dash/users');
 };
 
 const Toast = Swal.mixin({

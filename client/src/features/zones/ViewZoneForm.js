@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react"
-import { useUpdateZoneMutation } from "./zonesApiSlice"
-import { useNavigate } from "react-router-dom"
+import { useUpdateZoneMutation,selectZoneById } from "./zonesApiSlice"
+import { useNavigate,useParams } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
@@ -8,24 +8,14 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2'
 import Modal from 'react-bootstrap/Modal';
-
+import { useSelector } from 'react-redux'
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
 
-const EditZoneForm = ({ zone }) => {
+const ViewZoneForm = () => {
+    let { id } = useParams();
 
-    const [updateZone, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateZoneMutation()
-
-    // const [deleteZone, {
-    //     isSuccess: isDelSuccess,
-    //     isError: isDelError,
-    //     error: delerror
-    // }] = useDeleteZoneMutation()
+    const zone = useSelector(state => selectZoneById(state, id))
 
     const navigate = useNavigate()
     const userRef = useRef();
@@ -49,7 +39,7 @@ const EditZoneForm = ({ zone }) => {
     }, [])
     
     useEffect(() => {
-        document.title = 'Modificación de Zona';
+        document.title = 'Ver Zona';
     });
 
     useEffect(() => {
@@ -64,62 +54,18 @@ const EditZoneForm = ({ zone }) => {
         setErrMsg('');
     }, [name, details])
 
-    useEffect(() => {
-        if (isSuccess) {
-            setName('')
-            setDetails('')
-            navigate('/dash/zones')
-        }
-
-    }, [isSuccess, navigate])
-
-    const onNameChanged = e => setName(e.target.value)
-    const onDetailsChanged = e => setDetails(e.target.value)
-
-    const onActiveChanged = () => setActive(prev => !prev)
-
-    const onSaveZoneClicked = async (e) => {
-        if (name == ""){
-            Toast.fire({
-                icon: 'error',
-                position:"top",
-                title: 'Debe completar el nombre'
-            })
-
-
-       }
-        await updateZone({ id: zone.id, name, details, active })
-            .then((response) => {
-                if(response.error){
-                    Toast.fire({
-                        icon: 'error',
-                        position: 'top',
-                        title: response.error.data.message
-                        })
-                }else{
-                    Toast.fire({
-                        icon: 'info',
-                        title: response.data.message
-                        })
-                }
-            })
-    }
-    
 
     // const onDeleteZoneClicked = async () => {
     //     await deleteZone({ id: zone.id })
     // }
 
-    let canSave = [validName, validDetails].every(Boolean) && !isLoading
-
-    const errClass = (isError) ? "errmsg" : "offscreen"
 
     // const errContent = (error?.data?.message) ?? ''
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
-    navigate('/dash');
+    navigate('/dash/zones');
 };
 
     const Toast = Swal.mixin({
@@ -138,7 +84,7 @@ const EditZoneForm = ({ zone }) => {
         <>
          <Modal show={!show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title id="cabezal"><strong>Editar Zona</strong></Modal.Title>
+          <Modal.Title id="cabezal"><strong>Ver Zona</strong></Modal.Title>
         </Modal.Header>
         <Modal.Body>
             {/* <div className="account-wall" align="center">
@@ -168,11 +114,13 @@ const EditZoneForm = ({ zone }) => {
                             </button> */}
                                 </div>
                             </div>
-                            <br />
+                        
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
+                                    <strong>Nombre</strong>
                                     <input
+                                        disabled
                                         className="form-control"
                                         placeholder="Nombre de la zona"
                                         id="name"
@@ -180,7 +128,6 @@ const EditZoneForm = ({ zone }) => {
                                         type="text"
                                         autoComplete="off"
                                         value={name}
-                                        onChange={onNameChanged}
                                         required
                                         aria-invalid={validName ? "false" : "true"}
                                         aria-describedby="uidnote"
@@ -188,48 +135,32 @@ const EditZoneForm = ({ zone }) => {
                                         onBlur={() => setNameFocus(false)}
                                     />
                                 </div>
-                                <label htmlFor="name" id="iconito">
-                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                                </label>
                             </div>
                         </div>
-                        <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
+                        <br/>
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
-                        <input
-                            className="form-control"
-                            placeholder="Detalles"
-                            id="details"
-                            name="details"
-                            type="text"
-                            autoComplete="off"
-                            value={details}
-                            onChange={onDetailsChanged}
+                                    <strong>Detalle</strong>
+                                    <input
+                                        disabled
+                                        className="form-control"
+                                        placeholder="Detalles"
+                                        id="details"
+                                        name="details"
+                                        type="text"
+                                        autoComplete="off"
+                                        value={details}
 
-                            aria-invalid={validDetails ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setDetailsFocus(true)}
-                            onBlur={() => setDetailsFocus(false)}
-                        />
+                                        aria-invalid={validDetails ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setDetailsFocus(true)}
+                                        onBlur={() => setDetailsFocus(false)}
+                                    />
+                                </div>
+
+                            </div>
                         </div>
-                        <label htmlFor="details" id="iconito">
-                            <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
-                        </label>
-                        </div>
-                        </div>
-                        <p id="uidnote" className={detailsFocus && details && !validDetails ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
-                            Puede contener números y letras.<br />
-                        </p>
 
                         <br></br>
 
@@ -237,7 +168,7 @@ const EditZoneForm = ({ zone }) => {
 
                         </form>
                     </main>
-                    <br />
+                    
                     {/* </Container>
                     </div> */}
                     </Modal.Body>
@@ -245,10 +176,6 @@ const EditZoneForm = ({ zone }) => {
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked} 
-        //   disabled={!validName ? true : false}
-          >Guardar cambios</Button>
-          
         </Modal.Footer>
       </Modal>
                 </>
@@ -256,4 +183,4 @@ const EditZoneForm = ({ zone }) => {
 
                 return content
 }
-                export default EditZoneForm
+                export default ViewZoneForm
