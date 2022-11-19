@@ -81,7 +81,7 @@ const PointsList = () => {
             navigate('/dash');
         };
 
-        if (!filtroPrendido && filteredIds.length === 0) {
+        if ((!filtroPrendido && filteredIds.length === 0 && !isAdmin) || (isAdmin && ids.length === 0) ) {
             content = <p className="errmsg">No se encontraron puntos para este usuario.</p>
         }else{
         content = (
