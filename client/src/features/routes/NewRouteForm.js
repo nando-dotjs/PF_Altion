@@ -72,58 +72,15 @@ const NewRouteForm = () => {
     timerProgressBar: true
     })
 
-    // let zonesList
-    // let zoneList = []
 
-    // const loadZones = (zone) => {
-    //     if (zoneList?.length > 0) {
-    //         let z = zoneList.findIndex(e => e._id === zone._id)
-    //         if (z === -1){
-    //             zoneList.push(zone)
-    //         }else{
-    //             zoneList.splice(z, 1)
-    //         } 
-    //     }else{
-    //         zoneList.push(zone)
-    //     }
-    //     console.log(zoneList)
-    // }
-
-    // if (zonesisLoading) zonesList = <p>Cargando...</p>
-
-    // if (zonesisError) {
-    //     zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
-    // }
-
-    // if (zonesisSuccess) {
-
-    //     const { ids } = zones
-
-    //     const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
-    //     zonesList = (
-    //         <Table className="table tableZones" bordered hover>
-    //             <thead className="tableThead">
-    //                 <tr>
-    //                     <th scope="col" className="tableTh zoneCheck">Selec.</th>
-    //                     <th scope="col" className="tableTh zoneName">Zona</th>
-    //                     <th scope="col" className="tableTh zoneDetails">Detalles</th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 {tableContent}
-    //             </tbody>
-    //         </Table>
-    //     )
-    // }
-
-    //Nueva lógica de Zonas para react-select
-
-    let zonesJSON = {}
-    zonesisSuccess ? zonesJSON = zones.entities : zonesJSON = {}
-
+    let filteredZones = []
     let zonesList = []
-    for(var i in zonesJSON){
-        zonesList.push(zonesJSON[i]);
+    if (zonesisSuccess) {
+        filteredZones = zones.ids.filter(e => zones.entities[e].active === true)
+
+        for(var d in filteredZones){
+            zonesList.push(zones.entities[filteredZones[d]]);
+        }
     }
 
     const {
@@ -138,13 +95,20 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    let driversJSON = {}
-    driversisSuccess ? driversJSON = driversList.entities : driversJSON = {}
+    
 
+    let filteredDrivers = []
     let drivers = []
-    for(var d in driversJSON){
-        drivers.push(driversJSON[d]);
+    if (driversisSuccess) {
+        filteredDrivers = driversList.ids.filter(e => driversList.entities[e].active === true)
+
+        for(var d in filteredDrivers){
+            drivers.push(driversList.entities[filteredDrivers[d]]);
+        }
     }
+    
+    
+
 
 
     const {

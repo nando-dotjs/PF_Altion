@@ -105,7 +105,7 @@ const PointsList = () => {
                                 />}
                                 <Table  striped bordered hover size="sm" className="table tableUsers">
                                     <thead>
-                                        <tr>
+                                        <tr> 
                                             <th>Estado</th>                                    
                                             <th>Nombre</th>
                                             <th>Zona</th>

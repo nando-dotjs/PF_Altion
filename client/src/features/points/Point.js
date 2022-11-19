@@ -27,7 +27,7 @@ const Point = ({ pointId }) => {
                         ? <span className="pointStatusCompleted">Activo</span>
                         : <span className="pointStatusOpen">Pendiente</span>
                     }
-                </td>
+                </td> 
                 <td className="tableCell pointTitle">{point.name}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
 

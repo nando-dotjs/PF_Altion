@@ -2,6 +2,7 @@ import { useGetRoutesQuery } from "./routesApiSlice"
 import Route from './Route'
 import useTitle from "../../hooks/useTitle"
 import Table from 'react-bootstrap/Table';
+import Spinner from 'react-bootstrap/Spinner'
 
 const RoutesList = () => {
     useTitle('Lista de Recorridos')
@@ -19,7 +20,23 @@ const RoutesList = () => {
 
     let content
 
-    if (isLoading) content = <p>Cargando...</p>
+    if (isLoading) content = (
+            <Table className="table tableRoutes">
+                <thead className="tableThead">
+                    <tr>
+                        <th scope="col" className="tableTh routeDate">Fecha</th>
+                        <th scope="col" className="tableTh routeTime">Hora</th>
+                        <th scope="col" className="tableTh routeState">Estado</th>
+                        <th scope="col" className="tableTh routeEdit">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Spinner animation="border" role="status"> </Spinner>
+                    <br/>
+                    <span className="sr-only">Cargando...</span>
+                </tbody>
+            </Table>
+    )
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>
