@@ -24,10 +24,16 @@ const RouteMap = (props) => {
 
     const corralon = {"lat":-32.324320, "lng":-58.083528}
 
-    const [map, setMap] = useState(/** @type google.maps.Map */ (null))
-    const [directionsResponse, setDirectionsResponse] = useState(null)
+    const [map, setMap] = useState('')
+    const [directionsResponse, setDirectionsResponse] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
+
+    	React.useEffect( () => {
+        routePointList = []
+        setRoutePoints(props.points?.map(point => routePointList.push({location:{"lat":+point.lat, "lng":+point.long}})));
+        calculateRoute()
+      }, [props.points]); 
 
     let routePointList = []
     const [routePoints, setRoutePoints] = useState(props.points?.map(point => routePointList.push({location:{"lat":+point.lat, "lng":+point.long}})))
@@ -39,6 +45,7 @@ const RouteMap = (props) => {
 
     const calculateRoute = async () => {
         // eslint-disable-next-line no-undef
+        
         const directionsService = new google.maps.DirectionsService()
         const results = await directionsService.route({
         origin: corralon,
@@ -50,15 +57,25 @@ const RouteMap = (props) => {
         setDirectionsResponse(results)
         setDistance(results.routes[0].legs[0].distance.text)
         setDuration(results.routes[0].legs[0].duration.text)
+        setMarkers(props.points?.map(point => {
+        const latlng = {"lat":+point.lat, "lng":+point.long};
+        return <MarkerF key={point._id} position={latlng}/>
+        }))
     }
 
-    const [directionsAPI, setDirectionsAPI] = useState(
-        <DirectionsRenderer directions={directionsResponse} />
-    )
+    const [directionsAPI, setDirectionsAPI] = useState('')
+
+      React.useEffect( () => {
+        if (directionsResponse !== ''){
+          setDirectionsAPI(<DirectionsRenderer directions={directionsResponse} />)
+        }else{
+          setDirectionsAPI('')
+        }
+      }, [directionsResponse]); 
 
     const [markers, setMarkers] = useState(props.points?.map(point => {
         const latlng = {"lat":+point.lat, "lng":+point.long};
-        return <MarkerF position={latlng}/>
+        return <MarkerF key={point._id} position={latlng}/>
     }));
 
     // const tableContent = ids?.length && ids.map(routeId => <Route key={routeId} routeId={routeId} />) 
@@ -79,7 +96,7 @@ const RouteMap = (props) => {
 
           { /* Child components, such as markers, info windows, etc. */ }
             {markers}
-            <DirectionsRenderer directions={directionsResponse} />
+            {directionsAPI}
           <></>
         </GoogleMap>
       </LoadScriptOnlyIfNeeded>

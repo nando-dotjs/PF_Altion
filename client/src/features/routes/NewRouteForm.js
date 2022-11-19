@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAddNewRouteMutation } from "./routesApiSlice"
+import { useNavigate } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
 import {Container, Form } from "react-bootstrap"
@@ -28,7 +29,7 @@ const NewRouteForm = () => {
         error
     }] = useAddNewRouteMutation()
 
-
+    const navigate = useNavigate()
     useTitle('Nuevo Recorrido')
     registerLocale('es', es)
 
@@ -73,6 +74,7 @@ const NewRouteForm = () => {
     })
 
 
+    //Filtro de Zonas
     let filteredZones = []
     let zonesList = []
     if (zonesisSuccess) {
@@ -83,6 +85,8 @@ const NewRouteForm = () => {
         }
     }
 
+
+    //Filtro de Choferes
     const {
         data: driversList,
         isLoading: driversisLoading,
@@ -105,10 +109,7 @@ const NewRouteForm = () => {
         }
     }
     
-    
-
-
-
+    //Filtro de Puntos
     const {
         data: pointsList,
         isLoading: pointsisLoading,
@@ -121,15 +122,7 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    // let pointsList = {}
-    // pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
-
-    // let points = []
-    // for(var o in pointsJSON){
-    //     points.push(pointsJSON[o]);
-    // }
-
-    let filteredPoints = []
+    const [filteredPoints, setFilteredPoints] = useState([]);
     let pointsJSON = []
     let points = []    
     if (pointsisSuccess) {
@@ -140,33 +133,49 @@ const NewRouteForm = () => {
         }
     }
 
+    //Filtro de Puntos
     const filterPoints = (e) => {
 
-        e.preventDefault()
-
-        filteredPoints = []
+        let AuxFilteredPoints = []
         for(var z in selectedZones){
             for(var p in pointsJSON){
                if(pointsJSON[p].zone === selectedZones[z].name){
-                    filteredPoints.push(pointsJSON[p])
+                    AuxFilteredPoints.push(pointsJSON[p])
                }
             }
         }
-        
-        setChargedList(
-            <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
-        )
+        setFilteredPoints(AuxFilteredPoints)
+
+        // setChargedList(
+        //     <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
+        // )
 
     }
+
+	useEffect( () => {
+        if(filteredPoints.length > 0){
+            setChargedList(<DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>);
+        }else{
+            setChargedList('')
+        }
+	}, [filteredPoints]); 
 
     
+    //Carga de Mapa
 
-    const prepareMap = (e) => {
-        e.preventDefault()
-        setRouteMap(
-            <RouteMapContainer points={selectedPoints}/>
-        )
-    }
+    useEffect( () => {
+        if(selectedPoints.length > 0){
+            setRouteMap(<RouteMapContainer points={selectedPoints}/>)
+        }else{
+            setRouteMap('')
+        }
+	}, [selectedPoints]); 
+
+    // const prepareMap = (e) => {
+    //     setRouteMap(
+    //         <RouteMapContainer points={selectedPoints}/>
+    //     )
+    // }
 
     const {
         data: users,
@@ -214,6 +223,12 @@ const NewRouteForm = () => {
                 })
         }
     }
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(true)
+        navigate('/dash/routes');
+    };
 
 
     const content = (
@@ -292,9 +307,9 @@ const NewRouteForm = () => {
                                     {chargedList}
                                 </div>
 
-                                <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
+                                {/* <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
                                 Visualizar Recorrido
-                                </button>
+                                </button> */}
                                 
 
                                 {routeMap}

@@ -15,11 +15,16 @@ const DragList = (props) => {
 	const dragOverItem = React.useRef()
 
 	const deletePoint = (e) => {
+
 		const newList = points.filter((item) => item !== e);
 
     	setPoints(newList);
 		
 	}
+
+	React.useEffect( () => {
+    setPoints(props.points);
+	}, [props.points]); 
 
 	//const handle drag sorting
 	const handleSort = () => {
@@ -54,7 +59,7 @@ const DragList = (props) => {
 			<div className="list-container">
 				{points.map((item, index) => (
 					<div
-						key={index}
+						key={item._id}
 						className="list-item"
 						draggable
 						onDragStart={(e) => (dragItem.current = index)}
@@ -63,14 +68,14 @@ const DragList = (props) => {
 						onDragOver={(e) => e.preventDefault()}>
 						<i className="fa-solid fa-bars"></i>
 						<p>{`${item.name} - ${item.street} ${item.streetNumber}`}</p>
-						<button className={'btn btn-danger'} onClick={() => deletePoint(item)}>
+						<button className={'btn btn-danger'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
 							X
 						</button>
 					</div>
 				))}
 			</div>
 			<button className={'btn btn-success'} onClick={e => {e.preventDefault(); props.setSelectedPoints(points)}}>
-			Seleccionar Puntos
+			Visualizar Recorrido
 			</button>
 		</div>
 	)
