@@ -95,8 +95,6 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    
-
     let filteredDrivers = []
     let drivers = []
     if (driversisSuccess) {
@@ -123,15 +121,24 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    let pointsJSON = {}
-    pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
+    // let pointsList = {}
+    // pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
 
-    let points = []
-    for(var o in pointsJSON){
-        points.push(pointsJSON[o]);
-    }
-    
+    // let points = []
+    // for(var o in pointsJSON){
+    //     points.push(pointsJSON[o]);
+    // }
+
     let filteredPoints = []
+    let pointsJSON = []
+    let points = []    
+    if (pointsisSuccess) {
+        points = pointsList.ids.filter(e => pointsList.entities[e].completed === true)
+
+        for(var o in points){
+            pointsJSON.push(pointsList.entities[points[o]]);
+        }
+    }
 
     const filterPoints = (e) => {
 
