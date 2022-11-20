@@ -74,6 +74,7 @@ const DragList = (props) => {
 					</div>
 				))}
 			</div>
+			<br/>
 			<button className={'btn btn-success'} onClick={e => {e.preventDefault(); props.setSelectedPoints(points)}}>
 			Visualizar Recorrido
 			</button>

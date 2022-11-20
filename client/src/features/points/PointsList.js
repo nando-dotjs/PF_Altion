@@ -86,7 +86,6 @@ const PointsList = () => {
         }else{
         content = (
             <>
-                <br />
                         <Container>     
                                                
                             <div id="fondoTabla">

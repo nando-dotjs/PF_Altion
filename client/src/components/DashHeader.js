@@ -397,10 +397,10 @@ const DashHeader = () => {
                             <NavDropdown.Item href="/dash/points">Listar Puntos</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
-                            {(isAdmin || isRecolector ) && <Navbar.Brand><NavDropdown title="Rutas" id="basic-nav-dropdown" >
-                          <NavDropdown.Item href="/dash/routes/new">Crear Ruta</NavDropdown.Item>
+                            {(isAdmin || isRecolector ) && <Navbar.Brand><NavDropdown title="Recorridos" id="basic-nav-dropdown" >
+                          <NavDropdown.Item href="/dash/routes/new">Crear Recorrido</NavDropdown.Item>
                             {/* <Navbar.Brand> <NavDropdown.Item onClick={sendLogout}>Validar Rutas</NavDropdown.Item></Navbar.Brand> */}
-                          <NavDropdown.Item href="/dash/routes">Listar Rutas</NavDropdown.Item>
+                          <NavDropdown.Item href="/dash/routes">Listar Recorridos</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
                         </Nav>

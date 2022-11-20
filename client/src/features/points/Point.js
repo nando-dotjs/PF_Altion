@@ -19,7 +19,6 @@ const Point = ({ pointId }) => {
         const handleEdit = () => navigate(`/dash/points/${pointId}`)
         const handleView = () => navigate(`/dash/point/${pointId}`)
 
-        console.log(point);
         return (
             <tr className="tableRow">
                 <td className="tableCell pointStatus">

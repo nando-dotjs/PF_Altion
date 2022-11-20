@@ -18,25 +18,29 @@ const Route = ({ routeId }) => {
 
         var dateObject = new Date(route.date);
 
-
         return (
-            <tr className="tableRow route">
-                <td className={`tableCell ${cellStatus}`}>{dateObject.toLocaleDateString()}</td>
-                <td className={`tableCell ${cellStatus}`}>{route.time}</td>
-                <td className={`tableCell ${cellStatus}`}>{route.state}</td>    
-                <td className={`tableCell ${cellStatus}`}>
+            <tr className="tableRow">
+                <td className="tableCell routeStatus">
+                    {route.state === 'Pendiente'
+                        ? <span className="routeStatusCompleted">Pendiente</span>
+                        : <span className="routeStatusOpen">Completado</span>
+                    }
+                </td> 
+                <td className="tableCell routeDate">{dateObject.toLocaleDateString()}</td>
+                <td className="tableCell routeTime">{route.time}</td>
+
+                <td className="tableCell">
                     <button
-                        className="icon-button tableButton"
+                        className="btn btn-primary"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
-                </td>
-                <td className={`tableCell ${cellStatus}`}>
-                    <button
-                        className="icon-button tableButton"
-                        onClick={handleInit}
-                    >
+                    &nbsp;
+                    <button 
+                        className="btn btn-primary"
+                        onClick={handleInit} 
+                    >  
                         <FontAwesomeIcon icon={faPlay} />
                     </button>
                 </td>

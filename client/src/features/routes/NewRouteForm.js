@@ -3,7 +3,7 @@ import { useAddNewRouteMutation } from "./routesApiSlice"
 import { useNavigate } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form } from "react-bootstrap"
+import {Container, Form, Modal, ProgressBar } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
@@ -47,7 +47,7 @@ const NewRouteForm = () => {
     
     const [startDate, setStartDate] = useState(new Date());
     const [time, setTime] = useState('');
-    const [driver, setDriver] = useState({_id:'', name: '', surname: ''});
+    const [driver, setDriver] = useState('');
     const [chargedList, setChargedList] = useState('');
     const [selectedZones, setSelectedZones] = useState([]);
     const [selectedPoints, setSelectedPoints] = useState([]);
@@ -189,16 +189,24 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-        if((isAdmin || isCEV || isEmpresa)) {
+    useEffect( () => {
+        if(users){
             for(var u in users.entities) {
                 if (users.entities[u].mail === mail) {
                     setActiveUser(users.entities[u])
                 }
-
             }
+        }else{
+            setActiveUser('')
+        }
+	}, [selectedPoints]); 
+
+    const onSaveRouteClicked = async (e) => {
+        e.preventDefault()
+
+
+
+        if((isAdmin || isCEV || isEmpresa)) {
             let pointlist = []
             
             for(var k in selectedPoints){
@@ -233,95 +241,108 @@ const NewRouteForm = () => {
 
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+            <Modal show={!show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Nuevo Recorrido</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ProgressBar now={33} />
+                    <br/>
+                    <Container fluid>
 
-            <Container fluid>
+                        <Container fluid>
 
-                <section>
-
-                    <main className='newRoute'>
-
-                        {/* <p className={errClass}>{error?.data?.message}</p> */}
-                        <form className="form">
-
-                            
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <Form.Label>Fecha del Recorrido</Form.Label>
-                                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                            {/* <p className={errClass}>{error?.data?.message}</p> */}
+                            <form className="form">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <Form.Label>Fecha del Recorrido</Form.Label>
+                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                                    </div>
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Hora del Recorrido</Form.Label>
+                                        <Select
+                                        id="time"
+                                        name="horario"
+                                        className={`formSelect`}
+                                        placeholder={'Seleccione un horario...'}
+                                        value={time}
+                                        options={horas}
+                                        onChange={onTimeChanged}
+                                        getOptionLabel={(option) => option.name}
+                                        getOptionValue={(option) => option.name}/>
+                                    </div>
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Chofer del Recorrido</Form.Label>
+                                        <Select
+                                            id="driver"
+                                            name="driver"
+                                            options={drivers}
+                                            className={`formSelect`}
+                                            placeholder={'Seleccione chofer...'}
+                                            value={driver}
+                                            onChange={onDriverChanged}
+                                            getOptionLabel={(option) => option.name + ' ' + option.surname}
+                                            getOptionValue={(option) => option._id}
+                                        >
+                                        </Select>
+                                    </div>
                                 </div>
-                                <div className="row">
-                                    <Form.Label>Hora del Recorrido</Form.Label>
-                                    <Select
-                                    id="time"
-                                    name="horario"
-                                    className={`formSelect`}
-                                    value={time}
-                                    options={horas}
-                                    onChange={onTimeChanged}
-                                    getOptionLabel={(option) => option.name}
-                                    getOptionValue={(option) => option.name}/>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <Form.Label>Chofer del Recorrido</Form.Label>
-                                </div>
-                                <div className="row">
-                                    <Select
-                                        id="driver"
-                                        name="driver"
-                                        options={drivers}
-                                        className="formSelect"
-                                        value={driver}
-                                        onChange={onDriverChanged}
-                                        getOptionLabel={(option) => option.name + ' ' + option.surname}
-                                        getOptionValue={(option) => option._id}
-                                    >
-                                    </Select>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <Form.Label>Zona/s del Recorrido</Form.Label>
-                                </div>
-                                <div className="row">
-                                    <Select
-                                        id="zone"
-                                        name="zone"
-                                        options={zonesList}
-                                        className="formSelect"
-                                        value={selectedZones}
-                                        onChange={onZoneChanged}
-                                        getOptionLabel={(option) => option.name + ' - ' + option.details}
-                                        getOptionValue={(option) => option._id}
-                                        isMulti
-                                    >
-                                    </Select>
+                                <div className="container-fluid">         
 
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Zona/s del Recorrido</Form.Label>
+                                    </div>
+                                    <div className="row">
+                                        <Select
+                                            id="zone"
+                                            name="zone"
+                                            options={zonesList}
+                                            className="formSelect"
+                                            value={selectedZones}
+                                            placeholder={'Seleccione zona...'}
+                                            onChange={onZoneChanged}
+                                            getOptionLabel={(option) => option.name + ' - ' + option.details}
+                                            getOptionValue={(option) => option._id}
+                                            isMulti
+                                        >
+                                        </Select>
+
+                                    </div>                      
+                                    <br/>
+                                    <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                            Seleccionar Zonas
+                                    </button>
+
+                                    <div className="scrollableList">
+                                        {chargedList}
+                                    </div>
+                                    
+
+                                    {routeMap}
+                                    
                                 </div>
 
-                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
-                                        Seleccionar Zonas
-                                </button>
-
-                                <div className="scrollableList">
-                                    {chargedList}
+                            </form>
+                            <div className="row">
+                                <div className="col">
+                                    <button className={'btn btn-light'} onClick={() => handleClose()}>
+                                        Cancelar
+                                    </button>
                                 </div>
-
-                                {/* <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
-                                Visualizar Recorrido
-                                </button> */}
-                                
-
-                                {routeMap}
-
-                                <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
-                                    Confirmar Recorrido
-                                </button>
+                                <div className="col">
+                                    <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
+                                        Confirmar
+                                    </button>
+                                </div>
                             </div>
-                        </form>
-                    </main>
-                </section>
-                </Container>
+                        </Container>
+                    </Container>
+                </Modal.Body>
+            </Modal>
         </>
     )
 

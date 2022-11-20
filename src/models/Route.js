@@ -21,12 +21,16 @@ const routeSchema = new mongoose.Schema(
                 ref: 'Point'
             },
             collected: {
-                type: Boolean,
+                type: String,
                 required: true,
-                default: false
+                default: 'Pendiente'
             },
             amountCollected: {
                 type: Number,
+                required: false
+            },
+            details: {
+                type: String,
                 required: false
             },
             timeCollected: {
