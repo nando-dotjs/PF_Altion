@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const ZonesList = () => {
     
@@ -65,34 +66,36 @@ const ZonesList = () => {
 
         content = (
             <>
-          <br/>
           <Container>
-        <div id="fondoTabla">
-        <label>Filtrar: </label>
-        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
-        &nbsp;
-        &nbsp;
-        <label>Mostrar zonas inactivas: </label>
-        <input
-                className="filterActives"
-                id="user-active"
-                name="user-active"
-                type="checkbox"
-                value={viewInactives}
-                onChange={onActiveChanged}
-            />
-            <Table striped bordered hover size="sm" className="table tableUsers">
-                <thead className="tableThead">
-                    <tr>
-                        <th scope="col" className="tableTh zoneName">Nombre</th>
-                        <th scope="col" className="tableTh zoneDetails">Detalles</th>
-                        <th scope="col" className="tableTh zoneEdit">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableContent}
-                </tbody>
-            </Table>
+          <br/>
+            <div id="fondoTabla">
+                <InputGroup.Text>
+                &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                &nbsp; &nbsp;
+                <strong>Mostrar zonas inactivas: </strong>
+                    <InputGroup.Checkbox
+                        placeholder="Mostrar zonas inactivas"
+                        className="filterActives"
+                        id="user-active"
+                        name="user-active"
+                        type="checkbox"
+                        value={viewInactives}
+                        onChange={onActiveChanged}
+                    /></InputGroup.Text>     
+            </div>
+            <div id="fondoTabla">
+                <Table striped bordered hover size="sm" className="table tableUsers">
+                    <thead className="tableThead">
+                        <tr>
+                            <th scope="col" className="tableTh zoneName">Nombre</th>
+                            <th scope="col" className="tableTh zoneDetails">Detalles</th>
+                            <th scope="col" className="tableTh zoneEdit">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableContent}
+                    </tbody>
+                </Table>
             </div>
             </Container>
         </>

@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const DriversList = () => {
 
@@ -74,21 +75,23 @@ const DriversList = () => {
             <Container>
                   
               
-                <br />
+            <br/>
             <div id="fondoTabla">
-            <label>Filtrar: </label>
-            <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
-            &nbsp;
-            &nbsp;
-            <label>Mostrar choferes inactivos: </label>
-            <input
-                    className="filterActives"
-                    id="user-active"
-                    name="user-active"
-                    type="checkbox"
-                    value={viewInactives}
-                    onChange={onActiveChanged}
-                />
+                <InputGroup.Text>
+                &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                &nbsp; &nbsp;
+                <strong>Mostrar choferes inactivos: </strong>
+                    <InputGroup.Checkbox
+                        placeholder="Mostrar choferes inactivos"
+                        className="filterActives"
+                        id="user-active"
+                        name="user-active"
+                        type="checkbox"
+                        value={viewInactives}
+                        onChange={onActiveChanged}
+                    /></InputGroup.Text>     
+            </div>
+            <div id="fondoTabla">
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead>
                     <tr>

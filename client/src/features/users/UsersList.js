@@ -13,7 +13,7 @@ import Button from 'react-bootstrap/Button';
 // import axios from 'react-axios'
 import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
-
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const UsersList = () => {
     // function UsersList(){
@@ -98,22 +98,24 @@ const UsersList = () => {
             <>
                
                 <Container>
-                   
-                    <br />
+
+                    <br/>
                     <div id="fondoTabla">
-                        <label>Filtrar: </label>
-                        <input className="filterZone" value={filtroTexto} onChange={onChangeText} type="text"/>
-                        &nbsp;
-                        &nbsp;
-                        <label>Mostrar usuarios inactivos: </label>
-                        <input
+                        <InputGroup.Text>
+                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                        &nbsp; &nbsp;
+                        <strong>Mostrar usuarios inactivos: </strong>
+                            <InputGroup.Checkbox
+                                placeholder="Mostrar usuarios inactivos"
                                 className="filterActives"
                                 id="user-active"
                                 name="user-active"
                                 type="checkbox"
                                 value={viewInactives}
                                 onChange={onActiveChanged}
-                            />
+                            /></InputGroup.Text>     
+                    </div>
+                    <div id="fondoTabla">
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
