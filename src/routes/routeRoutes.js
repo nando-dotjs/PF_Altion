@@ -14,4 +14,7 @@ router.route('/')
 router.route('/points')
     .patch(routesController.updatePoints)
 
+router.route('/state')
+    .patch(routesController.updateState)
+
 module.exports = router

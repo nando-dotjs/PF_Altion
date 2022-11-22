@@ -14,7 +14,9 @@ import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
 import InputGroup from 'react-bootstrap/InputGroup';
+
 import Form from 'react-bootstrap/Form';
+
 
 const UsersList = () => {
 
@@ -91,14 +93,15 @@ const UsersList = () => {
             <>
 
                 <Container>
-                    <br />
+
+
+                    <br/>
                     <div id="fondoTabla">
-                        <br />
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
-                        &nbsp;
-                        &nbsp;
-                       <strong>Mostrar usuarios activos: </strong>
+                        &nbsp; &nbsp;
+                        <strong>Mostrar usuarios inactivos: </strong>
+
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
                                 className="filterActives"
@@ -107,12 +110,10 @@ const UsersList = () => {
                                 type="checkbox"
                                 value={viewInactives}
                                 onChange={onActiveChanged}
-                            /></InputGroup.Text>
-                        <br />
-                    </div>
-                    <br />
-                    <div id="fondoTabla">
 
+                            /></InputGroup.Text>     
+                    </div>
+                    <div id="fondoTabla">
 
                         <Table
                             // data={search(tableContent)} 

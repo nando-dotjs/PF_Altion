@@ -94,8 +94,25 @@ const DriversList = () => {
                     </div>
                     <br />
               
+
+            <br/>
             <div id="fondoTabla">
-            
+                <InputGroup.Text>
+                &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                &nbsp; &nbsp;
+                <strong>Mostrar choferes inactivos: </strong>
+                    <InputGroup.Checkbox
+                        placeholder="Mostrar choferes inactivos"
+                        className="filterActives"
+                        id="user-active"
+                        name="user-active"
+                        type="checkbox"
+                        value={viewInactives}
+                        onChange={onActiveChanged}
+                    /></InputGroup.Text>     
+            </div>
+            <div id="fondoTabla">
+
             <Table striped bordered hover size="sm" className="table tableUsers">
                 <thead>
                     <tr>

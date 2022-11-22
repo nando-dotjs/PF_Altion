@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAddNewRouteMutation } from "./routesApiSlice"
+import { useNavigate } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form } from "react-bootstrap"
+import {Container, Form, Modal, ProgressBar } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
@@ -28,7 +29,7 @@ const NewRouteForm = () => {
         error
     }] = useAddNewRouteMutation()
 
-
+    const navigate = useNavigate()
     useTitle('Nuevo Recorrido')
     registerLocale('es', es)
 
@@ -46,7 +47,7 @@ const NewRouteForm = () => {
     
     const [startDate, setStartDate] = useState(new Date());
     const [time, setTime] = useState('');
-    const [driver, setDriver] = useState({_id:'', name: '', surname: ''});
+    const [driver, setDriver] = useState('');
     const [chargedList, setChargedList] = useState('');
     const [selectedZones, setSelectedZones] = useState([]);
     const [selectedPoints, setSelectedPoints] = useState([]);
@@ -72,60 +73,20 @@ const NewRouteForm = () => {
     timerProgressBar: true
     })
 
-    // let zonesList
-    // let zoneList = []
 
-    // const loadZones = (zone) => {
-    //     if (zoneList?.length > 0) {
-    //         let z = zoneList.findIndex(e => e._id === zone._id)
-    //         if (z === -1){
-    //             zoneList.push(zone)
-    //         }else{
-    //             zoneList.splice(z, 1)
-    //         } 
-    //     }else{
-    //         zoneList.push(zone)
-    //     }
-    //     console.log(zoneList)
-    // }
-
-    // if (zonesisLoading) zonesList = <p>Cargando...</p>
-
-    // if (zonesisError) {
-    //     zonesList = <p className="errmsg">{zoneserror?.data?.message}</p>
-    // }
-
-    // if (zonesisSuccess) {
-
-    //     const { ids } = zones
-
-    //     const tableContent = ids?.length && ids.map(zoneId => <Zone key={zoneId} zoneId={zoneId} selectedZones={e => loadZones(e)} />)  
-    //     zonesList = (
-    //         <Table className="table tableZones" bordered hover>
-    //             <thead className="tableThead">
-    //                 <tr>
-    //                     <th scope="col" className="tableTh zoneCheck">Selec.</th>
-    //                     <th scope="col" className="tableTh zoneName">Zona</th>
-    //                     <th scope="col" className="tableTh zoneDetails">Detalles</th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 {tableContent}
-    //             </tbody>
-    //         </Table>
-    //     )
-    // }
-
-    //Nueva lógica de Zonas para react-select
-
-    let zonesJSON = {}
-    zonesisSuccess ? zonesJSON = zones.entities : zonesJSON = {}
-
+    //Filtro de Zonas
+    let filteredZones = []
     let zonesList = []
-    for(var i in zonesJSON){
-        zonesList.push(zonesJSON[i]);
+    if (zonesisSuccess) {
+        filteredZones = zones.ids.filter(e => zones.entities[e].active === true)
+
+        for(var d in filteredZones){
+            zonesList.push(zones.entities[filteredZones[d]]);
+        }
     }
 
+
+    //Filtro de Choferes
     const {
         data: driversList,
         isLoading: driversisLoading,
@@ -138,15 +99,17 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    let driversJSON = {}
-    driversisSuccess ? driversJSON = driversList.entities : driversJSON = {}
-
+    let filteredDrivers = []
     let drivers = []
-    for(var d in driversJSON){
-        drivers.push(driversJSON[d]);
+    if (driversisSuccess) {
+        filteredDrivers = driversList.ids.filter(e => driversList.entities[e].active === true)
+
+        for(var d in filteredDrivers){
+            drivers.push(driversList.entities[filteredDrivers[d]]);
+        }
     }
-
-
+    
+    //Filtro de Puntos
     const {
         data: pointsList,
         isLoading: pointsisLoading,
@@ -159,43 +122,60 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    let pointsJSON = {}
-    pointsisSuccess ? pointsJSON = pointsList.entities : pointsJSON = {}
+    const [filteredPoints, setFilteredPoints] = useState([]);
+    let pointsJSON = []
+    let points = []    
+    if (pointsisSuccess) {
+        points = pointsList.ids.filter(e => pointsList.entities[e].completed === true)
 
-    let points = []
-    for(var o in pointsJSON){
-        points.push(pointsJSON[o]);
+        for(var o in points){
+            pointsJSON.push(pointsList.entities[points[o]]);
+        }
     }
-    
-    let filteredPoints = []
 
+    //Filtro de Puntos
     const filterPoints = (e) => {
 
-        e.preventDefault()
-
-        filteredPoints = []
+        let AuxFilteredPoints = []
         for(var z in selectedZones){
             for(var p in pointsJSON){
                if(pointsJSON[p].zone === selectedZones[z].name){
-                    filteredPoints.push(pointsJSON[p])
+                    AuxFilteredPoints.push(pointsJSON[p])
                }
             }
         }
-        
-        setChargedList(
-            <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
-        )
+        setFilteredPoints(AuxFilteredPoints)
+
+        // setChargedList(
+        //     <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
+        // )
 
     }
+
+	useEffect( () => {
+        if(filteredPoints.length > 0){
+            setChargedList(<DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>);
+        }else{
+            setChargedList('')
+        }
+	}, [filteredPoints]); 
 
     
+    //Carga de Mapa
 
-    const prepareMap = (e) => {
-        e.preventDefault()
-        setRouteMap(
-            <RouteMapContainer points={selectedPoints}/>
-        )
-    }
+    useEffect( () => {
+        if(selectedPoints.length > 0){
+            setRouteMap(<RouteMapContainer points={selectedPoints}/>)
+        }else{
+            setRouteMap('')
+        }
+	}, [selectedPoints]); 
+
+    // const prepareMap = (e) => {
+    //     setRouteMap(
+    //         <RouteMapContainer points={selectedPoints}/>
+    //     )
+    // }
 
     const {
         data: users,
@@ -209,16 +189,24 @@ const NewRouteForm = () => {
         refetchOnMountOrArgChange: true
     })
 
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-        if((isAdmin || isCEV || isEmpresa)) {
+    useEffect( () => {
+        if(users){
             for(var u in users.entities) {
                 if (users.entities[u].mail === mail) {
                     setActiveUser(users.entities[u])
                 }
-
             }
+        }else{
+            setActiveUser('')
+        }
+	}, [selectedPoints]); 
+
+    const onSaveRouteClicked = async (e) => {
+        e.preventDefault()
+
+
+
+        if((isAdmin || isCEV || isEmpresa)) {
             let pointlist = []
             
             for(var k in selectedPoints){
@@ -244,98 +232,115 @@ const NewRouteForm = () => {
         }
     }
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(true)
+        navigate('/dash/routes');
+    };
+
 
     const content = (
         <>
-            <p className={errClass}>{error?.data?.message}</p>
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Nuevo Recorrido</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Container fluid>
 
-            <Container fluid>
+                        <Container fluid>
 
-                <section>
-
-                    <main className='newRoute'>
-
-                        {/* <p className={errClass}>{error?.data?.message}</p> */}
-                        <form className="form">
-
-                            
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <Form.Label>Fecha del Recorrido</Form.Label>
-                                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                            {/* <p className={errClass}>{error?.data?.message}</p> */}
+                            <form className="form">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <Form.Label>Fecha del Recorrido</Form.Label>
+                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                                    </div>
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Hora del Recorrido</Form.Label>
+                                        <Select
+                                        id="time"
+                                        name="horario"
+                                        className={`formSelect`}
+                                        placeholder={'Seleccione un horario...'}
+                                        value={time}
+                                        options={horas}
+                                        onChange={onTimeChanged}
+                                        getOptionLabel={(option) => option.name}
+                                        getOptionValue={(option) => option.name}/>
+                                    </div>
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Chofer del Recorrido</Form.Label>
+                                        <Select
+                                            id="driver"
+                                            name="driver"
+                                            options={drivers}
+                                            className={`formSelect`}
+                                            placeholder={'Seleccione chofer...'}
+                                            value={driver}
+                                            onChange={onDriverChanged}
+                                            getOptionLabel={(option) => option.name + ' ' + option.surname}
+                                            getOptionValue={(option) => option._id}
+                                        >
+                                        </Select>
+                                    </div>
                                 </div>
-                                <div className="row">
-                                    <Form.Label>Hora del Recorrido</Form.Label>
-                                    <Select
-                                    id="time"
-                                    name="horario"
-                                    className={`formSelect`}
-                                    value={time}
-                                    options={horas}
-                                    onChange={onTimeChanged}
-                                    getOptionLabel={(option) => option.name}
-                                    getOptionValue={(option) => option.name}/>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <Form.Label>Chofer del Recorrido</Form.Label>
-                                </div>
-                                <div className="row">
-                                    <Select
-                                        id="driver"
-                                        name="driver"
-                                        options={drivers}
-                                        className="formSelect"
-                                        value={driver}
-                                        onChange={onDriverChanged}
-                                        getOptionLabel={(option) => option.name + ' ' + option.surname}
-                                        getOptionValue={(option) => option._id}
-                                    >
-                                    </Select>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <Form.Label>Zona/s del Recorrido</Form.Label>
-                                </div>
-                                <div className="row">
-                                    <Select
-                                        id="zone"
-                                        name="zone"
-                                        options={zonesList}
-                                        className="formSelect"
-                                        value={selectedZones}
-                                        onChange={onZoneChanged}
-                                        getOptionLabel={(option) => option.name + ' - ' + option.details}
-                                        getOptionValue={(option) => option._id}
-                                        isMulti
-                                    >
-                                    </Select>
+                                <div className="container-fluid">         
 
+                                    <br/>
+                                    <div className="row">
+                                        <Form.Label>Zona/s del Recorrido</Form.Label>
+                                    </div>
+                                    <div className="row">
+                                        <Select
+                                            id="zone"
+                                            name="zone"
+                                            options={zonesList}
+                                            className="formSelect"
+                                            value={selectedZones}
+                                            placeholder={'Seleccione zona...'}
+                                            onChange={onZoneChanged}
+                                            getOptionLabel={(option) => option.name + ' - ' + option.details}
+                                            getOptionValue={(option) => option._id}
+                                            isMulti
+                                        >
+                                        </Select>
+
+                                    </div>                      
+                                    <br/>
+                                    <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                            Seleccionar Zonas
+                                    </button>
+
+                                    <div className="scrollableList">
+                                        {chargedList}
+                                    </div>
+                                    
+
+                                    {routeMap}
+                                    
                                 </div>
 
-                                <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
-                                        Seleccionar Zonas
-                                </button>
-
-                                <div className="scrollableList">
-                                    {chargedList}
+                            </form>
+                            <div className="row">
+                                <div className="col">
+                                    <button className={'btn btn-light'} onClick={() => handleClose()}>
+                                        Cancelar
+                                    </button>
                                 </div>
-
-                                <button className={'btn btn-success'} onClick={e => prepareMap(e)}>
-                                Visualizar Recorrido
-                                </button>
-                                
-
-                                {routeMap}
-
-                                <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
-                                    Confirmar Recorrido
-                                </button>
+                                <div className="col">
+                                    <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
+                                        Confirmar
+                                    </button>
+                                </div>
                             </div>
-                        </form>
-                    </main>
-                </section>
-                </Container>
+                        </Container>
+                    </Container>
+                </Modal.Body>
+            </Modal>
         </>
     )
 

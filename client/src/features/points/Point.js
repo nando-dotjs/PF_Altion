@@ -19,7 +19,6 @@ const Point = ({ pointId }) => {
         const handleEdit = () => navigate(`/dash/points/${pointId}`)
         const handleView = () => navigate(`/dash/point/${pointId}`)
 
-        console.log(point);
         return (
             <tr className="tableRow">
                 <td className="tableCell pointStatus">
@@ -27,7 +26,7 @@ const Point = ({ pointId }) => {
                         ? <span className="pointStatusCompleted">Activo</span>
                         : <span className="pointStatusOpen">Pendiente</span>
                     }
-                </td>
+                </td> 
                 <td className="tableCell pointTitle">{point.name}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
                 <td className="tableCell pointTitle">{point.name}</td>

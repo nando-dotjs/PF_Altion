@@ -122,6 +122,36 @@ const updatePoints = asyncHandler(async (req, res) => {
     res.json(`Recorrido de ${updatedRoute.date} actualizado`)
 })
 
+const updateState = asyncHandler(async (req, res) => {
+    const { id, routeState } = req.body
+
+    // Confirm data
+    if (!id || !routeState) {
+        return res.status(400).json({ message: 'Debe completar todos los campos' })
+    }
+
+    // Confirm route exists to update
+    const route = await Route.findById(id).exec()
+
+    if (!route) {
+        return res.status(400).json({ message: 'No se ha encontrado el recorrido' })
+    }
+
+    // // Check for duplicate title
+    // const duplicate = await Route.findOne({ user }).lean().exec()
+
+    // // Allow renaming of the original route 
+    // if (duplicate && duplicate?._id.toString() !== id) {
+    //     return res.status(409).json({ message: 'Ya existe un ROUTE asociado a este usuario' })
+    // }
+
+    route.state = routeState
+
+    const updatedRoute = await route.save()
+
+    res.json(`Recorrido de ${updatedRoute.date} actualizado`)
+})
+
 // @desc Delete a route
 // @route DELETE /routes
 // @access Private
@@ -152,5 +182,6 @@ module.exports = {
     createNewRoute,
     updateRoute,
     updatePoints,
+    updateState,
     deleteRoute
 }

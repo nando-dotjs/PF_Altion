@@ -7,11 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import MapPopup from '../maps/MapPopup'
 import '../users/register.css'
 import Swal from "sweetalert2"
-import Modal from 'react-bootstrap/Modal';
-
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import {Modal, Form, Container, Button} from 'react-bootstrap';
 
 const PHONENUMBER_REGEX = /^\d{8,9}$/;
 // eslint-disable-next-line
@@ -210,7 +206,7 @@ const NewPointForm = ({ users }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
-        navigate('/dash');
+        navigate('/dash/points');
     };
 
     const Toast = Swal.mixin({
@@ -227,7 +223,7 @@ const NewPointForm = ({ users }) => {
 
     const content = (
         <>
-            <Modal show={!show} onHide={handleClose}>
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title id="cabezal"><strong>Nuevo Punto</strong></Modal.Title>
                 </Modal.Header>

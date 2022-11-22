@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faSave} from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faPencilSquare} from "@fortawesome/free-solid-svg-icons"
 import { Button } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { selectPointById } from '../points/pointsApiSlice'
@@ -11,24 +11,28 @@ const PointsList = (props) => {
 
     const [amount, setAmount] = React.useState(props.amount)
 
+    const [pointState, setPointState] = React.useState(props.pointState)
+
     const point = useSelector(state => selectPointById(state, id))
 
-	return (
-            <tr>
-			<td>
-                {point.name}
-			</td>
-            <td>
-                <input type="number" name="myInput" value={amount} onChange={e => setAmount(e.target.value)}/>
-            </td>
-            <td className={`tableCell`}>
-                <button
-                    className="icon-button tableButton" onClick={() => props.handlePoint(point, amount)}
-                >
-                    <FontAwesomeIcon icon={faSave} />
+    React.useEffect(() => {
+        setPointState(props.pointState)
+    }, [props.pointState])
+
+    return (
+        <tr className="tableRow">
+            <td className="tableCell pointName">{point.name}</td>
+            <td className="tableCell pointState">{pointState}</td>
+            <td className="tableCell">
+                <button 
+                    className="btn btn-success btn-lg"
+                    onClick={() => props.handlePoint(point)} 
+                >  
+                    <FontAwesomeIcon icon={faPencilSquare} />
                 </button>
             </td>
-            </tr>
-	)
+        </tr>
+    )
+
 }
 export default PointsList
