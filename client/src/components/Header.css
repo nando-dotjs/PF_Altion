@@ -1,0 +1,40 @@
+#header-img
+{
+    width: 62px;
+    height: 62px;
+    margin-right: 25px;
+}
+
+.navbar-collapse {
+    flex-grow: 0.7;
+}
+
+@media only screen and (max-width: 640px) {
+
+    .navbar {
+        margin-right: auto;
+        margin-left: auto;   
+        display: block;
+    }
+
+    .navbar-nav { 
+        --bs-nav-link-padding-x: 0!important;
+        --bs-nav-link-padding-y: 0.3rem!important;
+    }
+
+    .me-auto {
+        margin-block-start: 5px!important;
+        /* margin-block-end: 30px!important;  */
+    }
+
+    #header-img {
+        width: 62px;
+        height: 62px;
+        margin-right: auto;
+    }
+
+    #basic-nav-dropdown-last{
+        margin-top: 15px; 
+    }
+    
+}
