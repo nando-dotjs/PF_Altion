@@ -18,6 +18,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import Navbar from 'react-bootstrap';
 import Swal from 'sweetalert2'
+import './Header.css';
 
 // import useAuth from '../hooks/useAuth'
 
@@ -372,7 +373,7 @@ const DashHeader = () => {
             <Navbar bg="light" expand="lg">
                 <Container>
                 <img id="header-img" src={require('../img/logoUC.PNG')} />
-                    <Navbar.Brand href="/dash"><strong>Unidos por la clasificación</strong></Navbar.Brand>
+                    <Navbar.Brand href="/dash"></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
@@ -403,11 +404,10 @@ const DashHeader = () => {
                           <NavDropdown.Item href="/dash/routes">Listar Recorridos</NavDropdown.Item>
                             </NavDropdown></Navbar.Brand>}
 
+                            <Navbar.Brand><NavDropdown title={name+' '+surname} id="basic-nav-dropdown-last">
+                                <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
+                            </NavDropdown></Navbar.Brand>
                         </Nav>
-                      
-                        <Navbar.Brand><NavDropdown title={name+' '+surname} id="basic-nav-dropdown" >
-                         <NavDropdown.Item onClick={sendLogout}>Cerrar Sesión</NavDropdown.Item>
-                        </NavDropdown></Navbar.Brand>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

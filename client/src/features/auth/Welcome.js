@@ -4,7 +4,6 @@ import useAuth from '../../hooks/useAuth'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-// import './register.css'
 import '../users/register.css'
 
 const Welcome = () => {
@@ -34,7 +33,6 @@ const Welcome = () => {
 
                 {/* </div> */}
             </section>
-            <img id="welcome-img" src={require('../../img/logoUC.PNG')} />
         </Container>
 
     )
