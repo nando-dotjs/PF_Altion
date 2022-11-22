@@ -15,18 +15,13 @@ import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
 import InputGroup from 'react-bootstrap/InputGroup';
 
-const UsersList = () => {
-    // function UsersList(){
+import Form from 'react-bootstrap/Form';
 
-    // const [data, setData] = useState ([]);
-    //     const fetchUsers = async () => {
-    //         const res = await axios.get("http://localhost:5000/users");
-    //         setData(res.data);
-    //     }
-    //     console.log(data)
+
+const UsersList = () => {
 
     const [filtroTexto, setTexto] = useState('');
-    const [viewInactives,setViewInactives] = useState(false);
+    const [viewInactives, setViewInactives] = useState(false);
     const [query, setQuery] = useState('');
     const [show, setShow] = useState(false);
     const navigate = useNavigate()
@@ -62,20 +57,20 @@ const UsersList = () => {
         const { ids, name, mail, role, entities } = users
         // console.log(users)
 
-    
+
         let filteredIds
-        if (viewInactives){
+        if (viewInactives) {
             filteredIds = [...ids]
-            if (filtroTexto !==  ''){
-                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()))
-            }  
-        }else {
-            filteredIds = ids.filter(userId => (entities[userId].active===true))
-            if (filtroTexto !==  ''){
-                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase()+' '+entities[userId].surname.toUpperCase()+' '+entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()) && entities[userId].active ===true)
-            }  
+            if (filtroTexto !== '') {
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase() + ' ' + entities[userId].surname.toUpperCase() + ' ' + entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()))
+            }
+        } else {
+            filteredIds = ids.filter(userId => (entities[userId].active === true))
+            if (filtroTexto !== '') {
+                filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase() + ' ' + entities[userId].surname.toUpperCase() + ' ' + entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()) && entities[userId].active === true)
+            }
         }
-        
+
 
         const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
         //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
@@ -91,13 +86,14 @@ const UsersList = () => {
         // console.log(query)
 
         // useEffect(() => {
-           
+
         // })
 
         content = (
             <>
-               
+
                 <Container>
+
 
                     <br/>
                     <div id="fondoTabla">
@@ -105,6 +101,7 @@ const UsersList = () => {
                         &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                         &nbsp; &nbsp;
                         <strong>Mostrar usuarios inactivos: </strong>
+
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
                                 className="filterActives"
@@ -113,16 +110,23 @@ const UsersList = () => {
                                 type="checkbox"
                                 value={viewInactives}
                                 onChange={onActiveChanged}
+
                             /></InputGroup.Text>     
                     </div>
                     <div id="fondoTabla">
+
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
-                                    <th>Usuario</th>
-                                    <th>Roles</th>
+                                    <th>Usuario <input id="filterByEmail"
+                                        placeholder="Buscar..."
+                                        onChange={e => setQuery(e.target.value)} />
+                                    </th>
+
+                                    <th>Roles<input id="filterByEmail" placeholder="Buscar..." />
+                                    </th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -136,7 +140,7 @@ const UsersList = () => {
                     </div>
 
                 </Container>
-                
+
             </>
         )
     }

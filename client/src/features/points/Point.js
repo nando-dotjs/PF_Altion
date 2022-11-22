@@ -29,7 +29,9 @@ const Point = ({ pointId }) => {
                 </td> 
                 <td className="tableCell pointTitle">{point.name}</td>
                 <td className="tableCell pointUpdated">{point.zone}</td>
-
+                <td className="tableCell pointTitle">{point.name}</td>
+                <td className="tableCell pointMail">{point.mail}</td>
+                
                 <td className="tableCell">
                     <button 
                         className="btn btn-primary"

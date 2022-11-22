@@ -67,6 +67,7 @@ const ZonesList = () => {
         content = (
             <>
           <Container>
+
           <br/>
             <div id="fondoTabla">
                 <InputGroup.Text>
@@ -96,6 +97,7 @@ const ZonesList = () => {
                         {tableContent}
                     </tbody>
                 </Table>
+
             </div>
             </Container>
         </>

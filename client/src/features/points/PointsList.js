@@ -13,6 +13,7 @@ import { ChangeEvent } from "react";
 import useTitle from "../../hooks/useTitle"
 import InputGroup from 'react-bootstrap/InputGroup';
 
+
 const PointsList = () => {
 
     const [filtroTexto, setTexto] = useState('');
@@ -87,6 +88,7 @@ const PointsList = () => {
         }else{
         content = (
             <>
+
                     <Container>     
                         <br/>
                         <div id="fondoTabla">
@@ -121,6 +123,7 @@ const PointsList = () => {
                         </div>
                     </Container>
                    
+
             </>
 
         )}
