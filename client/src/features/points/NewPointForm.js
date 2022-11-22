@@ -223,7 +223,7 @@ const NewPointForm = ({ users }) => {
 
     const content = (
         <>
-            <Modal show={!show} onHide={handleClose}>
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title id="cabezal"><strong>Nuevo Punto</strong></Modal.Title>
                 </Modal.Header>

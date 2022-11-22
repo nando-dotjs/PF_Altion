@@ -1,9 +1,14 @@
 
   .list-container {
-    list-style-position: inside;
-    width: 800px;
+    list-style-position:inherit;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
     max-width: 100%;
-    background: white;
+    background:#dbe6ff;
+    border-style: outset;
+    border-width: 0.2rem;
+    border-color: #273e72;
     box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.15);
     padding: 0;
     margin: 0;
@@ -13,26 +18,71 @@
   }
   
   .list-item {
-    display:flex;
-    padding: 0 0 0 2rem;
-    font-size: 18px;
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height:12%;
+    background: aliceblue;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    /* border-style:inset;
+    border-width: 2px;
+    border-color: rgb(125, 149, 255); */
   }
 
   .list-item:hover {
-    background: aliceblue;
+    background: rgb(219, 238, 255);
     cursor:grab;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   }
 
   .list-item:not(:last-child) {
-    border-bottom: 1px solid lightblue;
+    border-bottom: 1px solid #273e72;
   }
   
   .list-item:first-child {
-    margin-top: 1rem;
+    border-top: 1px solid #273e72;
   }
   
   .list-item:last-child {
     margin-bottom: 1rem;
-  } 
+  }  
+
+  .index {  
+    width: 10%;  
+    text-align: center;
+    padding: 3% 0;
+    height:100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background:lightskyblue;
+    float: left;  
+    border-style:solid;
+    border-width: 0rem 0.1rem 0rem 0rem;
+    border-color: #273e72;
+  }  
+
+  .name {  
+    width: 80%;  
+    height:max-content;  
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background: inherit;  
+    float: left;
+  }  
+    
+  .deleteButton {  
+    width: 10%;  
+    height: 100%;  
+    background-color: tomato;
+    padding: 0;
+    border: none;
+    float: left;  
+  }  
+
+  .deleteButton:hover {
+    background:orangered;
+  }

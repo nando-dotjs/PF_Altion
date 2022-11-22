@@ -1,7 +1,8 @@
 import React from 'react'
 import './DragList.css'
 import { Button } from 'react-bootstrap'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from "@fortawesome/free-solid-svg-icons"
 
 
 
@@ -57,6 +58,9 @@ const DragList = (props) => {
 
 			{/** List container //TODO break into component */}
 			<div className="list-container">
+				<div class="header">
+					<h3>Lista de puntos</h3>
+				</div>
 				{points.map((item, index) => (
 					<div
 						key={item._id}
@@ -66,10 +70,10 @@ const DragList = (props) => {
 						onDragEnter={(e) => (dragOverItem.current = index)}
 						onDragEnd={handleSort}
 						onDragOver={(e) => e.preventDefault()}>
-						<i className="fa-solid fa-bars"></i>
-						<p>{`${item.name} - ${item.street} ${item.streetNumber}`}</p>
-						<button className={'btn btn-danger'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
-							X
+						<div className="index">{index+1}</div>
+						<div className="name">{`${item.name} - ${item.street} ${item.streetNumber}`}</div>
+						<button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
+							<FontAwesomeIcon icon={faTimes}/>
 						</button>
 					</div>
 				))}
