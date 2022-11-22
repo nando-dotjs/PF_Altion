@@ -15,6 +15,10 @@ const PointsList = (props) => {
 
     const point = useSelector(state => selectPointById(state, id))
 
+    React.useEffect(() => {
+        setPointState(props.pointState)
+    }, [props.pointState])
+
     return (
         <tr className="tableRow">
             <td className="tableCell pointName">{point.name}</td>

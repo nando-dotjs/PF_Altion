@@ -1,12 +1,12 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import useAuth from '../../hooks/useAuth'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import {Row, Col, Table, Modal} from 'react-bootstrap';
-import { selectRouteById, useUpdatePointsMutation } from './routesApiSlice'
+import { selectRouteById, useUpdatePointsMutation, useUpdateStateMutation } from './routesApiSlice'
 import Point from './Point'
 import './initRoute.css';
 import Swal from "sweetalert2"
@@ -16,6 +16,8 @@ const InitRoute = () => {
     const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const route = useSelector(state => selectRouteById(state, id))
 
@@ -36,6 +38,15 @@ const InitRoute = () => {
         isError,
         error
     }] = useUpdatePointsMutation()
+
+
+    const [updateState, {
+        updStIsLoading,
+        updStIsSuccess,
+        updStIsError,
+        updStError
+    }] = useUpdateStateMutation()
+    
 
     const savePoints = () => {
         const current = new Date();
@@ -103,13 +114,36 @@ const InitRoute = () => {
        
     }
 
+    const onConfirmClicked = async (e) => {
+
+        await updateState({id, routeState:"Completado"})
+            .then((response) => {
+                    console.log(response)
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'info',
+                            title: response.data
+                          })
+                        navigate('/dash/routes')
+                    }
+            })
+
+    }
+
+    const onBackClicked = e => navigate('/dash/routes')
+
     const pointState = p => {
         for (let n in pointsList){
             if(pointsList[n].point === p){
                 return pointsList[n].collected
             }
         }
-    }
+    } 
 
     const [show, setShow] = React.useState(false);
 
@@ -117,7 +151,7 @@ const InitRoute = () => {
     const handleShow = () => setShow(true);
 
 
-    const tableContent = route.points?.length && route.points.map(p => <Point key={p.point} pointId={p.point} amount={p.amountCollected} pointState={pointState(p.point)} handlePoint={e => handlePoints(e)}/>)  
+    const tableContent = pointsList?.length && pointsList.map(p => <Point key={p.point} pointId={p.point} amount={p.amountCollected} pointState={pointState(p.point)} handlePoint={e => handlePoints(e)}/>)  
 
         const content = (
             <Container>             
@@ -165,7 +199,17 @@ const InitRoute = () => {
                         {tableContent}
                     </tbody>
                 </Table>
-                <button onClick={() => onSavePointsClicked()}>Confirmar</button>
+                <div className={'row'}>
+                    <div className={'col-md-3'}>
+                        <Button variant="secondary" onClick={e => onBackClicked(e)}>
+                            Volver
+                        </Button>
+                        &nbsp;
+                        <Button variant="primary" onClick={e => onConfirmClicked(e)}>
+                            Finalizar
+                        </Button>
+                    </div>
+                </div>    
             </Container>
         )
 
