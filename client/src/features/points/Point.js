@@ -27,10 +27,10 @@ const Point = ({ pointId }) => {
                         : <span className="pointStatusOpen">Pendiente</span>
                     }
                 </td> 
-                <td className="tableCell pointTitle">{point.name}</td>
+                <td className="tableCell pointTitle">{point.name}</td> 
                 <td className="tableCell pointUpdated">{point.zone}</td>
-                <td className="tableCell pointTitle">{point.name}</td>
-                <td className="tableCell pointMail">{point.mail}</td>
+                
+              
                 
                 <td className="tableCell">
                     <button 
