@@ -95,18 +95,6 @@ function App() {
              <Route path=":id" element={<ViewZoneForm />} />
             </Route>
 
-            <Route path="cevs">
-              <Route index element={<CevsList />} />
-              <Route path=":id" element={<EditCev />} />
-              <Route path="new" element={<NewCev />} />
-            </Route>
-
-            <Route path="companys">
-              <Route index element={<CompanysList />} />
-              <Route path=":id" element={<EditCompany />} />
-              <Route path="new" element={<NewCompany />} />
-            </Route>
-
             <Route path="points">
               <Route index element={<PointsList />} />
               <Route path=":id" element={<EditPoint />} />
