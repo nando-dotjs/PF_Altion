@@ -118,6 +118,13 @@ const UsersList = () => {
                         <Table
                             // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Roles</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 {/* temporal */}
                                 {/* {search(tableContent)} */}
