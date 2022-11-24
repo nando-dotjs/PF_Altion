@@ -16,6 +16,7 @@ import {useGetPointsQuery} from '../points/pointsApiSlice'
 import RouteMapContainer from '../maps/RouteMapContainer'
 import Swal from 'sweetalert2'
 import {useGetUsersQuery} from '../users/usersApiSlice'
+import Button from 'react-bootstrap/Button';
 
 
 const NewRouteForm = () => {
@@ -227,9 +228,11 @@ const NewRouteForm = () => {
                             icon: 'success',
                             title: response.data.message
                           })
+                          navigate('/dash/routes');
                     }
                 })
         }
+       
     }
 
     const [show, setShow] = useState(false);
@@ -314,7 +317,7 @@ const NewRouteForm = () => {
                                     <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
                                             Seleccionar Zonas
                                     </button>
-
+                                    <br/>
                                     <div className="scrollableList">
                                         {chargedList}
                                     </div>
@@ -323,20 +326,25 @@ const NewRouteForm = () => {
                                     {routeMap}
                                     
                                 </div>
-
+                                <br/>
+                              
                             </form>
-                            <div className="row">
-                                <div className="col">
-                                    <button className={'btn btn-light'} onClick={() => handleClose()}>
+                            {/* <div className="row">
+                                <div className="col"> */}
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    {/* <button className={'btn btn-light'} onClick={() => handleClose()}> */}
                                         Cancelar
-                                    </button>
-                                </div>
-                                <div className="col">
-                                    <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}>
+                                    </Button>
+                                {/* </div> */}
+                                {/* <div className="col"> */}
+                                <Button variant="primary" onClick={onSaveRouteClicked}>
+                                    {/* <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}> */}
                                         Confirmar
-                                    </button>
-                                </div>
-                            </div>
+                                    </Button>
+                                    </Modal.Footer>
+                                {/* </div> */}
+                            {/* </div> */}
                         </Container>
                     </Container>
                 </Modal.Body>

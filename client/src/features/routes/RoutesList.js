@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const RoutesList = () => {
 
@@ -62,12 +63,32 @@ const RoutesList = () => {
     	
         const tableContent = ids?.length && ids.map(routeId => <Route key={routeId} routeId={routeId} />)  
         content = (
-            <Container>                 
+            <Container>      
+                <br/>
                 <div id="fondoTabla">
-                <div className={'row'}>
+                        <InputGroup.Text>
+                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                        &nbsp; &nbsp;
+                        <strong>Mostrar recorridos completados: </strong>
+
+                            <InputGroup.Checkbox
+                                placeholder="Mostrar usuarios inactivos"
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewCompleted}
+                                onChange={e => handleViewCompleted(e)}
+
+                            /></InputGroup.Text>     
+                    </div>
+
+                <div id="fondoTabla">
+                {/* <div className={'row'}>
                     <div className={'col'}>
                         <DatePicker className={'form-control input-sm'} selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es" placeholder={"Filtro fecha"}/>
                     </div>
+                    <br/>
                     <div className={'col'}>
                         {(isAdmin) && <label>Mostrar recorridos completados: </label>}
                         {(isAdmin) && <input
@@ -79,7 +100,7 @@ const RoutesList = () => {
                             onChange={e => handleViewCompleted(e)}
                         />}
                     </div>
-                </div>
+                </div> */}
 
                     <Table  striped bordered hover size="sm" className="table tableUsers">
                         <thead>
