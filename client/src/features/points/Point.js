@@ -35,7 +35,8 @@ const Point = ({ pointId }) => {
                 <td className="tableCell">
                     <button 
                         className="btn btn-primary"
-                        onClick={handleView} 
+                        onClick={handleView}
+                        title="Ver" 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -43,6 +44,7 @@ const Point = ({ pointId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>

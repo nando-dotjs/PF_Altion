@@ -63,6 +63,8 @@ return (
                     <button 
                         className="btn btn-primary"
                         onClick={handleView} 
+                        title="Ver"
+                        
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -70,6 +72,7 @@ return (
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="editar"
                     >                      
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -77,6 +80,7 @@ return (
                     <button 
                         className={user.active ? "btn btn-success" : "btn btn-secondary"}
                         onClick={updateUserByClick} 
+                        title= {user.active ? "Desactivar" : "Activar"}
                     >  
                         <FontAwesomeIcon icon={user.active ? faToggleOn : faToggleOff} />
                     </button>

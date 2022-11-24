@@ -66,7 +66,8 @@ const Driver = ({ driverId }) => {
                 <td className={`tableCell ${cellStatus}`}>
                     <button 
                         className="btn btn-primary"
-                        onClick={handleView} 
+                        onClick={handleView}
+                        title="Ver" 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -74,6 +75,7 @@ const Driver = ({ driverId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -81,7 +83,8 @@ const Driver = ({ driverId }) => {
                     <button 
                         
                         className={driver.active ? "btn btn-success" : "btn btn-secondary"} 
-                        onClick={updateDriverByClick} 
+                        onClick={updateDriverByClick}
+                        title={driver.active ? "Desactivar" : "Activar"} 
                     >  
                         <FontAwesomeIcon  icon={ driver.active ? faToggleOn : faToggleOff} />
                     </button>

@@ -5,7 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROLES_PUBLICOS } from "../../config/roles"
 import './register.css'
-
+import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -59,7 +59,9 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
+    const [userValidate, setUserValidate] = useState(false);
 
+    const onUserValidate = e => setUserValidate(!userValidate)
 
     const [role, setRole] = useState('CEV')
     // eslint-disable-next-line
@@ -95,6 +97,8 @@ const Register = () => {
     useEffect(() => {
         setErrMsg('');
     }, [name, surname, mail, password, matchPwd])
+
+   
 
     useEffect(() => {
         if (isSuccess) {
@@ -179,6 +183,7 @@ const Register = () => {
     }
 
 
+
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
@@ -206,6 +211,7 @@ const Register = () => {
 
     return (
         <>
+
             <Modal show={!show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
@@ -384,18 +390,31 @@ const Register = () => {
                                 <figure class="text-center">
                                     <blockquote class="blockquote">
                                         <p>Los datos ingresados en esta cuenta
-                                    serán tratados y procesados según la normativa legal
-                                    vigente en el territorio de la República Oriental del Uruguay.</p>
+                                            serán tratados y procesados según la normativa legal
+                                            vigente en el territorio de la República Oriental del Uruguay.</p>
                                     </blockquote>
                                     <figcaption class="blockquote-footer">
-                                       Ley 18.331 <cite title="Source Title">"Protección de datos personales"</cite>
+                                        Ley 18.331 <cite title="Source Title">"Protección de datos personales"</cite>
                                     </figcaption>
                                     <a href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
                                 </figure>
+                                <InputGroup.Text>
+                                    <strong>Acepto los términos: </strong>
+                                    <InputGroup.Checkbox
+                                        placeholder="Mostrar usuarios inactivos"
+                                        className="filterActives"
+                                        id="userValidate"
+                                        name="userValidate"
+                                        type="checkbox"
+                                        value={userValidate}
+                                       onChange={onUserValidate}
+
+                                    />
+                                </InputGroup.Text>
                                 <br />
                                 <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked}
+                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate}
                                     // disabled={!validPassword || !validMatch ? true : false}
                                     >Registrar
                                     </Button>
