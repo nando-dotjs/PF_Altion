@@ -99,7 +99,8 @@ const Login = () => {
                     <Col>
                     
                     </Col>
-                    <Form className="form-signin">
+                    {/* Modificacion de form para manejar el submit usando la tecla enter */}
+                    <Form className="form-signin" onSubmit={handleSubmit}>
                         <Col md="auto">
                         {/* <label htmlFor="mail">Usuario:</label> */}
                         </Col>
@@ -128,7 +129,8 @@ const Login = () => {
                         />
                         </Col>
                         <Col>
-                        <Button className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button>
+                        {/* Modificación de botón para manejar el submit con enter */}
+                        <Button type="submit" className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button> 
                         </Col>
                         <br/>
                         <label htmlFor="registerLbl">¿No tienes una cuenta? </label> 
