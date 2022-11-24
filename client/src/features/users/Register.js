@@ -122,10 +122,10 @@ const Register = () => {
         e.preventDefault()
         const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
 
-        if (name == ""){
+        if (name == "") {
             Toast.fire({
                 icon: 'error',
-                position:"top",
+                position: "top",
                 title: 'Debe completar el nombre'
             })
 
@@ -133,20 +133,20 @@ const Register = () => {
         } else if (surname == "") {
             Toast.fire({
                 icon: 'error',
-                position:"top",
+                position: "top",
                 title: 'Debe completar el apellido'
             })
         } else if (mail == "") {
             Toast.fire({
                 icon: 'error',
-                position:"top",
+                position: "top",
                 title: 'Debe completar el correo electrónico'
             })
         } else if (password == "") {  //COMPRUEBA CAMPOS VACIOS
 
             Toast.fire({
                 icon: 'error',
-                position:"top",
+                position: "top",
                 title: 'Debe completar la contraseña'
             })
 
@@ -380,10 +380,22 @@ const Register = () => {
                                     id="combo1">
                                     {options}
                                 </Form.Select>
-
+                                <br />
+                                <figure class="text-center">
+                                    <blockquote class="blockquote">
+                                        <p>Los datos ingresados en esta cuenta
+                                    serán tratados y procesados según la normativa legal
+                                    vigente en el territorio de la República Oriental del Uruguay.</p>
+                                    </blockquote>
+                                    <figcaption class="blockquote-footer">
+                                       Ley 18.331 <cite title="Source Title">"Protección de datos personales"</cite>
+                                    </figcaption>
+                                    <a href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
+                                </figure>
+                                <br />
                                 <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} 
+                                    <Button className="formSubmitButton" onClick={onSaveUserClicked}
                                     // disabled={!validPassword || !validMatch ? true : false}
                                     >Registrar
                                     </Button>
