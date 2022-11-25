@@ -9,6 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Swal from "sweetalert2";
+import LoadingSpinner from "../spinner/LoadingSpinner";
 
 const RoutesList = () => {
 
@@ -35,7 +37,15 @@ const RoutesList = () => {
 
     let content
 
-    if (isLoading) content = (
+    function Spin(){
+        Swal.fire({
+            html: <span className="sr-only">Cargando...</span>,
+            title: 'I will blur the document with my backdrop'
+          });
+    }
+
+    if (isLoading)  content = (
+        
         <div>
             <Table className="table tableRoutes">
                 <thead className="tableThead">
@@ -47,9 +57,10 @@ const RoutesList = () => {
                     </tr>
                 </thead>
             </Table>    
-            <Spinner animation="border" role="status"> </Spinner>
+            {/* <Spinner animation="border" role="status"> </Spinner> */}
+            {<LoadingSpinner />}
             <br/>
-            <span className="sr-only">Cargando...</span>`
+            {/* <span className="sr-only">Cargando...</span>` */}
         </div>
     )
 
