@@ -99,7 +99,7 @@ const UsersList = () => {
                     <br/>
                     <div id="fondoTabla">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                         &nbsp; &nbsp;
                         <strong class="tituloCheck">Mostrar usuarios inactivos: </strong>
 
