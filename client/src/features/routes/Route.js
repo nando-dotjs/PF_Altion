@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faPlay} from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare, faPlay,faEye} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
@@ -64,7 +64,7 @@ const Route = ({ routeId }) => {
                         className="btn btn-primary"
                         onClick={handleInit} 
                     >  
-                        <FontAwesomeIcon icon={faPlay} />
+                        <FontAwesomeIcon icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
                 </td>
             </tr>
