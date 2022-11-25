@@ -33,8 +33,10 @@ const ZonesList = () => {
 
     let content
 
-    if (isLoading) content = <p>Cargando...</p>
-
+    if (isLoading) content = (
+        <div class="loader"></div>
+    )
+    
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>
     }
