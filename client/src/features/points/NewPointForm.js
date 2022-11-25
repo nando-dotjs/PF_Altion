@@ -415,7 +415,7 @@ const NewPointForm = ({ users }) => {
                                                 setMapPopup(true)
                                                 setHandleShow(true)
                                             }}>
-                                            {lat === '' ? 'Seleccionar dirección' : 'Dirección seleccionada'  }   
+                                            {lat === '' ? 'Seleccionar ubicación' : 'Ubicación seleccionada'  }   
                                         </Button>
                                     </div>
                                 </div>
