@@ -10,6 +10,7 @@ import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Swal from "sweetalert2";
+import '../users/Table.css';
 
 const DriversList = () => {
 
@@ -85,7 +86,7 @@ const DriversList = () => {
          
             <Container>
             <br/>
-            <div id="fondoTabla">
+            <div id="fondoTablaFiltro">
                 <InputGroup.Text>
                 &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                 &nbsp; &nbsp;
