@@ -3,6 +3,7 @@ import { useUpdatePointMutation,selectPointById } from "./pointsApiSlice"
 import { selectUserById } from "../users/usersApiSlice"
 import { useNavigate,useParams } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useGetZonesQuery } from "../zones/zonesApiSlice"
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
@@ -79,7 +80,6 @@ const ViewPointForm = () => {
     const [validLongitude, setValidLongitude] = useState(false)
     const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
-    console.log(point)
     useEffect(() => {
         userRef?.current?.focus();
     }, [])
@@ -90,10 +90,25 @@ const ViewPointForm = () => {
 
     const [values, setValues] = useState([])
     const [optionsZone, setOptions] = useState(point.zone)
+    const {
+        data: zones, isSuccess: zonesIsSuccess
+    } = useGetZonesQuery('zonesList', {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
     useEffect(() => {
-        fetch("https://unidosporlaclasificacion-api.onrender.com/zones")
-            .then((data) => data.json()).then((val) => { setValues(val) })
-    }, []);
+
+        let zonesList = []
+        if (zonesIsSuccess) {
+            for(var z in zones.ids){
+                zonesList.push(zones.entities[zones.ids[z]]);
+            }
+        }
+        setValues(zonesList)
+
+    }, [zones]);
 
     const optionsToChoose = values?.map((options, i) => (<option key={i}>{options.active ? options.name : 'No asignar'}</option>))
 
@@ -172,7 +187,6 @@ const ViewPointForm = () => {
     let label = null
     let check = null
     let map = null
-    console.log(userId)
     map = (
         <MapContainer isDraggable={false} latlng={latlng} />
     )
