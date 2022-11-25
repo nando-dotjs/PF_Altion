@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown,faEye, faPenToSquare, faPersonWalkingWithCane, faToggleOn,faToggleOff, faTrash} from "@fortawesome/free-solid-svg-icons"
+import { faEye, faPenToSquare, faToggleOn,faToggleOff} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 import { useUpdateUserStateMutation } from "./usersApiSlice"
 
@@ -24,12 +24,7 @@ const User = ({ userId }) => {
 
     const navigate = useNavigate()
 
-    const [updateUserState, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateUserStateMutation()
+    const [updateUserState] = useUpdateUserStateMutation()
 
     if (user) {
         const handleEdit = () => navigate(`/dash/users/${userId}`)
@@ -50,13 +45,9 @@ const User = ({ userId }) => {
                         }
                 })
         }
-        const cellStatus = user.active ? '' : 'tableCell--inactive'
-// console.log(user)
        
-return (
+    return (
             <tr className="tableRow user">
-                {/* <td className={`tableCell ${cellStatus}`}>{user.mail}</td>
-                <td className={`tableCell ${cellStatus}`}>{user.role}</td> */}
                 <td>{user.name +' '+user.surname}</td>
                 <td>{user.role}</td>
                 <td>
@@ -72,7 +63,7 @@ return (
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
-                        title="editar"
+                        title="Editar"
                     >                      
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
