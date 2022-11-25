@@ -63,7 +63,7 @@ const RoutesList = () => {
         content = (
             <Container>      
                 <br/>
-                <div id="fondoTabla">
+                <div id="fondoTablaFiltro">
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                         &nbsp; &nbsp;

@@ -19,3 +19,12 @@
     }
 
 }
+
+#fondoTablaFiltro {
+    border-radius: 50px;
+}
+
+#fondoTablaFiltro .input-group-text {
+    background-color: #A7A7B5;
+    color: white;
+}

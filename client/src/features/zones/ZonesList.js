@@ -78,7 +78,7 @@ const ZonesList = () => {
           <Container>
 
           <br/>
-            <div id="fondoTabla">
+            <div id="fondoTablaFiltro">
                 <InputGroup.Text>
                 &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                 &nbsp; &nbsp;
