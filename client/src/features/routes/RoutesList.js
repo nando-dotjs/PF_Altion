@@ -9,6 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Swal from "sweetalert2";
+import LoadingSpinner from "../spinner/LoadingSpinner";
 
 const RoutesList = () => {
 
@@ -35,9 +37,11 @@ const RoutesList = () => {
 
     let content
 
+
     if (isLoading) content = (
         <div class="loader"></div>
     )
+    
 
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>

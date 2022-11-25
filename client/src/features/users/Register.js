@@ -98,7 +98,7 @@ const Register = () => {
         setErrMsg('');
     }, [name, surname, mail, password, matchPwd])
 
-   
+
 
     useEffect(() => {
         if (isSuccess) {
@@ -389,7 +389,7 @@ const Register = () => {
                                 <br />
                                 <figure class="text-center">
                                     <blockquote class="blockquote">
-                                        <p>Los datos ingresados en esta cuenta
+                                        <p class="h6">Los datos ingresados en esta cuenta
                                             serán tratados y procesados según la normativa legal
                                             vigente en el territorio de la República Oriental del Uruguay.</p>
                                     </blockquote>
@@ -398,20 +398,13 @@ const Register = () => {
                                     </figcaption>
                                     <a href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
                                 </figure>
-                                <InputGroup.Text>
-                                    <strong>Acepto los términos: </strong>
-                                    <InputGroup.Checkbox
-                                        placeholder="Mostrar usuarios inactivos"
-                                        className="filterActives"
-                                        id="userValidate"
-                                        name="userValidate"
-                                        type="checkbox"
-                                        value={userValidate}
-                                       onChange={onUserValidate}
-
-                                    />
-                                </InputGroup.Text>
-                                <br />
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Acepto los términos
+                                    </label>
+                                </div>
+                              
                                 <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate}
