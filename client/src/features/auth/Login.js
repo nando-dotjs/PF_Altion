@@ -96,7 +96,7 @@ const Login = () => {
                         </Col>
                         <Col>
                         <input className="form-control" 
-                            placeholder="Ingrese su Email" 
+                            placeholder="Correo electrónico" 
                             type="text" id="mail" 
                             ref={userRef} value={mail} onChange={handleUserInput}
                             autoComplete="off"

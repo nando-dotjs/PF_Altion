@@ -43,8 +43,9 @@ const PointsList = () => {
     const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
 
-    if (isLoading) content = <p>Cargando...</p>
-
+    if (isLoading) content = (
+        <div class="loader"></div>
+    )
     if (isError) {
         content = <p className="errmsg">{error?.data?.message}</p>
     }
