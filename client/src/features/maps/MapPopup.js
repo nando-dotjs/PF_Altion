@@ -20,16 +20,18 @@ const MapPopup = (props) => {
 
       <Modal show={!show} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>Geolocalizar punto</Modal.Title>
+          <Modal.Title>Localizar ubicación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>Arrastre el indicador hacia el punto de recolección.</p>
         <MapContainer lat={props.lat} lng={props.lng} isEditable={true} latlng={props.latlng} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary"  onClick={(e) => {
+          <Button variant="primary" disabled={props.latlng === null} onClick={(e) => {
                         e.preventDefault()
-                        props.setTrigger(false)}}>
-           Geolocalizar
+                        props.setTrigger(false)
+                        }}>
+           Confirmar Ubicación
           </Button>
         </Modal.Footer>
       </Modal>

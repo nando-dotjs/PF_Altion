@@ -133,7 +133,7 @@ const NewPointForm = ({ users }) => {
 
     const onSavePointClicked = async (e) => {
         e.preventDefault()
-        if (name == ""){
+        if (name === ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
@@ -141,25 +141,31 @@ const NewPointForm = ({ users }) => {
             })
 
 
-        } else if (phoneNumber == "") {
+        } else if (phoneNumber === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el teléfono o celular'
             })
-        } else if (street == "") {
+        } else if (street === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar calle'
             })
-        } else if (streetNumber == "") {
+        } else if (streetNumber === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar número de puerta'
             })
-         }else if ((isAdmin || isCEV || isEmpresa) && canSave) {
+         }else if (lat === "" || lng ==="") {
+            Toast.fire({
+                icon: 'error',
+                position:"top",
+                title: 'Debe indicar su ubicación'
+            })
+         } else if ((isAdmin || isCEV || isEmpresa) && canSave) {
             let userIdLog = '';
             users.map(user => {
                 if (user.mail === mail) {
@@ -399,16 +405,22 @@ const NewPointForm = ({ users }) => {
                             {/* <label>
                             Ubicación:
                         </label> */}
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
+                                        <Button
+                                            className={lat === '' ? "formSubmitButton" : "btn-success"}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                setMapPopup(true)
+                                                setHandleShow(true)
+                                            }}>
+                                            {lat === '' ? 'Seleccionar dirección' : 'Dirección seleccionada'  }   
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <Button
-                                className="formSubmitButton"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    setMapPopup(true)
-                                    setHandleShow(true)
-                                }}>
-                                Seleccionar dirección
-                            </Button>
                             <br />
                             <MapPopup trigger={mapPopup} setTrigger={setMapPopup} lat={setLat} lng={setLng} latlng={latlng} />
                             <br />
