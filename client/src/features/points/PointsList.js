@@ -3,16 +3,11 @@ import Point from "./Point"
 import useAuth from "../../hooks/useAuth"
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
-import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom"
-import { useRef, useState, useEffect } from "react"
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import { ChangeEvent } from "react";
+import { useState } from "react"
 import useTitle from "../../hooks/useTitle"
 import InputGroup from 'react-bootstrap/InputGroup';
-
+import Swal from "sweetalert2";
 
 const PointsList = () => {
 
@@ -46,8 +41,17 @@ const PointsList = () => {
     if (isLoading) content = (
         <div class="loader"></div>
     )
+
     if (isError) {
-        content = <p className="errmsg">{error?.data?.message}</p>
+
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: error?.data?.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate('/dash')
     }
     
     if (isSuccess) {
@@ -85,7 +89,14 @@ const PointsList = () => {
         };
 
         if ((!filtroPrendido && filteredIds.length === 0 && !isAdmin) || (isAdmin && ids.length === 0) ) {
-            content = <p className="errmsg">No se encontraron puntos para este usuario.</p>
+            Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'No se encontraron puntos para este usuario',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              navigate('/dash');
         }else{
         content = (
             <>

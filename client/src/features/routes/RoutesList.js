@@ -2,13 +2,14 @@ import { useGetRoutesQuery } from "./routesApiSlice"
 import Route from './Route'
 import useAuth from "../../hooks/useAuth"
 import useTitle from "../../hooks/useTitle"
-import {Table, Spinner, Container} from 'react-bootstrap';
+import {Table, Container} from 'react-bootstrap';
 import {useState} from 'react';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
+import { useNavigate } from "react-router-dom"
 import InputGroup from 'react-bootstrap/InputGroup';
+import Swal from "sweetalert2";
 
 const RoutesList = () => {
 
@@ -19,6 +20,7 @@ const RoutesList = () => {
     const [filterDate, setFilterDate] = useState('')
 
     const handleViewCompleted = (e) => setViewCompleted(e.target.value)
+    const navigate = useNavigate()
 
     useTitle('Lista de Recorridos')
     const {
@@ -42,7 +44,15 @@ const RoutesList = () => {
     
 
     if (isError) {
-        content = <p className="errmsg">{error?.data?.message}</p>
+
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: error?.data?.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate('/dash')
     }
 
     if (isSuccess) {
