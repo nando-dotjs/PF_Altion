@@ -93,7 +93,7 @@ const PointsList = () => {
                         <br/>
                         <div id="fondoTabla">
                             <InputGroup.Text>
-                                &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                                &nbsp; &nbsp; <input className="filtroFiltrar" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                                 &nbsp; &nbsp;
                                 {(isAdmin) && <strong className="tituloCheck">Mostrar puntos pendientes: </strong> }
                                 {  (isAdmin) && <InputGroup.Checkbox
