@@ -1,9 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faPlay} from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare, faPlay,faEye} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
 import { selectRouteById } from './routesApiSlice'
+import Swal from "sweetalert2"
+
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    iconColor: 'white',
+    customClass: {
+        popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+})
 
 const Route = ({ routeId }) => {
     const route = useSelector(state => selectRouteById(state, routeId))
@@ -12,7 +26,16 @@ const Route = ({ routeId }) => {
     if (route) {
         const handleEdit = () => navigate(`/dash/routes/${routeId}`)
 
-        const handleInit = () => navigate(`/dash/routes/init/${routeId}`)
+        const handleInit = () => {
+            if(route.state==='Pendiente'){
+                navigate(`/dash/routes/init/${routeId}`)
+            }else{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No es posible ejecutar un recorrido ya completado'
+                  })
+            }
+        }
 
         const cellStatus = route.state ? '' : 'tableCell--inactive'
 
@@ -41,7 +64,7 @@ const Route = ({ routeId }) => {
                         className="btn btn-primary"
                         onClick={handleInit} 
                     >  
-                        <FontAwesomeIcon icon={faPlay} />
+                        <FontAwesomeIcon icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
                 </td>
             </tr>

@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const RoutesList = () => {
 
@@ -62,26 +63,29 @@ const RoutesList = () => {
     	
         const tableContent = ids?.length && ids.map(routeId => <Route key={routeId} routeId={routeId} />)  
         content = (
-            <Container>                 
+            <Container>      
+                <br/>
                 <div id="fondoTabla">
-                <div className={'row'}>
-                    <div className={'col'}>
-                        <DatePicker className={'form-control input-sm'} selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es" placeholder={"Filtro fecha"}/>
-                    </div>
-                    <div className={'col'}>
-                        {(isAdmin) && <label>Mostrar recorridos completados: </label>}
-                        {(isAdmin) && <input
-                            className="filterActives"
-                            id="user-active"
-                            name="user-active"
-                            type="checkbox"
-                            value={viewCompleted}
-                            onChange={e => handleViewCompleted(e)}
-                        />}
-                    </div>
-                </div>
+                        <InputGroup.Text>
+                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                        &nbsp; &nbsp;
+                        <strong class="tituloCheck">Mostrar recorridos completados: </strong>
 
-                    <Table  striped bordered hover size="sm" className="table tableUsers">
+                            <InputGroup.Checkbox
+                                placeholder="Mostrar usuarios inactivos"
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewCompleted}
+                                onChange={e => handleViewCompleted(e)}
+
+                            /></InputGroup.Text>     
+                    </div>
+
+                <div id="fondoTabla">
+                    
+                    <Table  striped bordered hover size="sm" className="table tableRoutes">
                         <thead>
                             <tr> 
                                 <th>Estado</th>                            

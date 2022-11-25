@@ -234,9 +234,9 @@ const NewPointForm = ({ users }) => {
                                 {/* <h1 id="cabezal">Nuevo Punto</h1> */}
                             </div>
                             <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
                                         <input
                                             className="form-control"
                                             placeholder="Nombre"
@@ -263,9 +263,9 @@ const NewPointForm = ({ users }) => {
                                 Debe empezar y contener solo letras.<br />
                             </p>
                             <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
                                         <input
                                             className="form-control"
                                             placeholder="Teléfono o celular"
@@ -292,9 +292,9 @@ const NewPointForm = ({ users }) => {
                                 No puedo contener otro tipo de carácteres.<br />
                             </p>
                             <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
                                        
                                         <input
                                             className="form-control"
@@ -322,9 +322,9 @@ const NewPointForm = ({ users }) => {
                                 Debe empezar y contener solo letras.<br />
                             </p>
                             <br />
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-10 col-md-8" id="iconito2">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
                                         <input
                                             className="form-control"
                                             placeholder="Número de puerta"

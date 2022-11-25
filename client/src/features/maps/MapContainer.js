@@ -15,9 +15,7 @@ let center = {
   lng: -58.080587
 };
 
-const onLoad = marker => {
-  console.log('marker: ', marker)
-}
+const onLoad = marker => {}
 
 const position = {
   lat: -32.317109,
@@ -30,7 +28,7 @@ class MyComponents extends Component {
 
     return (
       <LoadScriptOnlyIfNeeded
-        googleMapsApiKey="AIzaSyAcZs-ERY4Vyjpf-tqtirZFpLeu-kKqkEo"
+        googleMapsApiKey="AIzaSyBTdHYJ8JAS3y0bxq6pRB98KDHrIxXXwNU"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}

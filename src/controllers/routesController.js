@@ -31,7 +31,7 @@ const createNewRoute = asyncHandler(async (req, res) => {
     const { date, time, zones, points, collectors, driver, createdBy} = req.body
 
     // Confirm data
-    if (!date || !time || !zones || !points || !createdBy) {
+    if (!date || !time || !zones || !driver || !points || !createdBy) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 

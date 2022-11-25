@@ -73,34 +73,12 @@ const DriversList = () => {
             <>
          
             <Container>
-            <br />
-                    <div id="fondoTabla">
-                        <br />
-                        <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
-                        &nbsp;
-                        &nbsp;
-                       <strong>Mostrar choferes inactivos: </strong>
-                            <InputGroup.Checkbox
-                                placeholder="Mostrar usuarios inactivos"
-                                className="filterActives"
-                                id="user-active"
-                                name="user-active"
-                                type="checkbox"
-                                value={viewInactives}
-                                onChange={onActiveChanged}
-                            /></InputGroup.Text>
-                        <br />
-                    </div>
-                    <br />
-              
-
             <br/>
             <div id="fondoTabla">
                 <InputGroup.Text>
                 &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                 &nbsp; &nbsp;
-                <strong>Mostrar choferes inactivos: </strong>
+                <strong class="tituloCheck">Mostrar choferes inactivos: </strong>
                     <InputGroup.Checkbox
                         placeholder="Mostrar choferes inactivos"
                         className="filterActives"
@@ -113,7 +91,7 @@ const DriversList = () => {
             </div>
             <div id="fondoTabla">
 
-            <Table striped bordered hover size="sm" className="table tableUsers">
+            <Table striped bordered hover size="sm" className="table tableDrivers">
                 <thead>
                     <tr>
                         <th>Nombre</th>

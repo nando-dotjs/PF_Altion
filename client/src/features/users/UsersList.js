@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux'
 import { selectUserById } from './usersApiSlice'
 import InputGroup from 'react-bootstrap/InputGroup';
+import './Table.css';
 
 import Form from 'react-bootstrap/Form';
 
@@ -100,7 +101,7 @@ const UsersList = () => {
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                         &nbsp; &nbsp;
-                        <strong>Mostrar usuarios inactivos: </strong>
+                        <strong class="tituloCheck">Mostrar usuarios inactivos: </strong>
 
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
@@ -120,19 +121,12 @@ const UsersList = () => {
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
-                                    <th>Usuario <input id="filterByEmail"
-                                        placeholder="Buscar..."
-                                        onChange={e => setQuery(e.target.value)} />
-                                    </th>
-
-                                    <th>Roles<input id="filterByEmail" placeholder="Buscar..." />
-                                    </th>
+                                    <th>Usuario</th>
+                                    <th>Roles</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* temporal */}
-                                {/* {search(tableContent)} */}
                                 {tableContent}
                             </tbody>
                         </Table>

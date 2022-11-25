@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { useUpdatePointMutation } from "./pointsApiSlice"
+import { useGetZonesQuery } from "../zones/zonesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
@@ -85,10 +86,26 @@ const EditPointForm = ({ point, users }) => {
 
     const [values, setValues] = useState([])
     const [optionsZone, setOptions] = useState(point.zone)
+
+    const {
+        data: zones, isSuccess: zonesIsSuccess
+    } = useGetZonesQuery('zonesList', {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
     useEffect(() => {
-        fetch("https://unidosporlaclasificacion-api.onrender.com/zones")
-            .then((data) => data.json()).then((val) => { setValues(val) })
-    }, []);
+
+        let zonesList = []
+        if (zonesIsSuccess) {
+            for(var z in zones.ids){
+                zonesList.push(zones.entities[zones.ids[z]]);
+            }
+        }
+        setValues(zonesList)
+
+    }, [zones]);
 
     const optionsToChoose = values?.map((options, i) => ( options.active && <option key={i}> {options.name}</option>))
 
@@ -359,9 +376,9 @@ const EditPointForm = ({ point, users }) => {
                             Debe empezar y contener solo letras.<br />
                         </p>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
 
                                     <input
                                         className="form-control"
@@ -389,9 +406,9 @@ const EditPointForm = ({ point, users }) => {
                             No puedo contener otro tipo de carácteres.<br />
                         </p>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <input
                                         className="form-control"
                                         id="street"
@@ -418,9 +435,9 @@ const EditPointForm = ({ point, users }) => {
                             Debe empezar y contener solo letras.<br />
                         </p>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <input
                                         className="form-control"
                                         placeholder="Número"
@@ -477,9 +494,9 @@ const EditPointForm = ({ point, users }) => {
 
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <label>Ubicación</label>
                                     {map}
                                 </div>    

@@ -15,7 +15,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 // eslint-disable-next-line
-const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
+const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,20}$/;
 
 const NewZoneForm = () => {
 
@@ -203,7 +203,7 @@ const Toast = Swal.mixin({
                         </div>
                         <p id="uidnote" className={detailsFocus && details && !validDetails ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
+                            2 a 20 caracteres.<br />
                             Puede contener números y letras.<br />
                         </p>
 

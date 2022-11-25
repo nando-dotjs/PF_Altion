@@ -27,15 +27,16 @@ const Point = ({ pointId }) => {
                         : <span className="pointStatusOpen">Pendiente</span>
                     }
                 </td> 
-                <td className="tableCell pointTitle">{point.name}</td>
+                <td className="tableCell pointTitle">{point.name}</td> 
                 <td className="tableCell pointUpdated">{point.zone}</td>
-                <td className="tableCell pointTitle">{point.name}</td>
-                <td className="tableCell pointMail">{point.mail}</td>
+                
+              
                 
                 <td className="tableCell">
                     <button 
                         className="btn btn-primary"
-                        onClick={handleView} 
+                        onClick={handleView}
+                        title="Ver" 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -43,6 +44,7 @@ const Point = ({ pointId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>

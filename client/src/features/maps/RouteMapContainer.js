@@ -82,7 +82,7 @@ const RouteMap = (props) => {
 
     return (
       <LoadScriptOnlyIfNeeded
-        googleMapsApiKey="AIzaSyAcZs-ERY4Vyjpf-tqtirZFpLeu-kKqkEo"
+        googleMapsApiKey="AIzaSyBTdHYJ8JAS3y0bxq6pRB98KDHrIxXXwNU"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}

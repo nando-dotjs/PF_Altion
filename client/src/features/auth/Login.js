@@ -19,7 +19,6 @@ const Login = () => {
     const errRef = useRef()
     const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
-    const [errMsg, setErrMsg] = useState('')
     const [persist] = useState(JSON.parse(localStorage.getItem("persist")));
 
     const navigate = useNavigate()
@@ -34,10 +33,6 @@ const Login = () => {
     useEffect(() => {
         userRef.current.focus()
     }, [])
-
-    useEffect(() => {
-        setErrMsg('');
-    }, [mail, password])
 
 
     const handleSubmit = async (e) => {
@@ -59,15 +54,12 @@ const Login = () => {
           
         } catch (err) {
             if (!err.status) {
-                setErrMsg('No Server Response');
                 Swal.fire('No Server Response')
             } else if (err.status === 400) {
-                setErrMsg('Missing Mail or Password');
                 Swal.fire({
                     icon:"warning",
                     text:'Debe ingresar Correo y Contraseña'})
             } else if (err.status === 401) {
-                setErrMsg('El usuario y/o contraseña es incorrecto');
                
                 Swal.fire({ //Ventana de error datos incorrectos Lib Sweetalert2
                     title:"Error",
@@ -76,7 +68,7 @@ const Login = () => {
                     button: "Aceptar"
                 })
             } else {
-                setErrMsg(err.data?.message);
+                Swal.fire(err.data?.message);
             }
             errRef.current.focus();
         }
@@ -85,13 +77,11 @@ const Login = () => {
     const handleUserInput = (e) => setMail(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
 
-    const errClass = errMsg ? "errmsg" : "offscreen"
-
     if (isLoading) return <p>Cargando...</p>
 
     const content = (
         <div className="account-wall" align="center">
-            <img id="profile-img" src={require('../../img/logoUC.PNG')} />
+            <img id="profile-img" src={require('../../img/logoUC.PNG')} alt={"UPC"} />
             {/* <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p> */}
         <Container fluid>
             <Form>
@@ -99,7 +89,8 @@ const Login = () => {
                     <Col>
                     
                     </Col>
-                    <Form className="form-signin">
+                    {/* Modificacion de form para manejar el submit usando la tecla enter */}
+                    <Form className="form-signin" onSubmit={handleSubmit}>
                         <Col md="auto">
                         {/* <label htmlFor="mail">Usuario:</label> */}
                         </Col>
@@ -128,7 +119,8 @@ const Login = () => {
                         />
                         </Col>
                         <Col>
-                        <Button className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button>
+                        {/* Modificación de botón para manejar el submit con enter */}
+                        <Button type="submit" className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button> 
                         </Col>
                         <br/>
                         <label htmlFor="registerLbl">¿No tienes una cuenta? </label> 
