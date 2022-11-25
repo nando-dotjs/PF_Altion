@@ -67,7 +67,7 @@ const RoutesList = () => {
                 <br/>
                 <div id="fondoTabla">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                         &nbsp; &nbsp;
                         <strong class="tituloCheck">Mostrar recorridos completados: </strong>
 
