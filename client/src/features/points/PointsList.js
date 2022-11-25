@@ -95,7 +95,7 @@ const PointsList = () => {
                             <InputGroup.Text>
                                 &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                                 &nbsp; &nbsp;
-                                {(isAdmin) && <strong class="tituloCheck">Mostrar puntos pendientes: </strong> }
+                                {(isAdmin) && <strong className="tituloCheck">Mostrar puntos pendientes: </strong> }
                                 {  (isAdmin) && <InputGroup.Checkbox
                                         placeholder="Mostrar puntos pendientes"
                                         className="filterActives"
