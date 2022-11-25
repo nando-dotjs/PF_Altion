@@ -21,7 +21,7 @@ import Button from 'react-bootstrap/Button';
 
 const NewRouteForm = () => {
 
-    const { mail, isAdmin, isCEV, isEmpresa } = useAuth()
+    const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
     const [addNewRoute, {
         isLoading,
@@ -207,7 +207,7 @@ const NewRouteForm = () => {
 
 
 
-        if((isAdmin || isCEV || isEmpresa)) {
+        if((isAdmin || isCEV || isEmpresa || isRecolector)) {
             let pointlist = []
             
             for(var k in selectedPoints){

@@ -49,6 +49,7 @@ const InitRoute = () => {
     
 
     const savePoints = () => {
+
         const current = new Date();
         const time = current.toLocaleTimeString("es-UY");
         let auxArray = [...pointsList]
@@ -57,9 +58,31 @@ const InitRoute = () => {
                 auxArray[o] = {point: selectedPoint._id, collected, amountCollected, details:pointDetails, timeCollected: time}
             }
         }
-        //pointsList.push({point: p, amountCollected: a, timeCollected: time})
-        setPointsList(auxArray)
-        handleClose()
+            
+            if(collected==='Recolectado'){
+                if(+amountCollected>0){
+                    setPointsList(auxArray)
+                    handleClose()
+                }else{  
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'La cantidad de bolsones debe ser mayor a 0'
+                    })
+                }
+            }else{
+                
+                if(+amountCollected===0){
+                    setPointsList(auxArray)
+                    handleClose()
+                }else{
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'La cantidad de bolsones debe ser 0'
+                    })
+                }
+            }
+       
+
     } 
 
     const handlePoints = (p) => {
