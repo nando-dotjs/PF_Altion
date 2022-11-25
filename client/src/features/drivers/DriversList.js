@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Swal from "sweetalert2";
 
 const DriversList = () => {
 
@@ -42,7 +43,15 @@ const DriversList = () => {
     )
     
     if (isError) {
-        content = <p className="errmsg">{error?.data?.message}</p>
+
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: error?.data?.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate('/dash')
     }
 
     if (isSuccess) {
