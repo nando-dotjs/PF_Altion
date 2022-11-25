@@ -6,7 +6,7 @@ const NewZone = () => {
     
     const users = useSelector(selectAllUsers)
 
-    if (!users?.length) return <p>Actualmente esta funcionalidad no se encuentra disponible</p>
+    if (!users?.length) return
 
     const content = <NewZoneForm users={users} />
 
