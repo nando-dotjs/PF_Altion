@@ -36,21 +36,7 @@ const RoutesList = () => {
     let content
 
     if (isLoading) content = (
-        <div>
-            <Table className="table tableRoutes">
-                <thead className="tableThead">
-                    <tr>
-                        <th scope="col" className="tableTh routeDate">Fecha</th>
-                        <th scope="col" className="tableTh routeTime">Hora</th>
-                        <th scope="col" className="tableTh routeState">Estado</th>
-                        <th scope="col" className="tableTh routeEdit">Editar</th>
-                    </tr>
-                </thead>
-            </Table>    
-            <Spinner animation="border" role="status"> </Spinner>
-            <br/>
-            <span className="sr-only">Cargando...</span>`
-        </div>
+        <div class="loader"></div>
     )
 
     if (isError) {
