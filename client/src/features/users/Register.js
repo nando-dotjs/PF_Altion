@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useCreateNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faInfoCircle, faInfo, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROLES_PUBLICOS } from "../../config/roles"
 import './register.css'
@@ -54,7 +54,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
     const [pwdFocus, setPwdFocus] = useState(false);
-
+    const [pwdVisible, setPwdVisible] = useState(false);
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
@@ -98,7 +98,7 @@ const Register = () => {
         setErrMsg('');
     }, [name, surname, mail, password, matchPwd])
 
-   
+
 
     useEffect(() => {
         if (isSuccess) {
@@ -317,19 +317,26 @@ const Register = () => {
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Contraseña"
-                                                type="password"
-                                                id="password"
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                value={password}
-                                                required
-                                                aria-invalid={validPassword ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setPwdFocus(true)}
-                                                onBlur={() => setPwdFocus(false)}
-                                            />
+                                            <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Contraseña"
+                                                    type={pwdVisible ? 'text' : 'password'}
+                                                    id="password"
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    value={password}
+                                                    required
+                                                    aria-invalid={validPassword ? "false" : "true"}
+                                                    aria-describedby="uidnote"
+                                                    onFocus={() => setPwdFocus(true)}
+                                                    onBlur={() => setPwdFocus(false)}
+                                                />
+                                                <InputGroup.Text onClick={() => setPwdVisible(!pwdVisible) }>
+                                                <FontAwesomeIcon fixedWidth icon={pwdVisible ? faEye : faEyeSlash }></FontAwesomeIcon>    
+                                                
+                                                
+                                                </InputGroup.Text>
+                                            </InputGroup>
                                         </div>
                                         <label htmlFor="password" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
@@ -389,7 +396,7 @@ const Register = () => {
                                 <br />
                                 <figure class="text-center">
                                     <blockquote class="blockquote">
-                                        <p>Los datos ingresados en esta cuenta
+                                        <p class="h6">Los datos ingresados en esta cuenta
                                             serán tratados y procesados según la normativa legal
                                             vigente en el territorio de la República Oriental del Uruguay.</p>
                                     </blockquote>
@@ -398,20 +405,13 @@ const Register = () => {
                                     </figcaption>
                                     <a href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
                                 </figure>
-                                <InputGroup.Text>
-                                    <strong>Acepto los términos: </strong>
-                                    <InputGroup.Checkbox
-                                        placeholder="Mostrar usuarios inactivos"
-                                        className="filterActives"
-                                        id="userValidate"
-                                        name="userValidate"
-                                        type="checkbox"
-                                        value={userValidate}
-                                       onChange={onUserValidate}
-
-                                    />
-                                </InputGroup.Text>
-                                <br />
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Acepto los términos
+                                    </label>
+                                </div>
+                              
                                 <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate}
