@@ -69,7 +69,7 @@ const RoutesList = () => {
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                         &nbsp; &nbsp;
-                        <strong>Mostrar recorridos completados: </strong>
+                        <strong class="tituloCheck">Mostrar recorridos completados: </strong>
 
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
@@ -84,25 +84,8 @@ const RoutesList = () => {
                     </div>
 
                 <div id="fondoTabla">
-                {/* <div className={'row'}>
-                    <div className={'col'}>
-                        <DatePicker className={'form-control input-sm'} selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es" placeholder={"Filtro fecha"}/>
-                    </div>
-                    <br/>
-                    <div className={'col'}>
-                        {(isAdmin) && <label>Mostrar recorridos completados: </label>}
-                        {(isAdmin) && <input
-                            className="filterActives"
-                            id="user-active"
-                            name="user-active"
-                            type="checkbox"
-                            value={viewCompleted}
-                            onChange={e => handleViewCompleted(e)}
-                        />}
-                    </div>
-                </div> */}
-
-                    <Table  striped bordered hover size="sm" className="table tableUsers">
+                    
+                    <Table  striped bordered hover size="sm" className="table tableRoutes">
                         <thead>
                             <tr> 
                                 <th>Estado</th>                            
