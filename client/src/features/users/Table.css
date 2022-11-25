@@ -1,0 +1,21 @@
+@media only screen and (max-width: 640px) {
+
+    .filtroFiltrar {
+        display: none;
+    }
+
+    strong.tituloCheck {
+        text-align: center;
+        line-height: 5px;
+        margin-left: auto;
+    }
+    
+    .tableUsers>thead>tr>th:nth-of-type(2){
+        display: none;
+    }
+    
+    .tableUsers>tbody>tr>td:nth-of-type(2){
+        display: none;
+    }
+
+}

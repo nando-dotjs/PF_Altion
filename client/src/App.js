@@ -24,14 +24,6 @@ import NewDriverForm from './features/drivers/NewDriverForm';
 import EditDriver from './features/drivers/EditDriver';
 import ViewDriverForm from './features/drivers/ViewDriverForm';
 
-import CevsList from './features/cevs/CevsList';
-import EditCev from './features/cevs/EditCev';
-import NewCev from './features/cevs/NewCev';
-
-import CompanysList from './features/companys/CompanysList';
-import EditCompany from './features/companys/EditCompany';
-import NewCompany from './features/companys/NewCompany';
-
 import ZonesList from './features/zones/ZonesList';
 import EditZone from './features/zones/EditZone';
 import NewZone from './features/zones/NewZone';

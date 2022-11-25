@@ -15,9 +15,7 @@ let center = {
   lng: -58.080587
 };
 
-const onLoad = marker => {
-  console.log('marker: ', marker)
-}
+const onLoad = marker => {}
 
 const position = {
   lat: -32.317109,

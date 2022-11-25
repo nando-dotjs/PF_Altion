@@ -71,9 +71,9 @@ const ZonesList = () => {
           <br/>
             <div id="fondoTabla">
                 <InputGroup.Text>
-                &nbsp; &nbsp; <input className="form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                 &nbsp; &nbsp;
-                <strong>Mostrar zonas inactivas: </strong>
+                <strong class="tituloCheck">Mostrar zonas inactivas: </strong>
                     <InputGroup.Checkbox
                         placeholder="Mostrar zonas inactivas"
                         className="filterActives"
@@ -85,12 +85,12 @@ const ZonesList = () => {
                     /></InputGroup.Text>     
             </div>
             <div id="fondoTabla">
-                <Table striped bordered hover size="sm" className="table tableUsers">
-                    <thead className="tableThead">
+                <Table striped bordered hover size="sm" className="table tableZones">
+                    <thead>
                         <tr>
-                            <th scope="col" className="tableTh zoneName">Nombre</th>
-                            <th scope="col" className="tableTh zoneDetails">Detalles</th>
-                            <th scope="col" className="tableTh zoneEdit">Acciones</th>
+                            <th>Nombre</th>
+                            <th>Detalles</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
