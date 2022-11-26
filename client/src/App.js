@@ -12,6 +12,7 @@ import RoutesList from './features/routes/RoutesList'
 import NewRouteForm from './features/routes/NewRouteForm'
 import InitRoute from './features/routes/InitRoute'
 import EditRouteForm from './features/routes/EditRouteForm'
+import ViewRoute from './features/routes/ViewRoute'
 
 import UsersList from './features/users/UsersList'
 import EditUser from './features/users/EditUser'
@@ -102,6 +103,7 @@ function App() {
               <Route index element={<RoutesList />} />
               <Route path="new" element={<NewRouteForm />} />
               <Route path="init/:id" element={<InitRoute />} />
+              <Route path="view/:id" element={<ViewRoute />} />
               <Route path=":id" element={<EditRouteForm />} />
             </Route>
 

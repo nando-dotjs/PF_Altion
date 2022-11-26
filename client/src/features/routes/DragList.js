@@ -27,6 +27,11 @@ const DragList = (props) => {
     setPoints(props.points);
 	}, [props.points]); 
 
+	React.useEffect( () => {
+    	props.setSelectedPoints(points);
+	}, [points]); 
+
+
 	//const handle drag sorting
 	const handleSort = () => {
 		//duplicate items
@@ -80,9 +85,6 @@ const DragList = (props) => {
 				))}
 			</div>
 			<br/>
-			<button className={'btn btn-success'} onClick={e => {e.preventDefault(); props.setSelectedPoints(points)}}>
-			Visualizar Recorrido
-			</button>
 		</div>
 	)
 }
