@@ -79,6 +79,12 @@ const EditRouteForm = () => {
         return routeZones
     }
 
+    useEffect(() => {
+        if(zonesisSuccess){
+            setSelectedZones(getZones())
+        }
+    }, [zonesisSuccess])
+
     const getPoints = () => {
         let routePoints = []
         if(pointsisSuccess){
@@ -92,6 +98,12 @@ const EditRouteForm = () => {
         }
         return routePoints
     }
+
+    useEffect(() => {
+        if(pointsisSuccess){
+            setSelectedPoints(getPoints())
+        }
+    }, [pointsisSuccess])
 
     const [startDate, setStartDate] = useState(new Date(Date.parse(route.date)));
     const [time, setTime] = useState({"name":route.time});
