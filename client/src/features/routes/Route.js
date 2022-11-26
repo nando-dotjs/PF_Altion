@@ -66,7 +66,7 @@ const Route = ({ routeId }) => {
                         onClick={handleInit} 
                         title= {route.state ==='Pendiente' ? "Ejecutar" : "Visualizar"}
                     >  
-                        <FontAwesomeIcon icon={route.state ==='Pendiente' ? faPlay : faEye} />
+                        <FontAwesomeIcon fixedWidth icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
                 </td>
             </tr>

@@ -56,10 +56,10 @@ const createNewRoute = asyncHandler(async (req, res) => {
 // @route PATCH /routes
 // @access Private
 const updateRoute = asyncHandler(async (req, res) => {
-    const { id, date, time, zones, points, collectors, driver, state } = req.body
+    const { id, date, time, zones, points, driver } = req.body
 
     // Confirm data
-    if (!id || !date || !time || !zones || !points || !state) {
+    if (!id || !date || !time || !zones || !points ) {
         return res.status(400).json({ message: 'Debe completar todos los campos' })
     }
 
@@ -78,18 +78,15 @@ const updateRoute = asyncHandler(async (req, res) => {
     //     return res.status(409).json({ message: 'Ya existe un ROUTE asociado a este usuario' })
     // }
 
-    route.createdBy = createdBy
     route.date = date
     route.time = time
     route.zones = zones
     route.points = points
     route.driver = driver
-    route.collectors = collectors
-    route.state = state
 
     const updatedRoute = await route.save()
 
-    res.json(`Recorrido de ${updatedRoute.date} actualizado`)
+    res.json(`Recorrido actualizado`)
 })
 
 const updatePoints = asyncHandler(async (req, res) => {
