@@ -416,7 +416,7 @@ const Toast = Swal.mixin({
           <Button variant="secondary" onClick={handleClose}>
            Cancelar
           </Button>
-          <Button variant="primary" onClick={onSaveUserClicked} 
+          <Button variant="primary" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}
         //   disabled={!validPassword || !validMatch ? true : false}
           >Registrar</Button>
         </Modal.Footer>

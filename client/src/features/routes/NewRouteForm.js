@@ -238,7 +238,7 @@ const NewRouteForm = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
-        navigate('/dash/routes');
+        navigate('/dash');
     };
 
 
@@ -318,11 +318,12 @@ const NewRouteForm = () => {
                                             Seleccionar Zonas
                                     </button>
                                     <br/>
+                                    <br/>
                                     <div className="scrollableList">
                                         {chargedList}
                                     </div>
                                     
-
+                                    <br/>
                                     {routeMap}
                                     
                                 </div>
