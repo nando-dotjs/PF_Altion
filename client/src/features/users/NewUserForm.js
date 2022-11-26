@@ -27,7 +27,7 @@ const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const NewUserForm = () => {
     
-        
+    const optionsToChoose = Object.values(ROLES).map((i) => ( <option key={i}> {i}</option>))
     const [addNewUser, {
         isLoading,
         isSuccess,
@@ -123,24 +123,23 @@ const NewUserForm = () => {
     const onPasswordChanged = e => setPassword(e.target.value)
 
     const canSave = [role, validPassword, validMail, name, surname].every(Boolean) && !isLoading
-
+    let options
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (role == "-- Seleccione --"){
+        
+        if (role == ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe seleccionar un tipo de usuario'
             })
         }
-    else if (name == ""){
+        else if (name == ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el nombre'
             })
-
-
         } else if (surname == "") {
             Toast.fire({
                 icon: 'error',
@@ -178,15 +177,22 @@ const NewUserForm = () => {
                         }) 
          }
     }
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
 
-            > {role}</option >
-        )
-    })
+     options = (
+        <Form.Select
+            id="role"
+            name="role"
+            className={`formSelect`}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+        >
+            <option selected   hidden >-- Elige rol --</option>
+            {optionsToChoose}
+        </Form.Select>
+    )
+
+
+
     const [show, setShow] = useState(false);
     const handleClose = () => {
     setShow(true)
@@ -389,16 +395,8 @@ const Toast = Swal.mixin({
                                 <br />
                                 <label className="form__label" htmlFor="roles">
                                     Voy a registrar:</label>
-
-                                <Form.Select
-                                    id="role"
-                                    name="role"
-                                    className={`formSelect`}
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                >
-                                    {options}
-                                </Form.Select>
+                                {options}
+                                
 
                                 {/* <Col>
                                     <br />

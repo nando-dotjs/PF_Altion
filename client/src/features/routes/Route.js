@@ -24,8 +24,17 @@ const Route = ({ routeId }) => {
 
     const navigate = useNavigate()
     if (route) {
-        const handleEdit = () => navigate(`/dash/routes/${routeId}`)
-
+        const handleEdit = () => {
+            if(route.state==='Pendiente'){
+                navigate(`/dash/routes/${routeId}`)
+            }else{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No es posible editar un recorrido ya completado'
+                  })
+            }
+        }
+        
         const handleInit = () => {
             if(route.state==='Pendiente'){
                 navigate(`/dash/routes/init/${routeId}`)
