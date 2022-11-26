@@ -56,6 +56,7 @@ const Route = ({ routeId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -63,6 +64,7 @@ const Route = ({ routeId }) => {
                     <button 
                         className="btn btn-primary"
                         onClick={handleInit} 
+                        title= {route.state ==='Pendiente' ? "Ejecutar" : "Visualizar"}
                     >  
                         <FontAwesomeIcon fixedWidth icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
