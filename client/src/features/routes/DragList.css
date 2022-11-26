@@ -1,121 +1,72 @@
 
-  .list-container {
-    list-style-position:inherit;
-    justify-content: space-between;
-    flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    background:#dbe6ff;
-    border-style: outset;
-    border-width: 0.2rem;
-    border-color: #273e72;
-    box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.15);
-    padding: 0;
-    margin: 0;
-    border-radius: 0.1rem;
-    height:400px;
-    overflow-y:auto;
-  }
+
+.list-item {
   
-  .list-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height:12%;
-    background: aliceblue;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    /* border-style:inset;
-    border-width: 2px;
-    border-color: rgb(125, 149, 255); */
-  }
+  width: 390px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
 
-  .list-item:hover {
-    background: rgb(219, 238, 255);
-    cursor:grab;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  }
-
-  .list-item:not(:last-child) {
-    border-bottom: 1px solid #273e72;
-  }
+.list-container  h3 {
+  color: #fff;
+  background: #03a9f4;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 700;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   
-  .list-item:first-child {
-    border-top: 1px solid #273e72;
-  }
+}
+
+.list-container .list-item ul {
+  position: relative;
+  margin-left: 15px;
+  background: #fff;
   
-  .list-item:last-child {
-    margin-bottom: 1rem;
-  }  
+}
 
-  .index {  
-    width: 10%;  
-    text-align: center;
-    padding: 3% 0;
-    height:100%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background:lightskyblue;
-    float: left;  
-    border-style:solid;
-    border-width: 0rem 0.1rem 0rem 0rem;
-    border-color: #273e72;
-  }  
+.list-container ul li {
+  list-style: none;
+  padding: 10px;
+  width: 90%;
+  background: #fff;
+  box-shadow: 0 5px 25px rgba(0,0,0,.1);
+  transition: transform 0.5s;
+}
 
-  .name {  
-    width: 80%;  
-    height:max-content;  
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background: inherit;  
-    float: left;
-  }  
-    
-  .deleteButton {  
-    width: 10%;  
-    height: 100%;  
-    background-color: tomato;
-    padding: 0;
-    border: none;
-    float: left;  
-  }  
+.list-container ul:hover li {
+  opacity: 0.2;
+}
 
-  .deleteButton:hover {
-    background:orangered;
-  }
+.list-container ul li:hover {
+  transform: scale(1.1);
+  z-index: 100;
+  background: #25bcff;
+  box-shadow: 0 5px 25px rgba(0,0,0,.2);
+  color: #fff;
+  opacity: 1;
+}
 
-  .loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: gainsboro;
-      transition: opacity 0.75s, visibility 0.75s;
-  }
+.list-container ul li span {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  background: #25bcff;
+  color: #fff;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  transform: translateY(-2px);
+}
 
-  .loader--hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
+.list-container ul li:hover span {
+  background: #fff;
+  color: #25bcff;
+}
 
-  .loader::after{
-      content: "";
-      width: 75px;
-      height: 75px;
-      border: 15px solid #dddddd;
-      border-top-color: #009578;
-      border-radius: 50%;
-      animation: loading 0.75s ease infinite;
-  }
-
-  @keyframes loading {
-      from { transform: rotate(0turn) }
-      to { transform: rotate(1turn) }
-  }
+.list-container ul li span .deleteButton{
+  color: red;
+}

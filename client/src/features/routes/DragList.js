@@ -58,23 +58,24 @@ const DragList = (props) => {
 
 			{/** List container //TODO break into component */}
 			<div className="list-container">
-				<div class="header">
 					<h3>Lista de puntos</h3>
-				</div>
+				
 				{points.map((item, index) => (
-					<div
+					<div className="list-item"
 						key={item._id}
-						className="list-item"
 						draggable
 						onDragStart={(e) => (dragItem.current = index)}
 						onDragEnter={(e) => (dragOverItem.current = index)}
 						onDragEnd={handleSort}
 						onDragOver={(e) => e.preventDefault()}>
-						<div className="index">{index+1}</div>
-						<div className="name">{`${item.name} - ${item.street} ${item.streetNumber}`}</div>
-						<button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
+						<ul>
+							<li><span>{index+1}</span>{`${item.name} - ${item.street} ${item.streetNumber}`}<span><button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
 							<FontAwesomeIcon icon={faTimes}/>
-						</button>
+						</button></span></li>
+						</ul>
+						{/* <div className="index">{index+1}</div> */}
+						{/* <div className="name">{`${item.name} - ${item.street} ${item.streetNumber}`}</div> */}
+						
 					</div>
 				))}
 			</div>
