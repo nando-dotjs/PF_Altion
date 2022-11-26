@@ -164,14 +164,14 @@ const EditPointForm = ({ point, users }) => {
 
     const canSave = [validPhoneNumber, validName, validStreet, validStreetNumber, userId, optionsZone].every(Boolean) && !isLoading
     const onSavePointClicked = async (e) => {
+        console.log(completed)
+        console.log(optionsZone)
         if (name == ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el nombre'
             })
-
-
         } else if (phoneNumber == "") {
             Toast.fire({
                 icon: 'error',
@@ -190,6 +190,20 @@ const EditPointForm = ({ point, users }) => {
                 position:"top",
                 title: 'Debe completar número de puerta'
             })
+        }else if (completed === false || optionsZone === undefined) {
+                if(isAdmin){
+                    Toast.fire({
+                        icon: 'error',
+                        position:"top",
+                        title: 'El punto debe estar activo y tener una zona asignada'
+                        })
+                }else{
+                    Toast.fire({
+                    icon: 'error',
+                    position:"top",
+                    title: 'El punto debe estar activo por un administrador para ser modificado'
+                    })
+                }
         }else if (canSave) {
             await updatePoint({ id: point.id, user: userId, name, phoneNumber, street, streetNumber, completed, zone: optionsZone })
                 .then((response) => {
