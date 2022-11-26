@@ -19,9 +19,19 @@ import Swal from 'sweetalert2'
 import {useGetUsersQuery} from '../users/usersApiSlice'
 import Button from 'react-bootstrap/Button';
 import PointView from './PointView'
-
+import { CSVLink, CSVDownload } from "react-csv";
 
 const ViewRoute = () => {
+
+    let headers = [
+        { label: "Nombre",      key: "point.name" },
+        { label: "Estado",      key: "collected" },
+        { label: "Hora visita", key:"timeCollected" },
+        { label: "Bolsones",    key: "amountCollected" },
+        { label: "Detalle",     key: "details"}
+      ];
+
+
 
     const { id } = useParams()
 
@@ -104,6 +114,8 @@ const ViewRoute = () => {
         return routePoints
     }
 
+    
+
     useEffect(() => {
         if(pointsisSuccess){
             setSelectedPoints(getPoints())
@@ -130,6 +142,24 @@ const ViewRoute = () => {
 
     const errClass = isError ? "errmsg" : "offscreen"
     
+    const csvPoints = () => {
+        let pointCSV = []
+        for(var x in route.points){
+            for(var y in selectedPoints){
+                if(route.points[x].point===selectedPoints[y]._id){
+                    pointCSV.push({
+                        point:selectedPoints[y],
+                        details:route.points[x].details,
+                        collected:route.points[x].collected,
+                        amountCollected:route.points[x].amountCollected,
+                        timeCollected:route.points[x].timeCollected,
+                    })
+                }
+            }
+        }
+        return pointCSV
+    }
+
     const Toast = Swal.mixin({
     toast: true,
     position: 'top-right',
@@ -340,6 +370,16 @@ const ViewRoute = () => {
 
 
                             <Modal.Footer>
+                                <CSVLink 
+                                    headers={headers}
+                                    data={csvPoints()} 
+                                    separator={";"} 
+                                    filename={`${startDate.getDate()}-${startDate.getMonth()+1}-${startDate.getFullYear()}_${time.name}.csv`}
+                                    className='btn btn-success'
+                                    target='_blank'
+                                    >
+                                        Descargar Detalle
+                                </CSVLink>   
                                 <Button variant="secondary" onClick={handleClose}>
                                         Volver
                                 </Button>
@@ -389,8 +429,8 @@ const ViewRoute = () => {
                                     {pointDetails(selectedPoint._id)?.details}
                                 </Card.Text>
                             </Card.Body>
-                        </Card>
-                    </Container>            
+                        </Card>      
+                    </Container>             
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
