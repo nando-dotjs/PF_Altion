@@ -39,7 +39,7 @@ const RoutesList = () => {
 
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
     
 
@@ -65,9 +65,9 @@ const RoutesList = () => {
                 <br/>
                 <div id="fondoTablaFiltro">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateformat="dd/MM/yyyy" locale="es"/>
                         &nbsp; &nbsp;
-                        <strong class="tituloCheck">Mostrar recorridos completados: </strong>
+                        <strong className="tituloCheck">Mostrar recorridos completados: </strong>
 
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"

@@ -64,7 +64,7 @@ const Route = ({ routeId }) => {
                         className="btn btn-primary"
                         onClick={handleInit} 
                     >  
-                        <FontAwesomeIcon icon={route.state ==='Pendiente' ? faPlay : faEye} />
+                        <FontAwesomeIcon fixedWidth icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
                 </td>
             </tr>
