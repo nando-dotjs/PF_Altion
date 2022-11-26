@@ -36,7 +36,7 @@ const Point = ({ pointId }) => {
                     <button 
                         className="btn btn-primary"
                         onClick={handleView}
-                        title="Ver" 
+                        title="Visualizar" 
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>

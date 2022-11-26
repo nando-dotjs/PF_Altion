@@ -127,7 +127,7 @@ const EditUserForm = ({ user }) => {
                                 })
                         } else{
                             Toast.fire({
-                                icon: 'success',
+                                icon: 'info',
                                 title: response.data.message
                                 })
                         }
@@ -142,7 +142,7 @@ const EditUserForm = ({ user }) => {
                             })
                     } else{
                         Toast.fire({
-                            icon: 'success',
+                            icon: 'info',
                             title: response.data.message
                             })
                     }

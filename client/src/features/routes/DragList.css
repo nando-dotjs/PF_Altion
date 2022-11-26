@@ -1,121 +1,103 @@
 
-  .list-container {
-    list-style-position:inherit;
-    justify-content: space-between;
-    flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    background:#dbe6ff;
-    border-style: outset;
-    border-width: 0.2rem;
-    border-color: #273e72;
-    box-shadow: 0.25rem 0.25rem 0.75rem rgb(0 0 0 / 0.15);
-    padding: 0;
-    margin: 0;
-    border-radius: 0.1rem;
-    height:400px;
-    overflow-y:auto;
-  }
-  
-  .list-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height:12%;
-    background: aliceblue;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    /* border-style:inset;
-    border-width: 2px;
-    border-color: rgb(125, 149, 255); */
-  }
+.app {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
-  .list-item:hover {
-    background: rgb(219, 238, 255);
-    cursor:grab;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  }
+.list-item {
+    cursor: pointer;
+    width: 390px;  
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
-  .list-item:not(:last-child) {
-    border-bottom: 1px solid #273e72;
-  }
-  
-  .list-item:first-child {
-    border-top: 1px solid #273e72;
-  }
-  
-  .list-item:last-child {
-    margin-bottom: 1rem;
-  }  
+.list-container  h3 {
+    color: #fff;
+    background: #03a9f4;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: 700;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
 
-  .index {  
-    width: 10%;  
-    text-align: center;
-    padding: 3% 0;
-    height:100%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background:lightskyblue;
-    float: left;  
-    border-style:solid;
-    border-width: 0rem 0.1rem 0rem 0rem;
-    border-color: #273e72;
-  }  
-
-  .name {  
-    width: 80%;  
-    height:max-content;  
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background: inherit;  
+.list-container .list-item li {
+    position: relative;
+    background: #fff;
     float: left;
-  }  
-    
-  .deleteButton {  
-    width: 10%;  
-    height: 100%;  
-    background-color: tomato;
-    padding: 0;
-    border: none;
-    float: left;  
-  }  
+    margin-bottom: 15px;
+}
 
-  .deleteButton:hover {
-    background:orangered;
+.list-container li {
+    list-style: none;
+    padding: 10px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.1);
+    transition: transform 0.5s;
+}
+
+.list-container  li:hover {
+    background: #25bcff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.2);
+    color: #fff;
+    opacity: 1;
+}
+
+.list-container li span {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background: #25bcff;
+    color: #fff;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    transform: translateY(-2px);
+}
+
+.list-container li:hover span {
+    background: #fff;
+    color: #25bcff;
+}
+
+.list-container .list-item li .deleteButton {
+    float: right;
+    border: 0;
+    color: red;
+    background: none;
+}
+
+
+.form-control-fecha {
+  margin-left: 12px;
+  width: 94%;
+}
+
+@media only screen and (max-width: 640px) {
+
+  .form-control-fecha {
+      margin-left: 12px;
+      width: 94%;
+  }
+  
+  .list-container .list-item li {
+      position: relative;
+      background: #fff;
+      float: left;
+      margin-bottom: 15px;
   }
 
-  .loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: gainsboro;
-      transition: opacity 0.75s, visibility 0.75s;
+  .list-container li {
+      list-style: none;
+      padding: 10px;
+      width: 68%;
+      background: #fff;
+      box-shadow: 0 5px 25px rgba(0,0,0,.1);
+      transition: transform 0.5s;
   }
 
-  .loader--hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .loader::after{
-      content: "";
-      width: 75px;
-      height: 75px;
-      border: 15px solid #dddddd;
-      border-top-color: #009578;
-      border-radius: 50%;
-      animation: loading 0.75s ease infinite;
-  }
-
-  @keyframes loading {
-      from { transform: rotate(0turn) }
-      to { transform: rotate(1turn) }
-  }
+}

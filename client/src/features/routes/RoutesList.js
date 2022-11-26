@@ -3,8 +3,9 @@ import Route from './Route'
 import useAuth from "../../hooks/useAuth"
 import useTitle from "../../hooks/useTitle"
 import {Table, Container} from 'react-bootstrap';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import { useNavigate } from "react-router-dom"
@@ -21,6 +22,8 @@ const RoutesList = () => {
 
     const handleViewCompleted = (e) => setViewCompleted(e.target.value)
     const navigate = useNavigate()
+    const onActiveChanged = e => setViewCompleted(!viewCompleted)
+    const onChangeText = e => setFilterDate(e)
 
     useTitle('Lista de Recorridos')
     const {
@@ -39,7 +42,7 @@ const RoutesList = () => {
 
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
     
 
@@ -55,19 +58,50 @@ const RoutesList = () => {
           navigate('/dash')
     }
 
-    if (isSuccess) {
+    useEffect(() => {
 
-        const { ids } = routes
-    	
-        const tableContent = ids?.length && ids.map(routeId => <Route key={routeId} routeId={routeId} />)  
+    }, [filterDate,viewCompleted])
+
+
+    if (isSuccess) {
+        let filtroSimplicado = new Date(Date.parse(filterDate))
+        
+        const { ids, entities } = routes
+
+    	let filteredIds 
+        if(viewCompleted){
+            filteredIds = ids.filter(routeId => (entities[routeId].state === 'Pendiente'))
+            if (filterDate !== '' && filterDate !== null ) {
+                filteredIds = ids.filter(routeId => {
+                    let auxDate = (new Date(Date.parse(entities[routeId].date)));
+                    auxDate.setHours(0,0,0,0);
+                    
+                    return auxDate.getTime() === filtroSimplicado.getTime()
+                
+                })
+            }
+        }else{
+            filteredIds = [...ids]
+            if (filterDate !== '' && filterDate !== null  ) {
+                filteredIds = ids.filter(routeId => {
+                    let auxDate = (new Date(Date.parse(entities[routeId].date)));
+                    auxDate.setHours(0,0,0,0);
+                   
+                    return auxDate.getTime() === filtroSimplicado.getTime()
+                
+                })
+            }
+        }
+
+        const tableContent = ids?.length && filteredIds.map(routeId => <Route key={routeId} routeId={routeId} />)  
         content = (
             <Container>      
                 <br/>
                 <div id="fondoTablaFiltro">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={(date) => setFilterDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                        &nbsp; &nbsp; <DatePicker className="filtroFiltrar form-control" placeholder="Filtrar" selected={filterDate} onChange={onChangeText} dateFormat="dd/MM/yyyy" locale="es"/>
                         &nbsp; &nbsp;
-                        <strong class="tituloCheck">Mostrar recorridos completados: </strong>
+                        <strong className="tituloCheck">Mostrar recorridos completados: </strong>
 
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
@@ -76,7 +110,7 @@ const RoutesList = () => {
                                 name="user-active"
                                 type="checkbox"
                                 value={viewCompleted}
-                                onChange={e => handleViewCompleted(e)}
+                                onChange={onActiveChanged}
 
                             /></InputGroup.Text>     
                     </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
-import { useAddNewRouteMutation } from "./routesApiSlice"
-import { useNavigate } from "react-router-dom"
+import { useUpdateRouteMutation, selectRouteById } from "./routesApiSlice"
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
 import {Container, Form, Modal, ProgressBar } from "react-bootstrap"
@@ -10,28 +11,34 @@ import { registerLocale } from  "react-datepicker";
 import es from 'date-fns/locale/es';
 import useTitle from "../../hooks/useTitle"
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
-import { useGetDriversQuery } from "../drivers/driversApiSlice"
+import { useGetDriversQuery, selectDriverById } from "../drivers/driversApiSlice"
 import DragList from "./DragList";
-import {useGetPointsQuery} from '../points/pointsApiSlice'
+import {useGetPointsQuery, selectPointById} from '../points/pointsApiSlice'
 import RouteMapContainer from '../maps/RouteMapContainer'
 import Swal from 'sweetalert2'
 import {useGetUsersQuery} from '../users/usersApiSlice'
 import Button from 'react-bootstrap/Button';
-import './DragList.css';
 
-const NewRouteForm = () => {
+
+const EditRouteForm = () => {
+
+    const { id } = useParams()
+
+    const route = useSelector(state => selectRouteById(state, id))
+    const routeDriver = useSelector(state => selectDriverById(state, route.driver))
 
     const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
-    const [addNewRoute, {
+    const [updateRoute, {
         isLoading,
         isSuccess,
         isError,
         error
-    }] = useAddNewRouteMutation()
+    }] = useUpdateRouteMutation()
 
     const navigate = useNavigate()
-    useTitle('Nuevo Recorrido')
+
+    useTitle('Editar Recorrido')
     registerLocale('es', es)
 
     const {
@@ -45,17 +52,69 @@ const NewRouteForm = () => {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
-    
-    const [startDate, setStartDate] = useState(new Date());
-    const [time, setTime] = useState('');
-    const [driver, setDriver] = useState('');
+
+    const {
+        data: pointsList,
+        isLoading: pointsisLoading,
+        isSuccess: pointsisSuccess,
+        isError: pointsisError,
+        error: pointsserror
+    } = useGetPointsQuery('pointsList', {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    })
+
+    const getZones = () => {
+        let routeZones = []
+        if(zonesisSuccess){
+            for(var j in route.zones) {
+                for(var k in zones.ids){
+                    if(zones.entities[zones.ids[k]]._id === route.zones[j]){
+                        routeZones.push(zones.entities[zones.ids[k]])
+                    }
+                }
+            }
+        }
+        return routeZones
+    }
+
+    useEffect(() => {
+        if(zonesisSuccess){
+            setSelectedZones(getZones())
+        }
+    }, [zonesisSuccess])
+
+    const getPoints = () => {
+        let routePoints = []
+        if(pointsisSuccess){
+            for(var j in route.points) {
+                for(var k in pointsList.ids){
+                    if(pointsList.entities[pointsList.ids[k]]._id === route.points[j].point){
+                        routePoints.push(pointsList.entities[pointsList.ids[k]])
+                    }
+                }
+            }
+        }
+        return routePoints
+    }
+
+    useEffect(() => {
+        if(pointsisSuccess){
+            setSelectedPoints(getPoints())
+        }
+    }, [pointsisSuccess])
+
+    const [startDate, setStartDate] = useState(new Date(Date.parse(route.date)));
+    const [time, setTime] = useState({"name":route.time});
+    const [driver, setDriver] = useState(routeDriver);
     const [chargedList, setChargedList] = useState('');
-    const [selectedZones, setSelectedZones] = useState([]);
-    const [selectedPoints, setSelectedPoints] = useState([]);
+    const [selectedZones, setSelectedZones] = useState(getZones());
+    const [selectedPoints, setSelectedPoints] = useState(getPoints());
     const [routeMap, setRouteMap] = useState('');
     const [activeUser, setActiveUser] = useState('');
     const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
- 
+
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
     const onTimeChanged = e => setTime(e)
@@ -86,7 +145,6 @@ const NewRouteForm = () => {
         }
     }
 
-
     //Filtro de Choferes
     const {
         data: driversList,
@@ -111,19 +169,7 @@ const NewRouteForm = () => {
     }
     
     //Filtro de Puntos
-    const {
-        data: pointsList,
-        isLoading: pointsisLoading,
-        isSuccess: pointsisSuccess,
-        isError: pointsisError,
-        error: pointsserror
-    } = useGetPointsQuery('pointsList', {
-        pollingInterval: 60000,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true
-    })
-
-    const [filteredPoints, setFilteredPoints] = useState([]);
+    const [filteredPoints, setFilteredPoints] = useState(getPoints());
     let pointsJSON = []
     let points = []    
     if (pointsisSuccess) {
@@ -146,10 +192,6 @@ const NewRouteForm = () => {
             }
         }
         setFilteredPoints(AuxFilteredPoints)
-
-        // setChargedList(
-        //     <DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>
-        // )
 
     }
 
@@ -216,8 +258,9 @@ const NewRouteForm = () => {
 
             let selectedTime = time.name
 
-            await addNewRoute({ "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver, "createdBy":activeUser })
+            await updateRoute({id, "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver })
                 .then((response) => {
+                    console.log(response)
                     if(response.error){
                         Toast.fire({
                             icon: 'error',
@@ -225,8 +268,8 @@ const NewRouteForm = () => {
                           })
                     }else{
                         Toast.fire({
-                            icon: 'success',
-                            title: response.data.message
+                            icon: 'info',
+                            title: response.data
                           })
                           navigate('/dash/routes');
                     }
@@ -238,7 +281,7 @@ const NewRouteForm = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
-        navigate('/dash');
+        navigate('/dash/routes');
     };
 
 
@@ -246,19 +289,18 @@ const NewRouteForm = () => {
         <>
             <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="cabezal"><strong>Nuevo Recorrido</strong></Modal.Title>
+                    <Modal.Title id="cabezal"><strong>Editar Recorrido</strong></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Container fluid>
 
                         <Container fluid>
 
-                            {/* <p className={errClass}>{error?.data?.message}</p> */}
                             <form className="form">
                                 <div className="container-fluid">
                                     <div className="row">
                                         <Form.Label>Fecha del Recorrido</Form.Label>
-                                        <DatePicker className="form-control-fecha form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                                     </div>
                                     <br/>
                                     <div className="row">
@@ -324,11 +366,7 @@ const NewRouteForm = () => {
                                     </div>
                                     
                                     <br/>
-
-                                    <div className="row">
-                                        {routeMap}
-                                    </div> 
-                                    
+                                    {routeMap}
                                     
                                 </div>
                                 <br/>
@@ -360,4 +398,4 @@ const NewRouteForm = () => {
     return content
 }
 
-export default NewRouteForm
+export default EditRouteForm

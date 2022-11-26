@@ -24,16 +24,22 @@ const Route = ({ routeId }) => {
 
     const navigate = useNavigate()
     if (route) {
-        const handleEdit = () => navigate(`/dash/routes/${routeId}`)
-
+        const handleEdit = () => {
+            if(route.state==='Pendiente'){
+                navigate(`/dash/routes/${routeId}`)
+            }else{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No es posible editar un recorrido ya completado'
+                  })
+            }
+        }
+        
         const handleInit = () => {
             if(route.state==='Pendiente'){
                 navigate(`/dash/routes/init/${routeId}`)
             }else{
-                Toast.fire({
-                    icon: 'error',
-                    title: 'No es posible ejecutar un recorrido ya completado'
-                  })
+                navigate(`/dash/routes/view/${routeId}`)
             }
         }
 
@@ -56,6 +62,7 @@ const Route = ({ routeId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -63,8 +70,9 @@ const Route = ({ routeId }) => {
                     <button 
                         className="btn btn-primary"
                         onClick={handleInit} 
+                        title= {route.state ==='Pendiente' ? "Ejecutar" : "Visualizar"}
                     >  
-                        <FontAwesomeIcon icon={route.state ==='Pendiente' ? faPlay : faEye} />
+                        <FontAwesomeIcon fixedWidth icon={route.state ==='Pendiente' ? faPlay : faEye} />
                     </button>
                 </td>
             </tr>

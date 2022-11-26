@@ -65,6 +65,7 @@ const Zone = ({ zoneId }) => {
                     <button 
                         className="btn btn-primary"
                         onClick={handleView} 
+                        title="Visualizar"
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -72,6 +73,7 @@ const Zone = ({ zoneId }) => {
                     <button
                         className="btn btn-primary"
                         onClick={handleEdit}
+                        title="Editar"
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -79,6 +81,7 @@ const Zone = ({ zoneId }) => {
                     <button 
                         className={zone.active ? "btn btn-success" : "btn btn-secondary"}
                         onClick={updateZoneByClick} 
+                        title= {zone.active ? "Desactivar" : "Activar"}
                     >  
                         <FontAwesomeIcon icon={ zone.active ? faToggleOn : faToggleOff} />
                     </button>

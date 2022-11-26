@@ -212,7 +212,7 @@ const NewPointForm = ({ users }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
-        navigate('/dash/points');
+        navigate('/dash');
     };
 
     const Toast = Swal.mixin({
