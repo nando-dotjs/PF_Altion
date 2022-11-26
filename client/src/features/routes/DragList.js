@@ -73,11 +73,11 @@ const DragList = (props) => {
 						onDragEnter={(e) => (dragOverItem.current = index)}
 						onDragEnd={handleSort}
 						onDragOver={(e) => e.preventDefault()}>
-						<ul>
-							<li><span>{index+1}</span>{`${item.name} - ${item.street} ${item.streetNumber}`}<span><button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
+						{/* <ul> */}
+							<li><span>{index+1}</span>{`${item.name} - ${item.street} ${item.streetNumber}`}<button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
 							<FontAwesomeIcon icon={faTimes}/>
-						</button></span></li>
-						</ul>
+						</button></li>
+						{/* </ul> */}
 						{/* <div className="index">{index+1}</div> */}
 						{/* <div className="name">{`${item.name} - ${item.street} ${item.streetNumber}`}</div> */}
 						

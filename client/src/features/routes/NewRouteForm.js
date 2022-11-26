@@ -17,7 +17,7 @@ import RouteMapContainer from '../maps/RouteMapContainer'
 import Swal from 'sweetalert2'
 import {useGetUsersQuery} from '../users/usersApiSlice'
 import Button from 'react-bootstrap/Button';
-
+import './DragList.css';
 
 const NewRouteForm = () => {
 
@@ -258,7 +258,7 @@ const NewRouteForm = () => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <Form.Label>Fecha del Recorrido</Form.Label>
-                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                                        <DatePicker className="form-control-fecha form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                                     </div>
                                     <br/>
                                     <div className="row">
@@ -324,7 +324,11 @@ const NewRouteForm = () => {
                                     </div>
                                     
                                     <br/>
-                                    {routeMap}
+
+                                    <div className="row">
+                                        {routeMap}
+                                    </div> 
+                                    
                                     
                                 </div>
                                 <br/>

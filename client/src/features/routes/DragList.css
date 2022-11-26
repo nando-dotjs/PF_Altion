@@ -1,72 +1,103 @@
 
+.app {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
 .list-item {
-  
-  width: 390px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+    cursor: pointer;
+    width: 390px;  
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .list-container  h3 {
-  color: #fff;
-  background: #03a9f4;
-  padding: 10px 20px;
-  font-size: 20px;
-  font-weight: 700;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+    color: #fff;
+    background: #03a9f4;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: 700;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.list-container .list-item li {
+    position: relative;
+    background: #fff;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.list-container li {
+    list-style: none;
+    padding: 10px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.1);
+    transition: transform 0.5s;
+}
+
+.list-container  li:hover {
+    background: #25bcff;
+    box-shadow: 0 5px 25px rgba(0,0,0,.2);
+    color: #fff;
+    opacity: 1;
+}
+
+.list-container li span {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background: #25bcff;
+    color: #fff;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    transform: translateY(-2px);
+}
+
+.list-container li:hover span {
+    background: #fff;
+    color: #25bcff;
+}
+
+.list-container .list-item li .deleteButton {
+    float: right;
+    border: 0;
+    color: red;
+    background: none;
+}
+
+
+.form-control-fecha {
+  margin-left: 12px;
+  width: 94%;
+}
+
+@media only screen and (max-width: 640px) {
+
+  .form-control-fecha {
+      margin-left: 12px;
+      width: 94%;
+  }
   
-}
+  .list-container .list-item li {
+      position: relative;
+      background: #fff;
+      float: left;
+      margin-bottom: 15px;
+  }
 
-.list-container .list-item ul {
-  position: relative;
-  margin-left: 15px;
-  background: #fff;
-  
-}
+  .list-container li {
+      list-style: none;
+      padding: 10px;
+      width: 68%;
+      background: #fff;
+      box-shadow: 0 5px 25px rgba(0,0,0,.1);
+      transition: transform 0.5s;
+  }
 
-.list-container ul li {
-  list-style: none;
-  padding: 10px;
-  width: 90%;
-  background: #fff;
-  box-shadow: 0 5px 25px rgba(0,0,0,.1);
-  transition: transform 0.5s;
-}
-
-.list-container ul:hover li {
-  opacity: 0.2;
-}
-
-.list-container ul li:hover {
-  transform: scale(1.1);
-  z-index: 100;
-  background: #25bcff;
-  box-shadow: 0 5px 25px rgba(0,0,0,.2);
-  color: #fff;
-  opacity: 1;
-}
-
-.list-container ul li span {
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  background: #25bcff;
-  color: #fff;
-  display: inline-block;
-  border-radius: 50%;
-  margin-right: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  transform: translateY(-2px);
-}
-
-.list-container ul li:hover span {
-  background: #fff;
-  color: #25bcff;
-}
-
-.list-container ul li span .deleteButton{
-  color: red;
 }
