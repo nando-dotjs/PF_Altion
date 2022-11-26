@@ -27,6 +27,10 @@ const DragList = (props) => {
     setPoints(props.points);
 	}, [props.points]); 
 
+	React.useEffect( () => {
+    	props.setSelectedPoints(points);
+	}, [points]); 
+
 	//const handle drag sorting
 	const handleSort = () => {
 		//duplicate items

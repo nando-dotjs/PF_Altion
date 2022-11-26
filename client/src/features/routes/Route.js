@@ -30,10 +30,7 @@ const Route = ({ routeId }) => {
             if(route.state==='Pendiente'){
                 navigate(`/dash/routes/init/${routeId}`)
             }else{
-                Toast.fire({
-                    icon: 'error',
-                    title: 'No es posible ejecutar un recorrido ya completado'
-                  })
+                navigate(`/dash/routes/view/${routeId}`)
             }
         }
 

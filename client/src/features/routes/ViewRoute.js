@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form, Modal, ProgressBar } from "react-bootstrap"
+import {Container, Form, Modal, Row, Col } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
@@ -20,7 +20,7 @@ import {useGetUsersQuery} from '../users/usersApiSlice'
 import Button from 'react-bootstrap/Button';
 
 
-const EditRouteForm = () => {
+const ViewRoute = () => {
 
     const { id } = useParams()
 
@@ -85,6 +85,10 @@ const EditRouteForm = () => {
         }
     }, [zonesisSuccess])
 
+    // useEffect(() => {
+
+    // }, [input])
+
     const getPoints = () => {
         let routePoints = []
         if(pointsisSuccess){
@@ -110,11 +114,14 @@ const EditRouteForm = () => {
     const [driver, setDriver] = useState(routeDriver);
     const [chargedList, setChargedList] = useState('');
     const [selectedZones, setSelectedZones] = useState(getZones());
-    const [selectedPoints, setSelectedPoints] = useState(getPoints());
+    const [selectedPoints, setSelectedPoints] = useState([]);
     const [routeMap, setRouteMap] = useState('');
     const [activeUser, setActiveUser] = useState('');
     const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
+    const [zonesText, setZonesText] = useState('');
 
+    const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+    console.log(startDate.getTime())
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
     const onTimeChanged = e => setTime(e)
@@ -133,6 +140,7 @@ const EditRouteForm = () => {
     timerProgressBar: true
     })
 
+    
 
     //Filtro de Zonas
     let filteredZones = []
@@ -287,106 +295,85 @@ const EditRouteForm = () => {
 
     const content = (
         <>
-            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title id="cabezal"><strong>Editar Recorrido</strong></Modal.Title>
+                    <Modal.Title id="cabezal"><strong>Datos del Recorrido</strong></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Container fluid>
-
                         <Container fluid>
+                            <Row>
+                                <Col>
+                                    <form className="form">
+                                        <div className="container-fluid">
+                                            <div className="row">
+                                                <Form.Label>Fecha Recorrido del {startDate.getDate()} de {months[startDate.getMonth()]} de {startDate.getFullYear()} </Form.Label>
+                                                
+                                                {/* <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/> */}
+                                            </div>
+                                            <br/>
+                                            <div className="row">
+                                                <Form.Label>Hora del Recorrido: {time.name}</Form.Label>
+                                            </div>
+                                            <br/>
+                                            <div className="row">
+                                                <Form.Label>Chofer del Recorrido: {routeDriver.name} {routeDriver.surname}</Form.Label>
+                                            </div>
+                                        </div>
+                                        <div className="container-fluid">         
 
-                            <form className="form">
-                                <div className="container-fluid">
-                                    <div className="row">
-                                        <Form.Label>Fecha del Recorrido</Form.Label>
-                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
-                                    </div>
-                                    <br/>
-                                    <div className="row">
-                                        <Form.Label>Hora del Recorrido</Form.Label>
-                                        <Select
-                                        id="time"
-                                        name="horario"
-                                        className={`formSelect`}
-                                        placeholder={'Seleccione un horario...'}
-                                        value={time}
-                                        options={horas}
-                                        onChange={onTimeChanged}
-                                        getOptionLabel={(option) => option.name}
-                                        getOptionValue={(option) => option.name}/>
-                                    </div>
-                                    <br/>
-                                    <div className="row">
-                                        <Form.Label>Chofer del Recorrido</Form.Label>
-                                        <Select
-                                            id="driver"
-                                            name="driver"
-                                            options={drivers}
-                                            className={`formSelect`}
-                                            placeholder={'Seleccione chofer...'}
-                                            value={driver}
-                                            onChange={onDriverChanged}
-                                            getOptionLabel={(option) => option.name + ' ' + option.surname}
-                                            getOptionValue={(option) => option._id}
-                                        >
-                                        </Select>
-                                    </div>
-                                </div>
-                                <div className="container-fluid">         
+                                            <br/>
+                                            <div className="row">
+                                                <Form.Label>Zona/s del Recorrido</Form.Label>
+                                            </div>
+                                            <div className="row">
+                                                <Select
+                                                    id="zone"
+                                                    name="zone"
+                                                    disabled
+                                                    options={zonesList}
+                                                    className="formSelect"
+                                                    value={selectedZones}
+                                                    placeholder={'Seleccione zona...'}
+                                                    onChange={onZoneChanged}
+                                                    getOptionLabel={(option) => option.name + ' - ' + option.details}
+                                                    getOptionValue={(option) => option._id}
+                                                    isMulti
+                                                >
+                                                </Select>
 
-                                    <br/>
-                                    <div className="row">
-                                        <Form.Label>Zona/s del Recorrido</Form.Label>
-                                    </div>
-                                    <div className="row">
-                                        <Select
-                                            id="zone"
-                                            name="zone"
-                                            options={zonesList}
-                                            className="formSelect"
-                                            value={selectedZones}
-                                            placeholder={'Seleccione zona...'}
-                                            onChange={onZoneChanged}
-                                            getOptionLabel={(option) => option.name + ' - ' + option.details}
-                                            getOptionValue={(option) => option._id}
-                                            isMulti
-                                        >
-                                        </Select>
+                                            </div>                      
+                                            <br/>
+                                            <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
+                                                    Seleccionar Zonas
+                                            </button>
+                                            <br/>
+                                            <div className="scrollableList">
+                                                {chargedList}
+                                            </div>
+                                            
 
-                                    </div>                      
-                                    <br/>
-                                    <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
-                                            Seleccionar Zonas
-                                    </button>
-                                    <br/>
-                                    <div className="scrollableList">
-                                        {chargedList}
-                                    </div>
+                                            {routeMap}
+                                            
+                                        </div>
+                                        <br/>
                                     
+                                    </form>
+                                </Col>
+                                <Col>
+                                .col-xs-6 .col-md-4
+                                </Col>
+                            </Row>
 
-                                    {routeMap}
-                                    
-                                </div>
-                                <br/>
-                              
-                            </form>
-                            {/* <div className="row">
-                                <div className="col"> */}
+
                                 <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
-                                    {/* <button className={'btn btn-light'} onClick={() => handleClose()}> */}
                                         Cancelar
                                     </Button>
-                                {/* </div> */}
-                                {/* <div className="col"> */}
                                 <Button variant="primary" onClick={onSaveRouteClicked}>
-                                    {/* <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}> */}
                                         Confirmar
                                     </Button>
                                     </Modal.Footer>
-                                {/* </div> */}
-                            {/* </div> */}
                         </Container>
                     </Container>
                 </Modal.Body>
@@ -397,4 +384,4 @@ const EditRouteForm = () => {
     return content
 }
 
-export default EditRouteForm
+export default ViewRoute
