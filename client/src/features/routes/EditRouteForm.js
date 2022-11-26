@@ -98,7 +98,7 @@ const EditRouteForm = () => {
     const [driver, setDriver] = useState(routeDriver);
     const [chargedList, setChargedList] = useState('');
     const [selectedZones, setSelectedZones] = useState(getZones());
-    const [selectedPoints, setSelectedPoints] = useState([]);
+    const [selectedPoints, setSelectedPoints] = useState(getPoints());
     const [routeMap, setRouteMap] = useState('');
     const [activeUser, setActiveUser] = useState('');
     const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
