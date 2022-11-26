@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react';
 import './Header.css';
 
 
@@ -12,7 +14,16 @@ const DashHeader = () => {
 
     const { name, surname, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
-    const [sendLogout] = useSendLogoutMutation()
+    const navigate = useNavigate()
+
+
+    const [sendLogout, {
+        isSuccess
+    }] = useSendLogoutMutation()
+
+    useEffect(() => {
+        if (isSuccess) navigate('/')
+    }, [isSuccess, navigate])
 
     const content = (
         <>

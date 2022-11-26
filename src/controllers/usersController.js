@@ -140,7 +140,7 @@ const updateUser = asyncHandler (async (req, res) => {
     }
 
     const updatedUser = await user.save()
-    res.json({ message: `${updatedUser.mail} actualizado`})
+    res.json({ message: `Usuario ${updatedUser.name} ${updatedUser.surname} actualizado`})
 })
 
 // @desc Actualizar el estado del usuario

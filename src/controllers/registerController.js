@@ -54,7 +54,7 @@ const registerNewUser = asyncHandler (async (req, res) => {
     const user = await (User.create(userObject))
 
     if (user) { // Si el usuario se creó
-        res.status(201).json({ message: `El usuario ${mail} ha sido creado`})
+        res.status(201).json({ message: `El usuario ${name} ${surname} ha sido creado`})
     } else {
         res.status(400).json({ message: 'Datos recibidos del usuario inválidos'})
     }

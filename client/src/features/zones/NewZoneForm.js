@@ -150,7 +150,7 @@ const Toast = Swal.mixin({
                                 <div class="col-10 col-md-8" id="iconito2">
                                     <input
                                         className="form-control"
-                                        placeholder="Nombre de la zona"
+                                        placeholder="Nombre"
                                         id="name"
                                         name="name"
                                         type="text"

@@ -351,7 +351,7 @@ const Register = () => {
                                     Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
                                     Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                                 </p>
-                                <br />
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -381,40 +381,41 @@ const Register = () => {
                                 </p>
 
                                 <br />
-                                <label className="form__label" htmlFor="roles">
-                                    Voy a registrar:</label>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-10 col-md-8" id="iconito2">
+                                            <label className="form__label" htmlFor="roles">
+                                                Voy a registrar:</label>
 
-                                <Form.Select
-                                    // id="role"
-                                    name="role"
-                                    className={`formSelect`}
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                    id="combo1">
-                                    {options}
-                                </Form.Select>
+                                            <Form.Select
+                                                // id="role"
+                                                name="role"
+                                                className={`formSelect`}
+                                                value={role}
+                                                onChange={(e) => setRole(e.target.value)}
+                                                id="combo1">
+                                                {options}
+                                            </Form.Select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br />
-                                <figure class="text-center">
-                                    <blockquote class="blockquote">
-                                        <p class="h6">Los datos ingresados en esta cuenta
-                                            serán tratados y procesados según la normativa legal
-                                            vigente en el territorio de la República Oriental del Uruguay.</p>
-                                    </blockquote>
-                                    <figcaption class="blockquote-footer">
-                                        Ley 18.331 <cite title="Source Title">"Protección de datos personales"</cite>
-                                    </figcaption>
-                                    <a href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
-                                </figure>
                                 <div class="form-check">
+                               
+                                      
                                     <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
-                                    <label class="form-check-label" for="flexCheckChecked">
-                                        Acepto los términos
-                                    </label>
+                                    <figcaption class="blockquote-footer">
+                                            <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
+                                            &nbsp;
+                                            <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
+                                    </figcaption> 
+                                       
+                                  
                                 </div>
                               
                                 <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate}
+                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate || !validPassword || !validMatch ? true : false}
                                     // disabled={!validPassword || !validMatch ? true : false}
                                     >Registrar
                                     </Button>
