@@ -4,19 +4,12 @@ import useTitle from "../../hooks/useTitle"
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
 import './register.css'
-import DashFooter from "../../components/DashFooter";
-import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom"
-import { useRef, useState, useEffect } from "react"
-import Button from 'react-bootstrap/Button';
-// import BootstrapTable from 'react-bootstrap-table-next';
-// import axios from 'react-axios'
-import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
+import { useState } from "react"
 import InputGroup from 'react-bootstrap/InputGroup';
 import './Table.css';
+import Swal from "sweetalert2";
 
-import Form from 'react-bootstrap/Form';
 
 
 const UsersList = () => {
@@ -52,7 +45,15 @@ const UsersList = () => {
     )
 
     if (isError) {
-        content = <p className="errmsg">{error?.data?.message}</p>
+
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: error?.data?.message,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          navigate('/dash')
     }
 
     if (isSuccess) {
@@ -99,7 +100,7 @@ const UsersList = () => {
 
 
                     <br/>
-                    <div id="fondoTabla">
+                    <div id="fondoTablaFiltro">
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                         &nbsp; &nbsp;

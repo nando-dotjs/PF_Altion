@@ -2,11 +2,11 @@ import { useRef, useState, useEffect } from "react"
 import { useAddNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faInfoCircle, faInfo, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 // import { faSave } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 import './register.css'
-
+import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -64,7 +64,7 @@ const NewUserForm = () => {
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
     const [pwdFocus, setPwdFocus] = useState(false);
-
+    const [pwdVisible, setPwdVisible] = useState(false);
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
@@ -323,21 +323,28 @@ const Toast = Swal.mixin({
                                 <br />
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Contraseña"
-                                                type="password"
-                                                id="password"
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                value={password}
-                                                required
-                                                aria-invalid={validPassword ? "false" : "true"}
-                                                aria-describedby="pwdnote"
-                                                onFocus={() => setPwdFocus(true)}
-                                                onBlur={() => setPwdFocus(false)}
-                                            />
-                                        </div>
+                                            <div class="col-10 col-md-8" id="iconito2">
+                                                <InputGroup className="mb-3">
+                                                    <input
+                                                        className="form-control"
+                                                        placeholder="Contraseña"
+                                                        type={pwdVisible ? 'text' : 'password'}
+                                                        id="password"
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                        value={password}
+                                                        required
+                                                        aria-invalid={validPassword ? "false" : "true"}
+                                                        aria-describedby="uidnote"
+                                                        onFocus={() => setPwdFocus(true)}
+                                                        onBlur={() => setPwdFocus(false)}
+                                                    />
+                                                    <InputGroup.Text onClick={() => setPwdVisible(!pwdVisible) }>
+                                                    <FontAwesomeIcon fixedWidth icon={pwdVisible ? faEye : faEyeSlash }></FontAwesomeIcon>    
+                                                    
+                                                    
+                                                    </InputGroup.Text>
+                                                </InputGroup>
+                                            </div>
                                         <label htmlFor="password" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
                                             <FontAwesomeIcon icon={faTimes} id="pass" className={validPassword || !password ? "hide" : "invalid"} />

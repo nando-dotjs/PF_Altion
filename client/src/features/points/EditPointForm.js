@@ -163,7 +163,6 @@ const EditPointForm = ({ point, users }) => {
     const onZoneNameChanged = e => setOptions(e.target.value)
 
     const canSave = [validPhoneNumber, validName, validStreet, validStreetNumber, userId, optionsZone].every(Boolean) && !isLoading
-
     const onSavePointClicked = async (e) => {
         if (name == ""){
             Toast.fire({

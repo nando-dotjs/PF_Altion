@@ -77,7 +77,9 @@ const Login = () => {
     const handleUserInput = (e) => setMail(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
 
-    if (isLoading) return <p>Cargando...</p>
+    if (isLoading) return <div class="loader"></div>
+        
+    
 
     const content = (
         <div className="account-wall" align="center">
@@ -96,7 +98,7 @@ const Login = () => {
                         </Col>
                         <Col>
                         <input className="form-control" 
-                            placeholder="Ingrese su Email" 
+                            placeholder="Correo electrónico" 
                             type="text" id="mail" 
                             ref={userRef} value={mail} onChange={handleUserInput}
                             autoComplete="off"
