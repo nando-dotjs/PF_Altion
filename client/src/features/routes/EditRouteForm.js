@@ -256,7 +256,7 @@ const EditRouteForm = () => {
                           })
                     }else{
                         Toast.fire({
-                            icon: 'success',
+                            icon: 'info',
                             title: response.data
                           })
                           navigate('/dash/routes');
@@ -348,11 +348,12 @@ const EditRouteForm = () => {
                                             Seleccionar Zonas
                                     </button>
                                     <br/>
+                                    <br/>
                                     <div className="scrollableList">
                                         {chargedList}
                                     </div>
                                     
-
+                                    <br/>
                                     {routeMap}
                                     
                                 </div>
