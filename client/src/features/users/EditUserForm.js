@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 import './register.css'
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -217,6 +218,7 @@ const Toast = Swal.mixin({
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Nombre"
@@ -231,6 +233,13 @@ const Toast = Swal.mixin({
                                         onFocus={() => setNameFocus(true)}
                                         onBlur={() => setNameFocus(false)}
                                     />
+                                </InputGroup>
+
+                                <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                    2 a 15 caracteres.<br />
+                                    Debe empezar y contener solo letras.<br />
+                                </p>
+
                                 </div>
                                 {/* <div class="col-3 col-md-1" id="iconito"> */}
                                 <label htmlFor="name" id="iconito">
@@ -240,16 +249,11 @@ const Toast = Swal.mixin({
                                 {/* </div> */}
                             </div>
                         </div>
-                        <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
+                        
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
-
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Apellido"
@@ -264,6 +268,11 @@ const Toast = Swal.mixin({
                                         onFocus={() => setSurnameFocus(true)}
                                         onBlur={() => setSurnameFocus(false)}
                                     />
+                               </InputGroup>
+                                    <p id="uidnote" className={surnameFocus && surname && !validSurname ? "validation" : "offscreen"}>
+                                        2 a 15 caracteres.<br />
+                                        Debe empezar y contener solo letras.<br />
+                                    </p>
                                 </div>
                                 <label htmlFor="surname" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
@@ -272,16 +281,11 @@ const Toast = Swal.mixin({
 
                             </div>
                         </div>
-                        <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
-
+                        
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Correo Electrónico"
@@ -296,6 +300,11 @@ const Toast = Swal.mixin({
                                         onFocus={() => setMailFocus(true)}
                                         onBlur={() => setMailFocus(false)}
                                     />
+                                </InputGroup>
+                                <p id="uidnote" className={mailFocus && mail && !validMail ? "validation" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    Ingrese un correo electrónico válido.<br />
+                                </p>
                                 </div>
                                 <label htmlFor="mail" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
@@ -304,15 +313,12 @@ const Toast = Swal.mixin({
 
                             </div>
                         </div>
-                        <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Ingrese un correo electrónico válido.<br />
-                        </p>
-                        <br />
+             
 
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Contraseña"
@@ -326,6 +332,12 @@ const Toast = Swal.mixin({
                                         onFocus={() => setPwdFocus(true)}
                                         onBlur={() => setPwdFocus(false)}
                                     />
+                                </InputGroup>
+                                    <p id="pwdnote" className={pwdFocus && !validPassword ? "validation" : "offscreen"}>
+                                        8 a 24 caracteres.<br />
+                                        Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
+                                        Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                                    </p>
                                 </div>
                                 <label htmlFor="password" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
@@ -334,10 +346,10 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
 
-                        <br />
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Confirmar contraseña"
@@ -351,6 +363,10 @@ const Toast = Swal.mixin({
                                         onFocus={() => setMatchFocus(true)}
                                         onBlur={() => setMatchFocus(false)}
                                     />
+                                </InputGroup>
+                                    <p id="confirmnote" className={matchFocus && !validMatch ? "validation" : "offscreen"}>
+                                        La contraseña debe coincidir con el primer campo
+                                    </p>
                                 </div>
                                 <label htmlFor="confirm_pwd" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
@@ -358,37 +374,46 @@ const Toast = Swal.mixin({
                                 </label>
                             </div>
                         </div>
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            La contraseña debe coincidir con el primer campo
-                        </p>
+                
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
 
-                        <br />
+                                        <label className="formLabel formCheckboxContainer" htmlFor="user-active">
+                                            ACTIVO:
+                                            <input
+                                                className="form-check-input"
+                                                id="user-active"
+                                                name="user-active"
+                                                type="checkbox"
+                                                checked={active}
+                                                onChange={onActiveChanged}
+                                            />
+                                        
+                                        </label>
 
-
-                        <label className="formLabel formCheckboxContainer" htmlFor="user-active">
-                            ACTIVO:
-                            <input
-                                className="form-check-input"
-                                id="user-active"
-                                name="user-active"
-                                type="checkbox"
-                                checked={active}
-                                onChange={onActiveChanged}
-                            />
-                           
-                        </label>
+                                </div>
+                            </div>
+                        </div>
                         <br/>
                         <br/>
-                        <Form.Select
-                            id="role"
-                            name="role"
-                            className={`formSelect`}
-                            value={role}
-                            onChange={e => setRole(e.target.value)}
-                        >
-                            {options}
-                        </Form.Select>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-10 col-md-8" id="iconito2">
+                                    <Form.Select
+                                        id="role"
+                                        name="role"
+                                        className={`formSelect`}
+                                        value={role}
+                                        onChange={e => setRole(e.target.value)}
+                                    >
+                                        {options}
+                                    </Form.Select>
+
+                                </div>
+                            </div>
+                        </div>
                         <br />
                         <br />
                         {/* <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!role || !validMail || !name || !surname ? true : false}>Guardar cambios</Button> */}

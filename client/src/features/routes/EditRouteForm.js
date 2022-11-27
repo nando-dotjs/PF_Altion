@@ -300,7 +300,7 @@ const EditRouteForm = () => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <Form.Label>Fecha del Recorrido</Form.Label>
-                                        <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
+                                        <DatePicker className="form-control form-control-fechaRecorrido" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/>
                                     </div>
                                     <br/>
                                     <div className="row">

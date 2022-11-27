@@ -13,7 +13,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+import InputGroup from 'react-bootstrap/InputGroup';
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,20}$/;
 
@@ -148,21 +148,27 @@ const Toast = Swal.mixin({
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
-                                    <input
-                                        className="form-control"
-                                        placeholder="Nombre"
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        autoComplete="off"
-                                        value={name}
-                                        onChange={onNameChanged}
-                                        required
-                                        aria-invalid={validName ? "false" : "true"}
-                                        aria-describedby="uidnote"
-                                        onFocus={() => setNameFocus(true)}
-                                        onBlur={() => setNameFocus(false)}
-                                    />
+                                    <InputGroup className="mb-3">
+                                        <input
+                                            className="form-control"
+                                            placeholder="Nombre"
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            autoComplete="off"
+                                            value={name}
+                                            onChange={onNameChanged}
+                                            required
+                                            aria-invalid={validName ? "false" : "true"}
+                                            aria-describedby="uidnote"
+                                            onFocus={() => setNameFocus(true)}
+                                            onBlur={() => setNameFocus(false)}
+                                        />
+                                    </InputGroup>
+                                    <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                        2 a 15 caracteres.<br />
+                                        Debe empezar y contener solo letras.<br />
+                                    </p>
                                 </div>
                                 <label htmlFor="name" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
@@ -170,30 +176,30 @@ const Toast = Swal.mixin({
                                 </label>
                             </div>
                         </div>
-                        <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 15 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-10 col-md-8" id="iconito2">
-                        <input
-                            className="form-control"
-                            placeholder="Detalles"
-                            id="details"
-                            name="details"
-                            type="text"
-                            autoComplete="off"
-                            value={details}
-                            onChange={onDetailsChanged}
+                                <InputGroup className="mb-3">            
+                                    <input
+                                        className="form-control"
+                                        placeholder="Detalles"
+                                        id="details"
+                                        name="details"
+                                        type="text"
+                                        autoComplete="off"
+                                        value={details}
+                                        onChange={onDetailsChanged}
 
-                            aria-invalid={validDetails ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setDetailsFocus(true)}
-                            onBlur={() => setDetailsFocus(false)}
-                        />
+                                        aria-invalid={validDetails ? "false" : "true"}
+                                        aria-describedby="uidnote"
+                                        onFocus={() => setDetailsFocus(true)}
+                                        onBlur={() => setDetailsFocus(false)}
+                                    />
+                                </InputGroup>
+                                <p id="uidnote" className={detailsFocus && details && !validDetails ? "validation" : "offscreen"}>
+                                    2 a 20 caracteres.<br />
+                                    Puede contener números y letras.<br />
+                                </p>
                         </div>
                         <label htmlFor="details" id="iconito">
                             <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
@@ -201,11 +207,7 @@ const Toast = Swal.mixin({
                         </label>
                         </div>
                         </div>
-                        <p id="uidnote" className={detailsFocus && details && !validDetails ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            2 a 20 caracteres.<br />
-                            Puede contener números y letras.<br />
-                        </p>
+                        
 
                         <br></br>
                         {/* <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Registrar</Button> */}

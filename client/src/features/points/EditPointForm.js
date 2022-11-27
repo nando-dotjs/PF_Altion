@@ -8,6 +8,7 @@ import MapContainer from '../maps/MapContainer'
 import useAuth from '../../hooks/useAuth'
 import Form from 'react-bootstrap/Form';
 import '../users/register.css'
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import Modal from 'react-bootstrap/Modal';
 import Container from 'react-bootstrap/Container';
@@ -355,14 +356,25 @@ const EditPointForm = ({ point, users }) => {
                             </div>
                         </div>
                         <br />
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                         <div className="formDivider">
                             <p className="formCreated">Creado: {created}</p>
                             <p className="formUpdated">Actualizado: {updated}</p>
                         </div>
+                        </div>
+
+                        </div>
+
+                        </div>
+
+
                         <br />
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Nombre"
@@ -376,23 +388,24 @@ const EditPointForm = ({ point, users }) => {
                                         onFocus={() => setNameFocus(true)}
                                         onBlur={() => setNameFocus(false)}
                                     />
+                                </InputGroup>
+                                <p id="uidpoint" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                    10 a 50 caracteres.<br />
+                                    Debe empezar y contener solo letras.<br />
+                                </p>
                                 </div>
+                                
                                 <label htmlFor="name" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                                     <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                                 </label>
                             </div>
                         </div>
-                        <p id="uidpoint" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            10 a 50 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
+                        
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-10 col-md-8" id="iconito2">
-
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Teléfono"
@@ -406,6 +419,11 @@ const EditPointForm = ({ point, users }) => {
                                         onFocus={() => setPhoneNumberFocus(true)}
                                         onBlur={() => setPhoneNumberFocus(false)}
                                     />
+                                </InputGroup>
+                                <p id="uidpoint" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "validation" : "offscreen"}>
+                                    0 a 9 números.<br />
+                                    No puedo contener otro tipo de carácteres.<br />
+                                </p>
                                 </div>
                                 <label htmlFor="phoneNumber" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
@@ -413,15 +431,11 @@ const EditPointForm = ({ point, users }) => {
                                 </label>
                             </div>
                         </div>
-                        <p id="uidpoint" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            0 a 9 números.<br />
-                            No puedo contener otro tipo de carácteres.<br />
-                        </p>
-                        <br />
+                       
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         id="street"
@@ -435,6 +449,11 @@ const EditPointForm = ({ point, users }) => {
                                         onFocus={() => setStreetFocus(true)}
                                         onBlur={() => setStreetFocus(false)}
                                     />
+                               </InputGroup>
+                               <p id="uidpoint" className={streetFocus && street && !validStreet ? "validation" : "offscreen"}>
+                                    3 a 20 caracteres.<br />
+                                    Debe empezar y contener solo letras.<br />
+                                </p>
                                 </div>
                                 <label htmlFor="street" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
@@ -442,15 +461,11 @@ const EditPointForm = ({ point, users }) => {
                                 </label>
                             </div>
                         </div>
-                        <p id="uidpoint" className={streetFocus && street && !validStreet ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            3 a 20 caracteres.<br />
-                            Debe empezar y contener solo letras.<br />
-                        </p>
-                        <br />
+                        
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-10 col-md-8" id="iconito2">
+                                <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
                                         placeholder="Número"
@@ -464,6 +479,11 @@ const EditPointForm = ({ point, users }) => {
                                         onFocus={() => setStreetNumberFocus(true)}
                                         onBlur={() => setStreetNumberFocus(false)}
                                     />
+                                </InputGroup>
+                                <p id="uidpoint" className={streetNumberFocus && streetNumber && !validStreetNumber ? "validation" : "offscreen"}>
+                                    Solo números.<br />
+                                    No puedo contener otro tipo de carácteres.<br />
+                                </p>
                                 </div>
                                 <label htmlFor="number" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
@@ -471,29 +491,20 @@ const EditPointForm = ({ point, users }) => {
                                 </label>
                             </div>
                         </div>
-                        <p id="uidpoint" className={streetNumberFocus && streetNumber && !validStreetNumber ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Solo números.<br />
-                            No puedo contener otro tipo de carácteres.<br />
-                        </p>
-                        <br />
-                        <div className="formRow">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col">
+                        
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     {(isAdmin) &&<label className="formLabel formCheckboxContainer" htmlFor="point-username">
                                             Asigando a:</label>}
                                         <br />
                                         {selector}
                                         {input}
-                                    </div>
                                     <br />
-                                    <div className="col">
+                                    
                                     {(isAdmin) && <label className="formLabel formCheckboxContainer" htmlFor="point-username">
                                             Zona:</label>}
                                         {selectorZone}
-                                    </div>
-                                </div>
 
 
                                 <label className="formLabel formCheckboxContainer" htmlFor="point-completed">
@@ -501,10 +512,11 @@ const EditPointForm = ({ point, users }) => {
                                     {label}
                                     {check}
                                 </label>
+                                
                                 <br />
 
+                                </div>
                             </div>
-
                         </div>
                         <br />
                         <div className="container-fluid">
