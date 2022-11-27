@@ -431,7 +431,7 @@ const Register = () => {
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">  
-                                        <Col>
+                                        <Col className="colRegistro">
                                     <br />
                                         <Button className="btn btn-secondary" href="/">Volver</Button>
 
