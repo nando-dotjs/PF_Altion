@@ -1,9 +1,11 @@
-import { useRef, useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import { useNavigate,useParams } from "react-router-dom";
-import { selectZoneById } from "./zonesApiSlice";
-import { Button, Modal} from 'react-bootstrap';
 import '../users/register.css';
+
+import { Button, Modal } from 'react-bootstrap';
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { selectZoneById } from "./zonesApiSlice";
+import { useSelector } from 'react-redux';
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;

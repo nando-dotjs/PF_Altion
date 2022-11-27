@@ -1,14 +1,12 @@
+import { faEye, faPenToSquare, faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faPenToSquare, faToggleOn,faToggleOff} from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from 'react-router-dom'
-import { useUpdateUserStateMutation } from "./usersApiSlice"
-import useAuth from '../../hooks/useAuth'
-import { useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
 import { selectUserById } from './usersApiSlice'
-import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
-
-
-
+import useAuth from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useUpdateUserStateMutation } from "./usersApiSlice"
 
 const Toast = Swal.mixin({
     toast: true,
@@ -20,7 +18,7 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 1500,
     timerProgressBar: true
-  })
+})
 
 const User = ({ userId }) => {
 
@@ -36,30 +34,30 @@ const User = ({ userId }) => {
         const handleEdit = () => navigate(`/dash/users/${userId}`)
         const handleView = () => navigate(`/dash/user/${userId}`)
         const updateUserByClick = async () => {
-              if(user.mail !== mail){
-              await updateUserState({ id: userId })
-                .then((response) => {
-                        if(response.error){
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.error.data.message
-                                })
-                        } else{
-                            Toast.fire({
-                                icon: 'info',
-                                title: response.data.message
-                                })
-                        }
-                })
-                }else{
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'No es posible desactivar este usuario'
-                        })
-                }
+            if(user.mail !== mail){
+                await updateUserState({ id: userId })
+                    .then((response) => {
+                            if(response.error){
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.error.data.message
+                                    })
+                            } else{
+                                Toast.fire({
+                                    icon: 'info',
+                                    title: response.data.message
+                                    })
+                            }
+                    })
+            }else{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No es posible desactivar este usuario'
+                    })
+            }
         }
        
-    return (
+        return (
             <tr className="tableRow user">
                 <td>{user.name +' '+user.surname}</td>
                 <td>{user.role}</td>
@@ -68,7 +66,6 @@ const User = ({ userId }) => {
                         className="btn btn-primary"
                         onClick={handleView} 
                         title="Visualizar"
-                        
                     >  
                         <FontAwesomeIcon icon={faEye} />
                     </button>
@@ -88,11 +85,10 @@ const User = ({ userId }) => {
                     >  
                         <FontAwesomeIcon icon={user.active ? faToggleOn : faToggleOff} />
                     </button>
-     
                 </td>
             </tr>
         )
 
-    } else return null
+    } else return ''
 }
 export default User

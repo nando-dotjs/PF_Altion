@@ -1,16 +1,14 @@
-import { useGetUsersQuery } from "./usersApiSlice"
-import User from './User'
-import useTitle from "../../hooks/useTitle"
-import Table from 'react-bootstrap/Table';
-import Container from "react-bootstrap/esm/Container";
 import './register.css'
+import './Table.css';
+
+import { Container, InputGroup, Pagination, Table } from 'react-bootstrap'
+
+import Swal from "sweetalert2";
+import User from './User'
+import { useGetUsersQuery } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import InputGroup from 'react-bootstrap/InputGroup';
-import './Table.css';
-import Swal from "sweetalert2";
-import Pagination from 'react-bootstrap/Pagination';
-
+import useTitle from "../../hooks/useTitle"
 
 const UsersList = () => {
 
@@ -34,8 +32,6 @@ const UsersList = () => {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
-    // const date = new Date()
-    // const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
     let content
 
@@ -58,8 +54,6 @@ const UsersList = () => {
     if (isSuccess) {
 
         const { ids, entities } = users
-        // console.log(users)
-
 
         let filteredIds
         if (viewInactives) {
@@ -73,7 +67,6 @@ const UsersList = () => {
                 filteredIds = ids.filter(userId => (entities[userId].name.toUpperCase() + ' ' + entities[userId].surname.toUpperCase() + ' ' + entities[userId].role.toUpperCase()).includes(filtroTexto.toUpperCase()) && entities[userId].active === true)
             }
         }
-
 
         const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(userId => <User key={userId} userId={userId} />)
 
@@ -112,17 +105,13 @@ const UsersList = () => {
 
         content = (
             <>
-
                 <Container>
-
-
-                    <br/>
                     <div id="fondoTablaFiltro">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
-                        &nbsp; &nbsp;
-                        <strong className="tituloCheck">Mostrar usuarios inactivos: </strong>
-
+                            &nbsp; &nbsp; 
+                            <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                            &nbsp; &nbsp;
+                            <strong className="tituloCheck">Mostrar usuarios inactivos: </strong>
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
                                 className="filterActives"
@@ -132,12 +121,11 @@ const UsersList = () => {
                                 value={viewInactives}
                                 onChange={onActiveChanged}
 
-                            /></InputGroup.Text>     
+                            />
+                        </InputGroup.Text>     
                     </div>
                     <div id="fondoTabla">
-
                         <Table
-                            // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
@@ -150,7 +138,6 @@ const UsersList = () => {
                                 {tableContent}
                             </tbody>
                         </Table>
-
                     </div>
                     <Pagination>
                         <Pagination.First onClick={() => firstPage()} />

@@ -1,13 +1,14 @@
-import { useRef, useState, useEffect } from "react";
-import { useAddNewUserMutation } from "./usersApiSlice";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faTimes, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { InputGroup, Form, Container, Button, Modal} from 'react-bootstrap';
-import Swal from 'sweetalert2';
-import { ROLES } from "../../config/roles";
 import './register.css';
 
+import { Button, Container, Form, InputGroup, Modal } from 'react-bootstrap';
+import { faCheck, faEye, faEyeSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef, useState } from "react";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ROLES } from "../../config/roles";
+import Swal from 'sweetalert2';
+import { useAddNewUserMutation } from "./usersApiSlice";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -86,7 +87,6 @@ const NewUserForm = () => {
         if (isSuccess) {
             setName('')
             setSurname('')
-            // setUsername('')
             setPassword('')
             setMail('')
             setRole('')
@@ -185,11 +185,11 @@ const NewUserForm = () => {
 
     const content = (
         <>
-        <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
-            <Modal.Header closeButton>
-            <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <Container fluid>
                         <section>
                             <main className='register'>
