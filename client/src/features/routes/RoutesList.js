@@ -1,6 +1,6 @@
 import { useGetRoutesQuery } from "./routesApiSlice"
 import Route from './Route'
-import useAuth from "../../hooks/useAuth"
+//import useAuth from "../../hooks/useAuth"
 import useTitle from "../../hooks/useTitle"
 import {Table, Container} from 'react-bootstrap';
 import {useEffect, useState} from 'react';
@@ -11,16 +11,17 @@ import es from 'date-fns/locale/es';
 import { useNavigate } from "react-router-dom"
 import InputGroup from 'react-bootstrap/InputGroup';
 import Swal from "sweetalert2";
+import Pagination from 'react-bootstrap/Pagination';
 
 const RoutesList = () => {
 
-    const { mail, isAdmin } = useAuth()
+ //   const { mail, isAdmin } = useAuth()
     registerLocale('es', es)
 
     const [viewCompleted, setViewCompleted] = useState(true)
     const [filterDate, setFilterDate] = useState('')
+    const [page, setPage] = useState(1)
 
-    const handleViewCompleted = (e) => setViewCompleted(e.target.value)
     const navigate = useNavigate()
     const onActiveChanged = e => setViewCompleted(!viewCompleted)
     const onChangeText = e => setFilterDate(e)
@@ -93,7 +94,41 @@ const RoutesList = () => {
             }
         }
 
-        const tableContent = ids?.length && filteredIds.map(routeId => <Route key={routeId} routeId={routeId} />)  
+        const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(routeId => <Route key={routeId} routeId={routeId} />)  
+
+        let items = [];
+
+        const handlePage = (n) => {
+            setPage(n)
+            items = []
+        }
+
+        const nextPage = () => {
+            if(items.length !== page){
+                setPage(page+1)
+            }
+        }
+
+        const lastPage = () => {
+            setPage(items.length)
+        }
+
+        const firstPage = () => {
+            setPage(1)
+        }
+
+        const prevPage = () => {
+            if(page !== 1){
+                setPage(page-1)
+            }
+        }
+
+        for (let number = 1; number < (filteredIds.length/10)+1; number++) {
+            items.push(number);
+        }
+
+        let pagination = items.map(number => <Pagination.Item key={number} active={number === page} onClick={() => handlePage(number)}>{number}</Pagination.Item>)
+
         content = (
             <Container>      
                 <br/>
@@ -131,6 +166,13 @@ const RoutesList = () => {
                         </tbody>
                     </Table>
                 </div>
+                <Pagination>
+                    <Pagination.First onClick={() => firstPage()} />
+                    <Pagination.Prev onClick={() => prevPage()} />
+                        {pagination}
+                    <Pagination.Next onClick={() => nextPage()} />
+                    <Pagination.Last onClick={() => lastPage()} />
+                </Pagination>
             </Container>
         )
     }

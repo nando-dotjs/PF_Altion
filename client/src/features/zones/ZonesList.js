@@ -7,12 +7,13 @@ import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
 import InputGroup from 'react-bootstrap/InputGroup';
 import Swal from "sweetalert2";
+import Pagination from 'react-bootstrap/Pagination';
 
 const ZonesList = () => {
     
     const [filtroTexto, setTexto] = useState('')
     const [viewInactives,setViewInactives] = useState(false);
-    const [show, setShow] = useState(false);
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
     useTitle('Lista de Zonas')
 
@@ -65,12 +66,40 @@ const ZonesList = () => {
             } 
         }
 
-        const tableContent = ids?.length && filteredIds.map(zoneId => <Zone key={zoneId} zoneId={zoneId} />)
-         
-        const handleClose = () => {
-            setShow(true)
-            navigate('/dash');
-        };
+        const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(zoneId => <Zone key={zoneId} zoneId={zoneId} />)
+
+        let items = [];
+
+        const handlePage = (n) => {
+            setPage(n)
+            items = []
+        }
+
+        const nextPage = () => {
+            if(items.length !== page){
+                setPage(page+1)
+            }
+        }
+
+        const lastPage = () => {
+            setPage(items.length)
+        }
+
+        const firstPage = () => {
+            setPage(1)
+        }
+
+        const prevPage = () => {
+            if(page !== 1){
+                setPage(page-1)
+            }
+        }
+
+        for (let number = 1; number < (filteredIds.length/10)+1; number++) {
+            items.push(number);
+        }
+
+        let pagination = items.map(number => <Pagination.Item key={number} active={number === page} onClick={() => handlePage(number)}>{number}</Pagination.Item>)
 
 
         content = (
@@ -108,6 +137,13 @@ const ZonesList = () => {
                 </Table>
 
             </div>
+                <Pagination>
+                    <Pagination.First onClick={() => firstPage()} />
+                    <Pagination.Prev onClick={() => prevPage()} />
+                        {pagination}
+                    <Pagination.Next onClick={() => nextPage()} />
+                    <Pagination.Last onClick={() => lastPage()} />
+                </Pagination>
             </Container>
         </>
         )

@@ -9,15 +9,14 @@ import { useState } from "react"
 import InputGroup from 'react-bootstrap/InputGroup';
 import './Table.css';
 import Swal from "sweetalert2";
-
+import Pagination from 'react-bootstrap/Pagination';
 
 
 const UsersList = () => {
 
     const [filtroTexto, setTexto] = useState('');
     const [viewInactives, setViewInactives] = useState(false);
-    const [query, setQuery] = useState('');
-    const [show, setShow] = useState(false);
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
     useTitle('Lista de Usuarios')
 
@@ -58,7 +57,7 @@ const UsersList = () => {
 
     if (isSuccess) {
 
-        const { ids, name, mail, role, entities } = users
+        const { ids, entities } = users
         // console.log(users)
 
 
@@ -76,22 +75,40 @@ const UsersList = () => {
         }
 
 
-        const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
-        //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
-        // const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
-        const handleClose = () => {
-            setShow(true)
-            navigate('/dash');
-        };
-        //temporal
-        console.log()
-        // const search = (tableContent)=>{return tableContent.filter(users=>users.mail.toLowerCase().includes(query))}
-        //temporal
-        // console.log(query)
+        const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(userId => <User key={userId} userId={userId} />)
 
-        // useEffect(() => {
+        let items = [];
 
-        // })
+        const handlePage = (n) => {
+            setPage(n)
+            items = []
+        }
+
+        const nextPage = () => {
+            if(items.length !== page){
+                setPage(page+1)
+            }
+        }
+
+        const lastPage = () => {
+            setPage(items.length)
+        }
+
+        const firstPage = () => {
+            setPage(1)
+        }
+
+        const prevPage = () => {
+            if(page !== 1){
+                setPage(page-1)
+            }
+        }
+
+        for (let number = 1; number < (filteredIds.length/10)+1; number++) {
+            items.push(number);
+        }
+
+        let pagination = items.map(number => <Pagination.Item key={number} active={number === page} onClick={() => handlePage(number)}>{number}</Pagination.Item>)
 
         content = (
             <>
@@ -135,7 +152,13 @@ const UsersList = () => {
                         </Table>
 
                     </div>
-
+                    <Pagination>
+                        <Pagination.First onClick={() => firstPage()} />
+                        <Pagination.Prev onClick={() => prevPage()} />
+                            {pagination}
+                        <Pagination.Next onClick={() => nextPage()} />
+                        <Pagination.Last onClick={() => lastPage()} />
+                    </Pagination>
                 </Container>
 
             </>
