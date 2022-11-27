@@ -8,7 +8,7 @@ import MapPopup from '../maps/MapPopup'
 import '../users/register.css'
 import Swal from "sweetalert2"
 import {Modal, Form, Container, Button} from 'react-bootstrap';
-
+import InputGroup from 'react-bootstrap/InputGroup';
 const PHONENUMBER_REGEX = /^\d{8,9}$/;
 // eslint-disable-next-line
 const NAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{7,20}$/;
@@ -243,19 +243,25 @@ const NewPointForm = ({ users }) => {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Nombre"
-                                            id="name"
-                                            name="name"
-                                            value={name}
-                                            onChange={onNameChanged}
-                                            required
-                                            aria-invalid={validName ? "false" : "true"}
-                                            aria-describedby="uidcev"
-                                            onFocus={() => setNameFocus(true)}
-                                            onBlur={() => setNameFocus(false)}
-                                        />
+                                        <InputGroup className="mb-3">
+                                            <input
+                                                className="form-control"
+                                                placeholder="Nombre"
+                                                id="name"
+                                                name="name"
+                                                value={name}
+                                                onChange={onNameChanged}
+                                                required
+                                                aria-invalid={validName ? "false" : "true"}
+                                                aria-describedby="uidcev"
+                                                onFocus={() => setNameFocus(true)}
+                                                onBlur={() => setNameFocus(false)}
+                                            />
+                                        </InputGroup>
+                                        <p id="uidcev" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                            7 a 20 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
                                     </div>
                                     <label htmlFor="name" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
@@ -263,28 +269,28 @@ const NewPointForm = ({ users }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidcev" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                7 a 20 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Teléfono o celular"
-                                            id="phoneNumber"
-                                            name="phoneNumber"
-                                            value={phoneNumber}
-                                            onChange={onPhoneNumberChanged}
-                                            required
-                                            aria-invalid={validPhoneNumber ? "false" : "true"}
-                                            aria-describedby="uidcev"
-                                            onFocus={() => setPhoneNumberFocus(true)}
-                                            onBlur={() => setPhoneNumberFocus(false)}
-                                        />
+                                        <InputGroup className="mb-3">
+                                            <input
+                                                className="form-control"
+                                                placeholder="Teléfono o celular"
+                                                id="phoneNumber"
+                                                name="phoneNumber"
+                                                value={phoneNumber}
+                                                onChange={onPhoneNumberChanged}
+                                                required
+                                                aria-invalid={validPhoneNumber ? "false" : "true"}
+                                                aria-describedby="uidcev"
+                                                onFocus={() => setPhoneNumberFocus(true)}
+                                                onBlur={() => setPhoneNumberFocus(false)}
+                                            />
+                                        </InputGroup>   
+                                        <p id="uidcev" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "validation" : "offscreen"}>
+                                            Mínimo 8 caracteres, máximo 9.<br />
+                                            No puedo contener otro tipo de carácteres.<br />
+                                        </p> 
                                     </div>
                                     <label htmlFor="phoneNumber" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validPhoneNumber ? "valid" : "hide"} />
@@ -292,29 +298,29 @@ const NewPointForm = ({ users }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidcev" className={phoneNumberFocus && phoneNumber && !validPhoneNumber ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                Mínimo 8 caracteres, máximo 9.<br />
-                                No puedo contener otro tipo de carácteres.<br />
-                            </p>
-                            <br />
+                            
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-10 col-md-8" id="iconito2">
-                                       
-                                        <input
-                                            className="form-control"
-                                            placeholder="Calle"
-                                            id="street"
-                                            name="street"
-                                            value={street}
-                                            onChange={onStreetChanged}
-                                            required
-                                            aria-invalid={validStreet ? "false" : "true"}
-                                            aria-describedby="uidcev"
-                                            onFocus={() => setStreetFocus(true)}
-                                            onBlur={() => setStreetFocus(false)}
-                                        />
+                                        <InputGroup className="mb-3">
+                                            <input
+                                                className="form-control"
+                                                placeholder="Calle"
+                                                id="street"
+                                                name="street"
+                                                value={street}
+                                                onChange={onStreetChanged}
+                                                required
+                                                aria-invalid={validStreet ? "false" : "true"}
+                                                aria-describedby="uidcev"
+                                                onFocus={() => setStreetFocus(true)}
+                                                onBlur={() => setStreetFocus(false)}
+                                            />
+                                        </InputGroup>
+                                        <p id="uidcev" className={streetFocus && street && !validStreet ? "validation" : "offscreen"}>
+                                            3 a 20 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
                                     </div>
                                     <label htmlFor="street" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validStreet ? "valid" : "hide"} />
@@ -322,28 +328,29 @@ const NewPointForm = ({ users }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidcev" className={streetFocus && street && !validStreet ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                3 a 20 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br />
+                            
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-10 col-md-8" id="iconito2">
-                                        <input
-                                            className="form-control"
-                                            placeholder="Número de puerta"
-                                            id="text"
-                                            name="text"
-                                            value={streetNumber}
-                                            onChange={onStreetNumberChanged}
-                                            required
-                                            aria-invalid={validStreetNumber ? "false" : "true"}
-                                            aria-describedby="uidcev"
-                                            onFocus={() => setStreetNumberFocus(true)}
-                                            onBlur={() => setStreetNumberFocus(false)}
-                                        />
+                                        <InputGroup className="mb-3">
+                                            <input
+                                                className="form-control"
+                                                placeholder="Número de puerta"
+                                                id="text"
+                                                name="text"
+                                                value={streetNumber}
+                                                onChange={onStreetNumberChanged}
+                                                required
+                                                aria-invalid={validStreetNumber ? "false" : "true"}
+                                                aria-describedby="uidcev"
+                                                onFocus={() => setStreetNumberFocus(true)}
+                                                onBlur={() => setStreetNumberFocus(false)}
+                                            />
+                                        </InputGroup>
+                                        <p id="uidcev" className={streetNumberFocus && streetNumber && !validStreetNumber ? "validation" : "offscreen"}>
+                                            Solo números.<br />
+                                            No puedo contener otro tipo de carácteres.<br />
+                                        </p>
                                     </div>
                                     <label htmlFor="number" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validStreetNumber ? "valid" : "hide"} />
@@ -351,11 +358,6 @@ const NewPointForm = ({ users }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidcev" className={streetNumberFocus && streetNumber && !validStreetNumber ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                Solo números.<br />
-                                No puedo contener otro tipo de carácteres.<br />
-                            </p>
 
                             {/* <label htmlFor="latitud">
                   
@@ -375,7 +377,7 @@ const NewPointForm = ({ users }) => {
                                 onFocus={() => setLatitudeNumberFocus(true)}
                                 onBlur={() => setLatitudeNumberFocus(false)}
                             />
-                            <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude ? "instructions" : "offscreen"}>
+                            <p id="uidlat" className={latitudeNumberFocus && lat && !validLatitude ? "validation" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle} />
                                 No es una geo correcta<br />
                             </p>
@@ -397,7 +399,7 @@ const NewPointForm = ({ users }) => {
                                 onFocus={() => setLongitudeNumberFocus(true)}
                                 onBlur={() => setLongitudeNumberFocus(false)}
                             />
-                            <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude ? "instructions" : "offscreen"}>
+                            <p id="uidlng" className={longitudeNumberFocus && lng && !validLongitude ? "validation" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle} />
                                 No es una geo correcta<br />
                             </p>

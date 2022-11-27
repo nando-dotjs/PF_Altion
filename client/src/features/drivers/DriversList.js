@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
 import '../users/register.css'
 import Modal from 'react-bootstrap/Modal';
+import Pagination from 'react-bootstrap/Pagination';
 import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react"
 import Button from 'react-bootstrap/Button';
@@ -17,6 +18,7 @@ const DriversList = () => {
     const [filtroTexto, setTexto] = useState('');
     const [viewInactives,setViewInactives] = useState(false);
     const [show, setShow] = useState(false);
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
     useTitle('Lista de Choferes')
 
@@ -40,7 +42,7 @@ const DriversList = () => {
     let content
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
     
     if (isError) {
@@ -54,6 +56,7 @@ const DriversList = () => {
           })
           navigate('/dash')
     }
+
 
     if (isSuccess) {
 
@@ -72,14 +75,45 @@ const DriversList = () => {
             } 
         }
 
-        const tableContent = ids?.length && filteredIds.map(driverId => <Driver key={driverId} driverId={driverId} />)
-       
+        const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(driverId => <Driver key={driverId} driverId={driverId} />)
+
         const handleClose = () => {
             setShow(true)
             navigate('/dash');
         };
 
+        let items = [];
 
+        const handlePage = (n) => {
+            setPage(n)
+            items = []
+        }
+
+        const nextPage = () => {
+            if(items.length !== page){
+                setPage(page+1)
+            }
+        }
+
+        const lastPage = () => {
+            setPage(items.length)
+        }
+
+        const firstPage = () => {
+            setPage(1)
+        }
+
+        const prevPage = () => {
+            if(page !== 1){
+                setPage(page-1)
+            }
+        }
+
+        for (let number = 1; number < (filteredIds.length/10)+1; number++) {
+            items.push(number);
+        }
+
+        let pagination = items.map(number => <Pagination.Item key={number} active={number === page} onClick={() => handlePage(number)}>{number}</Pagination.Item>)
 
         content = (
             <>
@@ -90,7 +124,7 @@ const DriversList = () => {
                 <InputGroup.Text>
                 &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                 &nbsp; &nbsp;
-                <strong class="tituloCheck">Mostrar choferes inactivos: </strong>
+                <strong className="tituloCheck">Mostrar choferes inactivos: </strong>
                     <InputGroup.Checkbox
                         placeholder="Mostrar choferes inactivos"
                         className="filterActives"
@@ -117,6 +151,13 @@ const DriversList = () => {
             </Table>
             
         </div>
+        <Pagination>
+            <Pagination.First onClick={() => firstPage()} />
+            <Pagination.Prev onClick={() => prevPage()} />
+                {pagination}
+            <Pagination.Next onClick={() => nextPage()} />
+            <Pagination.Last onClick={() => lastPage()} />
+        </Pagination>
         </Container>
        
             </>

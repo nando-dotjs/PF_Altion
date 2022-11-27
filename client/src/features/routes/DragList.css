@@ -77,6 +77,11 @@
   width: 94%;
 }
 
+.form-control-fechaRecorrido {
+    margin-left: 15px;
+    width: 50%;
+}
+
 @media only screen and (max-width: 640px) {
 
   .form-control-fecha {
