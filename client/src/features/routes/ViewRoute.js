@@ -40,13 +40,6 @@ const ViewRoute = () => {
 
     const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
-    const [updateRoute, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateRouteMutation()
-
     const navigate = useNavigate()
 
     useTitle('Editar Recorrido')
@@ -139,8 +132,6 @@ const ViewRoute = () => {
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
     const onTimeChanged = e => setTime(e)
-
-    const errClass = isError ? "errmsg" : "offscreen"
     
     const csvPoints = () => {
         let pointCSV = []
@@ -227,23 +218,6 @@ const ViewRoute = () => {
             setActiveUser('')
         }
 	}, [selectedPoints]); 
-
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-
-
-        if((isAdmin || isCEV || isEmpresa || isRecolector)) {
-            let pointlist = []
-            
-            for(var k in selectedPoints){
-                pointlist.push({"point":selectedPoints[k]});
-            } 
-
-            let selectedTime = time.name
-        }
-       
-    }
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
