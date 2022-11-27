@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 import Modal from 'react-bootstrap/Modal';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
@@ -22,7 +23,8 @@ const EditDriverForm = ({ driver }) => {
         error
     }] = useUpdateDriverMutation()
 
-    // const [deleteDriver, {
+    // const [deleteDriver, 
+
     //     isSuccess: isDelSuccess,
     //     isError: isDelError,
     //     error: delerror
@@ -143,29 +145,14 @@ const EditDriverForm = ({ driver }) => {
 
                         <form className="form" onSubmit={e => e.preventDefault()}>
                             <div className="formTitleRow">
-                                {/* <h1 id="cabezal">Editar chófer</h1> */}
                                 <div className="formActionButtons">
-                                    {/* <button
-                                className="icon-button"
-                                title="Save"
-                                onClick={onSaveDriverClicked}
-                                disabled={!canSave}
-                            >
-                                <FontAwesomeIcon icon={faSave} />
-                            </button> */}
-                                    {/* <button
-                                className="icon-button"
-                                title="Delete"
-                                onClick={onDeleteDriverClicked}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button> */}
                                 </div>
                             </div>
                             <br />
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-10 col-md-8" id="iconito2">
+                                    <InputGroup className="mb-3">
                                         <input
                                             className="form-control"
                                             id="name"
@@ -180,6 +167,11 @@ const EditDriverForm = ({ driver }) => {
                                             onFocus={() => setNameFocus(true)}
                                             onBlur={() => setNameFocus(false)}
                                         />
+                                    </InputGroup>
+                                        <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
                                     </div>
                                     <label htmlFor="name" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
@@ -187,15 +179,11 @@ const EditDriverForm = ({ driver }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br/> 
+                            
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-10 col-md-8" id="iconito2">
+                                    <InputGroup className="mb-3">
                                         <input
                                             className="form-control"
                                             id="surname"
@@ -210,6 +198,11 @@ const EditDriverForm = ({ driver }) => {
                                             onFocus={() => setSurnameFocus(true)}
                                             onBlur={() => setSurnameFocus(false)}
                                         />
+                                    </InputGroup>
+                                        <p id="uidnote" className={surnameFocus && surname && !validSurname ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
                                     </div>
                                     <label htmlFor="surname" id="iconito">
                                         <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
@@ -217,23 +210,25 @@ const EditDriverForm = ({ driver }) => {
                                     </label>
                                 </div>
                             </div>
-                            <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                2 a 15 caracteres.<br />
-                                Debe empezar y contener solo letras.<br />
-                            </p>
-                            <br/> 
-                            <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
-                                ACTIVO:
-                                <input
-                                    className="form-check-input"
-                                    id="driver-active"
-                                    name="driver-active"
-                                    type="checkbox"
-                                    checked={active}
-                                    onChange={onActiveChanged}
-                                />
-                            </label>
+                            
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-10 col-md-8" id="iconito2">
+                                            <label className="formLabel formCheckboxContainer" htmlFor="driver-active">
+                                                ACTIVO:
+                                                <input
+                                                    className="form-check-input"
+                                                    id="driver-active"
+                                                    name="driver-active"
+                                                    type="checkbox"
+                                                    checked={active}
+                                                    onChange={onActiveChanged}
+                                                />
+                                            </label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <br/> 
                             <br/> 
                             {/* <Button className="formSubmitButton" onClick={onSaveDriverClicked} disabled={!validName || !validSurname ? true : false}>Guardar cambios</Button> */}
