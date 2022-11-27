@@ -220,9 +220,9 @@ const Register = () => {
                     <section>
                         <main className='register'>
                             <Form className="form" onSubmit={onSaveUserClicked}>
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                         <InputGroup className="mb-3">
                                             <input
                                                 className="form-control"
@@ -253,9 +253,9 @@ const Register = () => {
                                     </div>
                                 </div>
                                 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                         <InputGroup className="mb-3">
 
                                             <input
@@ -288,9 +288,9 @@ const Register = () => {
                                     </div>
                                 </div>
                                 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                         <InputGroup className="mb-3">
                                                 <input
                                                     className="form-control"
@@ -320,9 +320,9 @@ const Register = () => {
                                     </div>
                                 </div>
                                
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                             <InputGroup className="mb-3">
                                                 <input
                                                     className="form-control"
@@ -359,9 +359,9 @@ const Register = () => {
                                 </div>
                                 {/* id="pwdnote" */}
                                                                 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                         <InputGroup className="mb-3">
                                             <input
                                                 className="form-control"
@@ -391,9 +391,9 @@ const Register = () => {
                                 </div>
                                 
 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">
                                             <label className="form__label" htmlFor="roles">
                                                 Voy a registrar:</label>
 
@@ -411,12 +411,12 @@ const Register = () => {
                                 </div>
                                 <br />
 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">  
-                                        <div class="form-check">
-                                            <figcaption class="blockquote-footer">
-                                            <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">  
+                                        <div className="form-check">
+                                            <figcaption className="blockquote-footer">
+                                            <input className="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
 <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
                                                 <br></br>
                                                 <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
@@ -428,9 +428,9 @@ const Register = () => {
                                     </div>
                                 </div>
                                 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-10 col-md-8" id="iconito2">  
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-10 col-md-8" id="iconito2">  
                                         <Col className="colRegistro">
                                     <br />
                                         <Button className="btn btn-secondary" href="/">Volver</Button>

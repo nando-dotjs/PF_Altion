@@ -215,9 +215,9 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -241,7 +241,7 @@ const Toast = Swal.mixin({
                                 </p>
 
                                 </div>
-                                {/* <div class="col-3 col-md-1" id="iconito"> */}
+                                {/* <div className="col-3 col-md-1" id="iconito"> */}
                                 <label htmlFor="name" id="iconito">
                                     <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                                     <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
@@ -250,9 +250,9 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
                         
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -282,9 +282,9 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
                         
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -315,9 +315,9 @@ const Toast = Swal.mixin({
                         </div>
              
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -346,9 +346,9 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -375,9 +375,9 @@ const Toast = Swal.mixin({
                             </div>
                         </div>
                 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
 
                                         <label className="formLabel formCheckboxContainer" htmlFor="user-active">
                                             ACTIVO:
@@ -398,9 +398,9 @@ const Toast = Swal.mixin({
                         <br/>
                         <br/>
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <Form.Select
                                         id="role"
                                         name="role"

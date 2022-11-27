@@ -40,7 +40,7 @@ const UsersList = () => {
     let content
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
 
     if (isError) {
@@ -121,7 +121,7 @@ const UsersList = () => {
                         <InputGroup.Text>
                         &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
                         &nbsp; &nbsp;
-                        <strong class="tituloCheck">Mostrar usuarios inactivos: </strong>
+                        <strong className="tituloCheck">Mostrar usuarios inactivos: </strong>
 
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"

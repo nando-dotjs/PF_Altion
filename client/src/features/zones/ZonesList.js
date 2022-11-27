@@ -1,13 +1,10 @@
-import { useGetZonesQuery } from "./zonesApiSlice"
-import Zone from './Zone'
-import useTitle from "../../hooks/useTitle"
-import { useNavigate } from "react-router-dom"
-import { useRef, useState, useEffect } from "react"
-import Table from 'react-bootstrap/Table';
-import Container from "react-bootstrap/esm/Container";
-import InputGroup from 'react-bootstrap/InputGroup';
+import { useGetZonesQuery } from "./zonesApiSlice";
+import Zone from './Zone';
+import useTitle from "../../hooks/useTitle";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Container, InputGroup, Pagination, Table } from 'react-bootstrap';
 import Swal from "sweetalert2";
-import Pagination from 'react-bootstrap/Pagination';
 
 const ZonesList = () => {
     
@@ -34,7 +31,7 @@ const ZonesList = () => {
     let content
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
     
     if (isError) {
@@ -104,48 +101,48 @@ const ZonesList = () => {
 
         content = (
             <>
-          <Container>
+                <Container>
+                    <br/>
+                    <div id="fondoTablaFiltro">
+                        <InputGroup.Text>
+                            &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                            &nbsp; &nbsp;
+                            <strong className="tituloCheck">Mostrar zonas inactivas: </strong>
+                            <InputGroup.Checkbox
+                                placeholder="Mostrar zonas inactivas"
+                                className="filterActives"
+                                id="user-active"
+                                name="user-active"
+                                type="checkbox"
+                                value={viewInactives}
+                                onChange={onActiveChanged}
+                            />
+                        </InputGroup.Text>     
+                    </div>
+                    <div id="fondoTabla">
+                        <Table striped bordered hover size="sm" className="table tableZones">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Detalles</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tableContent}
+                            </tbody>
+                        </Table>
 
-          <br/>
-            <div id="fondoTablaFiltro">
-                <InputGroup.Text>
-                &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
-                &nbsp; &nbsp;
-                <strong class="tituloCheck">Mostrar zonas inactivas: </strong>
-                    <InputGroup.Checkbox
-                        placeholder="Mostrar zonas inactivas"
-                        className="filterActives"
-                        id="user-active"
-                        name="user-active"
-                        type="checkbox"
-                        value={viewInactives}
-                        onChange={onActiveChanged}
-                    /></InputGroup.Text>     
-            </div>
-            <div id="fondoTabla">
-                <Table striped bordered hover size="sm" className="table tableZones">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Detalles</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableContent}
-                    </tbody>
-                </Table>
-
-            </div>
-                <Pagination>
-                    <Pagination.First onClick={() => firstPage()} />
-                    <Pagination.Prev onClick={() => prevPage()} />
-                        {pagination}
-                    <Pagination.Next onClick={() => nextPage()} />
-                    <Pagination.Last onClick={() => lastPage()} />
-                </Pagination>
-            </Container>
-        </>
+                    </div>
+                    <Pagination>
+                        <Pagination.First onClick={() => firstPage()} />
+                        <Pagination.Prev onClick={() => prevPage()} />
+                            {pagination}
+                        <Pagination.Next onClick={() => nextPage()} />
+                        <Pagination.Last onClick={() => lastPage()} />
+                    </Pagination>
+                </Container>
+            </>
         )
     }
 

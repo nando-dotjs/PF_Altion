@@ -36,7 +36,7 @@ const PointsList = () => {
     let content
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
 
     if (isError) {

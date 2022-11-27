@@ -1,18 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-
 import { useDispatch } from 'react-redux'
+import {Form, Container, Button, Row, Col } from 'react-bootstrap'
+import Swal from 'sweetalert2'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
-
 import './Login.css';
-import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
 
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const Login = () => {
     const userRef = useRef()
@@ -77,66 +71,51 @@ const Login = () => {
     const handleUserInput = (e) => setMail(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
 
-    if (isLoading) return <div class="loader"></div>
+    if (isLoading) return <div className="loader"></div>
         
     
 
     const content = (
         <div className="account-wall" align="center">
             <img id="profile-img" src={require('../../img/logoUC.PNG')} alt={"UPC"} />
-            {/* <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p> */}
-        <Container fluid>
-            <Form>
-                    <Row className="justify-content-md-center">
-                    <Col>
-                    
-                    </Col>
+            <Container fluid>
+                <Row className="justify-content-md-center">
                     {/* Modificacion de form para manejar el submit usando la tecla enter */}
                     <Form className="form-signin" onSubmit={handleSubmit}>
-                        <Col md="auto">
-                        {/* <label htmlFor="mail">Usuario:</label> */}
+                        <Col>
+                            <input className="form-control" 
+                                placeholder="Correo electrónico" 
+                                type="text" id="mail" 
+                                ref={userRef} value={mail} onChange={handleUserInput}
+                                autoComplete="off"
+                                required
+                            />
+                            <br/>
                         </Col>
                         <Col>
-                        <input className="form-control" 
-                            placeholder="Correo electrónico" 
-                            type="text" id="mail" 
-                            ref={userRef} value={mail} onChange={handleUserInput}
-                            autoComplete="off"
-                            required
-                        />
-                        <br/>
+                            <input
+                                className="form-control"
+                                placeholder="Contraseña"
+                                type="password"
+                                id="password"
+                                onChange={handlePwdInput}
+                                value={password}
+                                required
+                            />
                         </Col>
                         <Col>
-                        {/* <label htmlFor="password">Contraseña:</label> */}
+                            {/* Modificación de botón para manejar el submit con enter */}
+                            <Button type="submit" className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button> 
                         </Col>
-                        <Col>
-                        <input
-                            className="form-control"
-                            placeholder="Contraseña"
-                            type="password"
-                            id="password"
-                            onChange={handlePwdInput}
-                            value={password}
-                            required
-                        />
-                        </Col>
-                        <Col>
-                        {/* Modificación de botón para manejar el submit con enter */}
-                        <Button type="submit" className="formSubmitButton" onClick={handleSubmit}>Ingresar</Button> 
-                        </Col>
-                        <br/>
-                        <label htmlFor="registerLbl">¿No tienes una cuenta? </label> 
-                        <br/>
-                        
-                    <Link to="/register">Regístrate</Link>
+                            <br/>
+                            <label htmlFor="registerLbl">¿No tienes una cuenta? </label> 
+                            <br/>
+                            
+                        <Link to="/register">Regístrate</Link>
                     </Form >
-                    <Col>
-                   
-                    </Col>
                 </Row>
-                </Form>
             </Container>
-            </div>
+        </div>
             
     )
 
