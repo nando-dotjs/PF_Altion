@@ -214,7 +214,7 @@ const Register = () => {
 
             <Modal show={!show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="cabezal"><strong>Nuevo Usuario</strong></Modal.Title>
+                    <Modal.Title id="cabezal"><strong>Registro</strong></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <section>
@@ -223,6 +223,7 @@ const Register = () => {
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
+                                        <InputGroup className="mb-3">
                                             <input
                                                 className="form-control"
                                                 placeholder="Nombre"
@@ -237,24 +238,25 @@ const Register = () => {
                                                 onFocus={() => setNameFocus(true)}
                                                 onBlur={() => setNameFocus(false)}
                                             />
+                                        </InputGroup>
+                                        <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
+
+
                                         </div>
-                                        {/* <div class="col-3 col-md-1" id="iconito"> */}
                                         <label htmlFor="name" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                                             <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                                         </label>
-                                        {/* </div> */}
                                     </div>
                                 </div>
-                                <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    2 a 15 caracteres.<br />
-                                    Debe empezar y contener solo letras.<br />
-                                </p>
-                                <br />
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
+                                        <InputGroup className="mb-3">
 
                                             <input
                                                 className="form-control"
@@ -270,6 +272,13 @@ const Register = () => {
                                                 onFocus={() => setSurnameFocus(true)}
                                                 onBlur={() => setSurnameFocus(false)}
                                             />
+                                        </InputGroup>
+
+                                        <p id="uidnote" className={surnameFocus && surname && !validSurname ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
+
                                         </div>
                                         <label htmlFor="surname" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
@@ -278,29 +287,30 @@ const Register = () => {
 
                                     </div>
                                 </div>
-                                <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    2 a 15 caracteres.<br />
-                                    Debe empezar y contener solo letras.<br />
-                                </p>
-                                <br />
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Correo Electrónico"
-                                                type="text"
-                                                id="mail"
-                                                autoComplete="off"
-                                                onChange={(e) => setMail(e.target.value)}
-                                                value={mail}
-                                                required
-                                                aria-invalid={validMail ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setMailFocus(true)}
-                                                onBlur={() => setMailFocus(false)}
-                                            />
+                                        <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Correo Electrónico"
+                                                    type="text"
+                                                    id="mail"
+                                                    autoComplete="off"
+                                                    onChange={(e) => setMail(e.target.value)}
+                                                    value={mail}
+                                                    required
+                                                    aria-invalid={validMail ? "false" : "true"}
+                                                    aria-describedby="uidnote"
+                                                    onFocus={() => setMailFocus(true)}
+                                                    onBlur={() => setMailFocus(false)}
+                                                />
+                                         </InputGroup>
+                                            <p id="uidnote" className={mailFocus && mail && !validMail ? "validation" : "offscreen"}>
+                                                Ingrese un correo electrónico válido.<br />
+                                            </p>
+
                                         </div>
                                         <label htmlFor="mail" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
@@ -309,11 +319,7 @@ const Register = () => {
 
                                     </div>
                                 </div>
-                                <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    Ingrese un correo electrónico válido.<br />
-                                </p>
-                                <br />
+                               
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -337,6 +343,13 @@ const Register = () => {
                                                 
                                                 </InputGroup.Text>
                                             </InputGroup>
+
+                                            <p id="uidnote" className={pwdFocus && password && !validPassword ? "validation" : "offscreen"}>
+                                                8 a 24 caracteres.<br />
+                                                Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
+                                                Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                                            </p>
+
                                         </div>
                                         <label htmlFor="password" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
@@ -345,16 +358,11 @@ const Register = () => {
                                     </div>
                                 </div>
                                 {/* id="pwdnote" */}
-                                <p id="uidnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    8 a 24 caracteres.<br />
-                                    Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
-                                    Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                                </p>
-                                
+                                                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
+                                        <InputGroup className="mb-3">
                                             <input
                                                 className="form-control"
                                                 placeholder="Confirmar contraseña"
@@ -368,6 +376,12 @@ const Register = () => {
                                                 onFocus={() => setMatchFocus(true)}
                                                 onBlur={() => setMatchFocus(false)}
                                             />
+                                        </InputGroup>
+
+                                        <p id="confirmnote" className={matchFocus && matchPwd && !validMatch ? "validation" : "offscreen"}>
+                                            La contraseña debe coincidir con el primer campo
+                                        </p>
+
                                         </div>
                                         <label htmlFor="confirm_pwd" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
@@ -375,12 +389,8 @@ const Register = () => {
                                         </label>
                                     </div>
                                 </div>
-                                <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    La contraseña debe coincidir con el primer campo
-                                </p>
+                                
 
-                                <br />
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
@@ -400,28 +410,42 @@ const Register = () => {
                                     </div>
                                 </div>
                                 <br />
-                                <div class="form-check">
-                               
-                                      
-                                    <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
-                                    <figcaption class="blockquote-footer">
-                                            <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
-                                            &nbsp;
-                                            <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
-                                    </figcaption> 
-                                       
-                                  
+
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-10 col-md-8" id="iconito2">  
+                                        <div class="form-check">
+                                            <figcaption class="blockquote-footer">
+                                            <input class="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
+<cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
+                                                <br></br>
+                                                <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
+
+                                            </figcaption> 
+
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-                              
-                                <Col>
+                                
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-10 col-md-8" id="iconito2">  
+                                        <Col>
                                     <br />
-                                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate || !validPassword || !validMatch ? true : false}
-                                    // disabled={!validPassword || !validMatch ? true : false}
-                                    >Registrar
-                                    </Button>
-                                    &nbsp;
-                                    <Button className="btn btn-secondary" href="/">Volver</Button>
-                                </Col>
+                                        <Button className="btn btn-secondary" href="/">Volver</Button>
+
+                                        &nbsp;
+                                        <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate || !validPassword || !validMatch ? true : false}
+                                        // disabled={!validPassword || !validMatch ? true : false}
+                                        >Registrar
+                                        </Button>
+                                        
+                                        </Col>
+                                        </div>
+                                    </div>
+                                </div>
+                                
 
                             </Form>
                             <br />

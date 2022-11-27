@@ -95,3 +95,27 @@
 .colored-toast .swal2-html-container {
   color: white;
 }
+
+.validation {
+  background: #2E6DAB;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.validation {
+  position: relative;
+  list-style: none;
+  color: #fff;
+  font-size: 0.90em;
+  transition: 0.5s;
+}
+
+.blockquote-footer {
+  text-align: center;
+}
+
+.col {
+  float: right;
+}
+
+
