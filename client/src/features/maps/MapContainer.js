@@ -6,8 +6,8 @@ import Swal from "sweetalert2"
 let isDraggable = true;
 
 const containerStyle = {
-  width: '90%',
-  height: '30em',
+  width: '100%',
+  height: '40em',
 };
 
 let center = {
