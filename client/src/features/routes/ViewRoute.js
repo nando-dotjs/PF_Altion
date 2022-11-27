@@ -1,25 +1,21 @@
-import { useState, useEffect } from "react"
-import { useUpdateRouteMutation, selectRouteById } from "./routesApiSlice"
-import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from "react-router-dom"
-import  useAuth  from '../../hooks/useAuth'
-import Select from "react-select";
-import {Container, Form, Modal, Row, Col, Card, Table } from "react-bootstrap"
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from  "react-datepicker";
-import es from 'date-fns/locale/es';
-import useTitle from "../../hooks/useTitle"
-import { useGetZonesQuery } from "../zones/zonesApiSlice"
-import { useGetDriversQuery, selectDriverById } from "../drivers/driversApiSlice"
-import DragList from "./DragList";
-import {useGetPointsQuery, selectPointById} from '../points/pointsApiSlice'
-import RouteMapContainer from '../maps/RouteMapContainer'
-import Swal from 'sweetalert2'
-import {useGetUsersQuery} from '../users/usersApiSlice'
+
+import {Card, Col, Container, Modal, Row, Table} from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+
 import Button from 'react-bootstrap/Button';
+import { CSVLink } from "react-csv";
 import PointView from './PointView'
-import { CSVLink, CSVDownload } from "react-csv";
+import RouteMapContainer from '../maps/RouteMapContainer'
+import es from 'date-fns/locale/es';
+import { registerLocale } from  "react-datepicker";
+import { selectDriverById } from "../drivers/driversApiSlice"
+import { selectRouteById } from "./routesApiSlice"
+import { useGetPointsQuery } from '../points/pointsApiSlice'
+import { useGetZonesQuery } from "../zones/zonesApiSlice"
+import { useSelector } from 'react-redux'
+import useTitle from "../../hooks/useTitle"
 
 const ViewRoute = () => {
 
@@ -38,8 +34,6 @@ const ViewRoute = () => {
     const route = useSelector(state => selectRouteById(state, id))
     const routeDriver = useSelector(state => selectDriverById(state, route.driver))
 
-    const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
-
     const navigate = useNavigate()
 
     useTitle('Editar Recorrido')
@@ -47,10 +41,7 @@ const ViewRoute = () => {
 
     const {
         data: zones,
-        isLoading: zonesisLoading,
         isSuccess: zonesisSuccess,
-        isError: zonesisError,
-        error: zoneserror
     } = useGetZonesQuery('zonesList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
@@ -59,10 +50,7 @@ const ViewRoute = () => {
 
     const {
         data: points,
-        isLoading: pointsisLoading,
         isSuccess: pointsisSuccess,
-        isError: pointsisError,
-        error: pointsserror
     } = useGetPointsQuery('pointsList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
@@ -87,11 +75,8 @@ const ViewRoute = () => {
         if(zonesisSuccess){
             setSelectedZones(getZones())
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [zonesisSuccess])
-
-    // useEffect(() => {
-
-    // }, [input])
 
     const getPoints = () => {
         let routePoints = []
@@ -113,25 +98,19 @@ const ViewRoute = () => {
         if(pointsisSuccess){
             setSelectedPoints(getPoints())
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pointsisSuccess])
 
-    const [pointsList, setPointsList] = useState(route.points)
-    const [startDate, setStartDate] = useState(new Date(Date.parse(route.date)));
-    const [time, setTime] = useState({"name":route.time});
-    const [driver, setDriver] = useState(routeDriver);
-    const [chargedList, setChargedList] = useState('');
+    const [pointsList] = useState(route.points)
+    const [startDate] = useState(new Date(Date.parse(route.date)));
+    const [time] = useState({"name":route.time});
     const [selectedZones, setSelectedZones] = useState(getZones());
     const [selectedPoints, setSelectedPoints] = useState([]);
     const [routeMap, setRouteMap] = useState('');
-    const [activeUser, setActiveUser] = useState('');
-    const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
     const [zonesText, setZonesText] = useState('');
     const [selectedPoint, setSelectedPoint] = useState('')
 
     const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    const onDriverChanged = e => setDriver(e)
-    const onZoneChanged = e => setSelectedZones(e)
-    const onTimeChanged = e => setTime(e)
     
     const csvPoints = () => {
         let pointCSV = []
@@ -150,23 +129,10 @@ const ViewRoute = () => {
         }
         return pointCSV
     }
-
-    const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-right',
-    iconColor: 'white',
-    customClass: {
-      popup: 'colored-toast'
-    },
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true
-    })
     
     //Texto Zonas
     useEffect(() => {
         let auxText = ''
-        // selectedZones.length === 1 ? auxText = 'Zona del Recorrido: ' : auxText = 'Zonas del Recorrido: '
         for (var z in selectedZones){
             if(+z === (selectedZones.length-1)){
                 auxText = auxText.concat(' ', selectedZones[z].name)
@@ -180,42 +146,11 @@ const ViewRoute = () => {
     }, [selectedZones])
     
     //Carga de Mapa
-
     useEffect( () => {
         if(selectedPoints.length > 0){
             setRouteMap(<RouteMapContainer points={selectedPoints}/>)
         }else{
             setRouteMap('')
-        }
-	}, [selectedPoints]); 
-
-    // const prepareMap = (e) => {
-    //     setRouteMap(
-    //         <RouteMapContainer points={selectedPoints}/>
-    //     )
-    // }
-
-    const {
-        data: users,
-        isLoading: usersisLoading,
-        isSuccess: usersisSuccess,
-        isError: usersisError,
-        error: userserror
-    } = useGetUsersQuery('usersList', {
-        pollingInterval: 60000,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true
-    })
-
-    useEffect( () => {
-        if(users){
-            for(var u in users.entities) {
-                if (users.entities[u].mail === mail) {
-                    setActiveUser(users.entities[u])
-                }
-            }
-        }else{
-            setActiveUser('')
         }
 	}, [selectedPoints]); 
 
@@ -285,43 +220,36 @@ const ViewRoute = () => {
                                                 </Card.Body>
                                             </Card>
                                             <br/>
-                                                <Card>
-                                                    <Card.Header>Chofer del Recorrido</Card.Header>
-                                                    <Card.Body>
-                                                        <Card.Text>
-                                                            {routeDriver.name} {routeDriver.surname}
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                </Card>
-
+                                            <Card>
+                                                <Card.Header>Chofer del Recorrido</Card.Header>
+                                                <Card.Body>
+                                                    <Card.Text>
+                                                        {routeDriver.name} {routeDriver.surname}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
                                         </div>
-                                        <div className="container-fluid">         
-
+                                        <div className="container-fluid">       
+                                            <br/>  
+                                            <Card>
+                                                <Card.Header>Zonas del Recorrido</Card.Header>
+                                                <Card.Body>
+                                                    <Card.Text>
+                                                        {zonesText}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
                                             <br/>
-                                                <Card>
-                                                    <Card.Header>Zonas del Recorrido</Card.Header>
-                                                    <Card.Body>
-                                                        <Card.Text>
-                                                            {zonesText}
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                </Card>
-                                            <br/>
-                                            
-                                                <Card>
-                                                    <Card.Header>Recorrido realizado</Card.Header>
-                                                    <Card.Body>
-                                                        <Card.Text>
-                                                            {routeMap}
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                </Card>
-                                            
-                                            
-                                            
+                                            <Card>
+                                                <Card.Header>Recorrido realizado</Card.Header>
+                                                <Card.Body>
+                                                    <Card.Text>
+                                                        {routeMap}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
                                         </div>
                                         <br/>
-                                    
                                     </form>
                                 </Col>
                                 <Col>
@@ -341,8 +269,6 @@ const ViewRoute = () => {
                                     </Table>
                                 </Col>
                             </Row>
-
-
                             <Modal.Footer>
                                 <CSVLink 
                                     headers={headers}

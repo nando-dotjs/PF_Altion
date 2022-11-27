@@ -1,16 +1,15 @@
-import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 import { faEye } from "@fortawesome/free-solid-svg-icons"
-import { Button } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { selectPointById } from '../points/pointsApiSlice'
+import { useSelector } from 'react-redux'
 
 const PointView = (props) => {
 
     const id = props.pointId
 
     const [pointState, setPointState] = React.useState(props.pointState)
-    const [amountCollected, setAmountCollected] = React.useState(props.amountCollected)
+    const [amountCollected] = React.useState(props.amountCollected)
 
     const point = useSelector(state => selectPointById(state, id))
 

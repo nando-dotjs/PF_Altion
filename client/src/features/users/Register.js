@@ -1,21 +1,15 @@
-import { useRef, useState, useEffect } from "react";
-import { useCreateNewUserMutation } from "./usersApiSlice"
-import { useNavigate } from "react-router-dom"
-import { faCheck, faTimes, faInfoCircle, faInfo, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import './register.css'
+
+import { Button, Col, Form, InputGroup, Modal } from 'react-bootstrap';
+import { faCheck, faEye, faEyeSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef, useState } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ROLES_PUBLICOS } from "../../config/roles"
-import './register.css'
-import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-
 import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
+import { useCreateNewUserMutation } from "./usersApiSlice"
+import { useNavigate } from "react-router-dom"
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\ ]{2,15}$/;
 
@@ -25,11 +19,10 @@ const EMAIL_REGEX = /[^\s*].*[^\s*]\@[a-zA-Z]{2,}\.[a-zA-Z]{2,}/
 
 const Register = () => {
 
-    const [createNewUser, { isLoading, isSuccess, isError, error }] = useCreateNewUserMutation()
+    const [createNewUser, { isLoading, isSuccess }] = useCreateNewUserMutation()
 
     const navigate = useNavigate()
 
-    const userRef = useRef();
     // eslint-disable-next-line
     const errRef = useRef();
 
@@ -37,19 +30,13 @@ const Register = () => {
     const [validName, setValidName] = useState(false)
     const [nameFocus, setNameFocus] = useState(false);
 
-
     const [surname, setSurname] = useState('')
     const [validSurname, setValidSurname] = useState(false)
     const [surnameFocus, setSurnameFocus] = useState(false);
 
-
     const [mail, setMail] = useState('')
     const [validMail, setValidMail] = useState(false)
     const [mailFocus, setMailFocus] = useState(false);
-
-    // const [username, setUsername] = useState('');
-    // const [validUsername, setValidUsername] = useState(false);
-    // const [userFocus, setUserFocus] = useState(false);
 
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
@@ -64,14 +51,12 @@ const Register = () => {
     const onUserValidate = e => setUserValidate(!userValidate)
 
     const [role, setRole] = useState('CEV')
+
     // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
+
     // eslint-disable-next-line
     const [success, setSuccess] = useState(false);
-
-    // useEffect(() => {
-    //     userRef.current.focus();
-    // }, [])
 
     useEffect(() => {
         setValidName(NAME_SURNAME_REGEX.test(name));
@@ -85,10 +70,6 @@ const Register = () => {
         setValidMail(EMAIL_REGEX.test(mail))
     }, [mail])
 
-    // useEffect(() => {
-    //     setValidUsername(USER_REGEX.test(username));
-    // }, [username])
-
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
         setValidMatch(password === matchPwd);
@@ -98,13 +79,10 @@ const Register = () => {
         setErrMsg('');
     }, [name, surname, mail, password, matchPwd])
 
-
-
     useEffect(() => {
         if (isSuccess) {
             setName('')
             setSurname('')
-            // setUsername('')
             setPassword('')
             setMatchPwd('')
             setMail('')
@@ -126,7 +104,7 @@ const Register = () => {
         e.preventDefault()
         const canSave = [validPassword, validMail, name, surname, role].every(Boolean) && !isLoading
 
-        if (name == "") {
+        if (name === "") {
             Toast.fire({
                 icon: 'error',
                 position: "top",
@@ -134,19 +112,19 @@ const Register = () => {
             })
 
 
-        } else if (surname == "") {
+        } else if (surname === "") {
             Toast.fire({
                 icon: 'error',
                 position: "top",
                 title: 'Debe completar el apellido'
             })
-        } else if (mail == "") {
+        } else if (mail === "") {
             Toast.fire({
                 icon: 'error',
                 position: "top",
                 title: 'Debe completar el correo electrónico'
             })
-        } else if (password == "") {  //COMPRUEBA CAMPOS VACIOS
+        } else if (password === "") { 
 
             Toast.fire({
                 icon: 'error',
@@ -154,8 +132,6 @@ const Register = () => {
                 title: 'Debe completar la contraseña'
             })
 
-            // alert("Los campos no pueden quedar vacios");
-            // return true;
         } else if (canSave) {
             await createNewUser({ name, surname, mail, password, role })
                 .then((response) => {
@@ -175,14 +151,10 @@ const Register = () => {
                             showConfirmButton: false,
                             timer: 2500
                         })
-
                     }
                 })
         }
-
     }
-
-
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -202,16 +174,8 @@ const Register = () => {
         timerProgressBar: true
     })
 
-    function validarCampos() {
-        if ((name == "") || (surname == "") || (mail == "") || password == "") {  //COMPRUEBA CAMPOS VACIOS
-            alert("Los campos no pueden quedar vacios");
-            // return true;
-        }
-    }
-
     return (
         <>
-
             <Modal show={!show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title id="cabezal"><strong>Registro</strong></Modal.Title>
@@ -398,7 +362,6 @@ const Register = () => {
                                                 Voy a registrar:</label>
 
                                             <Form.Select
-                                                // id="role"
                                                 name="role"
                                                 className={`formSelect`}
                                                 value={role}
@@ -414,60 +377,41 @@ const Register = () => {
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-10 col-md-8" id="iconito2">  
-                                        <div className="form-check">
-                                            <figcaption className="blockquote-footer">
-                                            <input className="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
-<cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
-                                                <br></br>
-                                                <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
-
-                                            </figcaption> 
-
-                                        </div>
+                                            <div className="form-check">
+                                                <figcaption className="blockquote-footer">
+                                                    <input className="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
+                                                    <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
+                                                    <br></br>
+                                                    <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
+                                                </figcaption> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+        
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-10 col-md-8" id="iconito2">  
-                                        <Col className="colRegistro">
-                                    <br />
-                                        <Button className="btn btn-secondary" href="/">Volver</Button>
-
-                                        &nbsp;
-                                        <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate || !validPassword || !validMatch ? true : false}
-                                        // disabled={!validPassword || !validMatch ? true : false}
-                                        >Registrar
-                                        </Button>
-                                        
-                                        </Col>
+                                            <Col className="colRegistro">
+                                                <br />
+                                                <Button className="btn btn-secondary" href="/">Volver</Button>
+                                                &nbsp;
+                                                <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!userValidate || !validPassword || !validMatch ? true : false}>
+                                                    Registrar
+                                                </Button>
+                                            </Col>
                                         </div>
                                     </div>
                                 </div>
-                                
-
                             </Form>
-                            <br />
                         </main>
                     </section>
-                    {/* </Container>
-            </div> */}
                 </Modal.Body>
                 <Modal.Footer>
                     Ya estás registrado?
-
                     <span className="line">
-                        {/*put router link here*/}
                         <a href="/">Ingresar</a>
                     </span>
-
-                    {/* <Button variant="secondary" onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                    
-                    <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validPassword || !validMatch ? true : false}>Registrar</Button> */}
-
                 </Modal.Footer>
             </Modal>
         </>
