@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from "react-router-dom"
 import  useAuth  from '../../hooks/useAuth'
 import Select from "react-select";
-import {Container, Form, Modal, Row, Col } from "react-bootstrap"
+import {Container, Form, Modal, Row, Col, Card, Table } from "react-bootstrap"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from  "react-datepicker";
@@ -18,9 +18,20 @@ import RouteMapContainer from '../maps/RouteMapContainer'
 import Swal from 'sweetalert2'
 import {useGetUsersQuery} from '../users/usersApiSlice'
 import Button from 'react-bootstrap/Button';
-
+import PointView from './PointView'
+import { CSVLink, CSVDownload } from "react-csv";
 
 const ViewRoute = () => {
+
+    let headers = [
+        { label: "Nombre",      key: "point.name" },
+        { label: "Estado",      key: "collected" },
+        { label: "Hora visita", key:"timeCollected" },
+        { label: "Bolsones",    key: "amountCollected" },
+        { label: "Detalle",     key: "details"}
+      ];
+
+
 
     const { id } = useParams()
 
@@ -28,13 +39,6 @@ const ViewRoute = () => {
     const routeDriver = useSelector(state => selectDriverById(state, route.driver))
 
     const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
-
-    const [updateRoute, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateRouteMutation()
 
     const navigate = useNavigate()
 
@@ -54,7 +58,7 @@ const ViewRoute = () => {
     })
 
     const {
-        data: pointsList,
+        data: points,
         isLoading: pointsisLoading,
         isSuccess: pointsisSuccess,
         isError: pointsisError,
@@ -93,9 +97,9 @@ const ViewRoute = () => {
         let routePoints = []
         if(pointsisSuccess){
             for(var j in route.points) {
-                for(var k in pointsList.ids){
-                    if(pointsList.entities[pointsList.ids[k]]._id === route.points[j].point){
-                        routePoints.push(pointsList.entities[pointsList.ids[k]])
+                for(var k in points.ids){
+                    if(points.entities[points.ids[k]]._id === route.points[j].point){
+                        routePoints.push(points.entities[points.ids[k]])
                     }
                 }
             }
@@ -103,12 +107,15 @@ const ViewRoute = () => {
         return routePoints
     }
 
+    
+
     useEffect(() => {
         if(pointsisSuccess){
             setSelectedPoints(getPoints())
         }
     }, [pointsisSuccess])
 
+    const [pointsList, setPointsList] = useState(route.points)
     const [startDate, setStartDate] = useState(new Date(Date.parse(route.date)));
     const [time, setTime] = useState({"name":route.time});
     const [driver, setDriver] = useState(routeDriver);
@@ -119,15 +126,31 @@ const ViewRoute = () => {
     const [activeUser, setActiveUser] = useState('');
     const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
     const [zonesText, setZonesText] = useState('');
+    const [selectedPoint, setSelectedPoint] = useState('')
 
     const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    console.log(startDate.getTime())
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
     const onTimeChanged = e => setTime(e)
-
-    const errClass = isError ? "errmsg" : "offscreen"
     
+    const csvPoints = () => {
+        let pointCSV = []
+        for(var x in route.points){
+            for(var y in selectedPoints){
+                if(route.points[x].point===selectedPoints[y]._id){
+                    pointCSV.push({
+                        point:selectedPoints[y],
+                        details:route.points[x].details,
+                        collected:route.points[x].collected,
+                        amountCollected:route.points[x].amountCollected,
+                        timeCollected:route.points[x].timeCollected,
+                    })
+                }
+            }
+        }
+        return pointCSV
+    }
+
     const Toast = Swal.mixin({
     toast: true,
     position: 'top-right',
@@ -139,78 +162,22 @@ const ViewRoute = () => {
     timer: 1500,
     timerProgressBar: true
     })
-
     
-
-    //Filtro de Zonas
-    let filteredZones = []
-    let zonesList = []
-    if (zonesisSuccess) {
-        filteredZones = zones.ids.filter(e => zones.entities[e].active === true)
-
-        for(var d in filteredZones){
-            zonesList.push(zones.entities[filteredZones[d]]);
-        }
-    }
-
-    //Filtro de Choferes
-    const {
-        data: driversList,
-        isLoading: driversisLoading,
-        isSuccess: driversisSuccess,
-        isError: driversisError,
-        error: driverserror
-    } = useGetDriversQuery('driversList', {
-        pollingInterval: 60000,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true
-    })
-
-    let filteredDrivers = []
-    let drivers = []
-    if (driversisSuccess) {
-        filteredDrivers = driversList.ids.filter(e => driversList.entities[e].active === true)
-
-        for(var d in filteredDrivers){
-            drivers.push(driversList.entities[filteredDrivers[d]]);
-        }
-    }
-    
-    //Filtro de Puntos
-    const [filteredPoints, setFilteredPoints] = useState(getPoints());
-    let pointsJSON = []
-    let points = []    
-    if (pointsisSuccess) {
-        points = pointsList.ids.filter(e => pointsList.entities[e].completed === true)
-
-        for(var o in points){
-            pointsJSON.push(pointsList.entities[points[o]]);
-        }
-    }
-
-    //Filtro de Puntos
-    const filterPoints = (e) => {
-
-        let AuxFilteredPoints = []
-        for(var z in selectedZones){
-            for(var p in pointsJSON){
-               if(pointsJSON[p].zone === selectedZones[z].name){
-                    AuxFilteredPoints.push(pointsJSON[p])
-               }
+    //Texto Zonas
+    useEffect(() => {
+        let auxText = ''
+        // selectedZones.length === 1 ? auxText = 'Zona del Recorrido: ' : auxText = 'Zonas del Recorrido: '
+        for (var z in selectedZones){
+            if(+z === (selectedZones.length-1)){
+                auxText = auxText.concat(' ', selectedZones[z].name)
+            }else{
+                auxText = auxText.concat(' ', selectedZones[z].name, ',')
             }
+            
         }
-        setFilteredPoints(AuxFilteredPoints)
 
-    }
-
-	useEffect( () => {
-        if(filteredPoints.length > 0){
-            setChargedList(<DragList points={filteredPoints} setSelectedPoints={setSelectedPoints}/>);
-        }else{
-            setChargedList('')
-        }
-	}, [filteredPoints]); 
-
+        setZonesText(auxText)
+    }, [selectedZones])
     
     //Carga de Mapa
 
@@ -252,50 +219,44 @@ const ViewRoute = () => {
         }
 	}, [selectedPoints]); 
 
-    const onSaveRouteClicked = async (e) => {
-        e.preventDefault()
-
-
-
-        if((isAdmin || isCEV || isEmpresa || isRecolector)) {
-            let pointlist = []
-            
-            for(var k in selectedPoints){
-                pointlist.push({"point":selectedPoints[k]});
-            } 
-
-            let selectedTime = time.name
-
-            await updateRoute({id, "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver })
-                .then((response) => {
-                    console.log(response)
-                    if(response.error){
-                        Toast.fire({
-                            icon: 'error',
-                            title: response.error.data.message
-                          })
-                    }else{
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.data
-                          })
-                          navigate('/dash/routes');
-                    }
-                })
-        }
-       
-    }
-
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
         navigate('/dash/routes');
     };
 
+    const pointState = p => {
+        for (let n in pointsList){
+            if(pointsList[n].point === p){
+                return pointsList[n].collected
+            }
+        }
+    } 
+
+    const pointDetails = p => {
+        for (let n in pointsList){
+            if(pointsList[n].point === p){
+                return pointsList[n]
+            }
+        }
+    } 
+
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
+
+    const handlePoints = (p) => {
+        if(p !== ''){
+            setSelectedPoint(p)
+            handleShowModal()
+        }
+    }
+
+    const tableContent = pointsList?.length && pointsList.map(p => <PointView key={p.point} pointId={p.point} pointState={pointState(p.point)} amountCollected={p.amountCollected} handlePoint={e => handlePoints(e)}/>)  
 
     const content = (
         <>
-            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false} size="lg">
+            <Modal show={!show} onHide={handleClose} backdrop="static" keyboard={false} size="xl">
                 <Modal.Header closeButton>
                     <Modal.Title id="cabezal"><strong>Datos del Recorrido</strong></Modal.Title>
                 </Modal.Header>
@@ -306,54 +267,57 @@ const ViewRoute = () => {
                                 <Col>
                                     <form className="form">
                                         <div className="container-fluid">
-                                            <div className="row">
-                                                <Form.Label>Fecha Recorrido del {startDate.getDate()} de {months[startDate.getMonth()]} de {startDate.getFullYear()} </Form.Label>
-                                                
-                                                {/* <DatePicker className="form-control" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" locale="es"/> */}
-                                            </div>
+                                            <Card>
+                                                <Card.Header>Fecha del Recorrido</Card.Header>
+                                                <Card.Body>
+                                                    <Card.Text>
+                                                        {startDate.getDate()} de {months[startDate.getMonth()]} de {startDate.getFullYear()}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
                                             <br/>
-                                            <div className="row">
-                                                <Form.Label>Hora del Recorrido: {time.name}</Form.Label>
-                                            </div>
+                                            <Card>
+                                                <Card.Header>Hora del Recorrido</Card.Header>
+                                                <Card.Body>
+                                                    <Card.Text>
+                                                        {time.name}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
                                             <br/>
-                                            <div className="row">
-                                                <Form.Label>Chofer del Recorrido: {routeDriver.name} {routeDriver.surname}</Form.Label>
-                                            </div>
+                                                <Card>
+                                                    <Card.Header>Chofer del Recorrido</Card.Header>
+                                                    <Card.Body>
+                                                        <Card.Text>
+                                                            {routeDriver.name} {routeDriver.surname}
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                </Card>
+
                                         </div>
                                         <div className="container-fluid">         
 
                                             <br/>
-                                            <div className="row">
-                                                <Form.Label>Zona/s del Recorrido</Form.Label>
-                                            </div>
-                                            <div className="row">
-                                                <Select
-                                                    id="zone"
-                                                    name="zone"
-                                                    disabled
-                                                    options={zonesList}
-                                                    className="formSelect"
-                                                    value={selectedZones}
-                                                    placeholder={'Seleccione zona...'}
-                                                    onChange={onZoneChanged}
-                                                    getOptionLabel={(option) => option.name + ' - ' + option.details}
-                                                    getOptionValue={(option) => option._id}
-                                                    isMulti
-                                                >
-                                                </Select>
-
-                                            </div>                      
+                                                <Card>
+                                                    <Card.Header>Zonas del Recorrido</Card.Header>
+                                                    <Card.Body>
+                                                        <Card.Text>
+                                                            {zonesText}
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                </Card>
                                             <br/>
-                                            <button type="button" className="btn btn-primary" onClick={e => filterPoints(e)}>
-                                                    Seleccionar Zonas
-                                            </button>
-                                            <br/>
-                                            <div className="scrollableList">
-                                                {chargedList}
-                                            </div>
                                             
-
-                                            {routeMap}
+                                                <Card>
+                                                    <Card.Header>Recorrido realizado</Card.Header>
+                                                    <Card.Body>
+                                                        <Card.Text>
+                                                            {routeMap}
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                </Card>
+                                            
+                                            
                                             
                                         </div>
                                         <br/>
@@ -361,23 +325,93 @@ const ViewRoute = () => {
                                     </form>
                                 </Col>
                                 <Col>
-                                .col-xs-6 .col-md-4
+                                    <h2>Puntos visitados</h2>
+                                    <Table striped bordered hover size="sm" className="table tableRoutes">
+                                        <thead className="tableThead">
+                                            <tr> 
+                                                <th>Nombre</th> 
+                                                <th>Estado</th>                                   
+                                                <th>Bolsones</th>
+                                                <th>Detalle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {tableContent}
+                                        </tbody>
+                                    </Table>
                                 </Col>
                             </Row>
 
 
-                                <Modal.Footer>
+                            <Modal.Footer>
+                                <CSVLink 
+                                    headers={headers}
+                                    data={csvPoints()} 
+                                    separator={";"} 
+                                    filename={`${startDate.getDate()}-${startDate.getMonth()+1}-${startDate.getFullYear()}_${time.name}.csv`}
+                                    className='btn btn-success'
+                                    target='_blank'
+                                    >
+                                        Descargar Detalle
+                                </CSVLink>   
                                 <Button variant="secondary" onClick={handleClose}>
-                                        Cancelar
-                                    </Button>
-                                <Button variant="primary" onClick={onSaveRouteClicked}>
-                                        Confirmar
-                                    </Button>
-                                    </Modal.Footer>
+                                        Volver
+                                </Button>
+                            </Modal.Footer>
                         </Container>
                     </Container>
                 </Modal.Body>
             </Modal>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedPoint.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Container fluid>
+                        <Card>
+                            <Card.Header>Estado</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    {pointState(selectedPoint._id)}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <br/>
+                        <Card>
+                            <Card.Header>Hora de recolección</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    {pointDetails(selectedPoint._id)?.timeCollected}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <br/>
+                        
+                        <Card>
+                            <Card.Header>Cantidad de Bolsones Recolectados</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    {pointDetails(selectedPoint._id)?.amountCollected}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <br/>
+                        <Card>
+                            <Card.Header>Detalle</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    {pointDetails(selectedPoint._id)?.details}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>      
+                    </Container>             
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>    
         </>
     )
 

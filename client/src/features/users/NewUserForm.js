@@ -236,20 +236,26 @@ const Toast = Swal.mixin({
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Nombre"
-                                                type="text"
-                                                id="name"
-                                                autoComplete="off"
-                                                onChange={(e) => setName(e.target.value)}
-                                                value={name}
-                                                required
-                                                aria-invalid={validName ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setNameFocus(true)}
-                                                onBlur={() => setNameFocus(false)}
-                                            />
+                                            <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Nombre"
+                                                    type="text"
+                                                    id="name"
+                                                    autoComplete="off"
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    value={name}
+                                                    required
+                                                    aria-invalid={validName ? "false" : "true"}
+                                                    aria-describedby="uidnote"
+                                                    onFocus={() => setNameFocus(true)}
+                                                    onBlur={() => setNameFocus(false)}
+                                                />
+                                            </InputGroup>
+                                            <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                                2 a 15 caracteres.<br />
+                                                Debe empezar y contener solo letras.<br />
+                                            </p>
                                         </div>
                                         {/* <div class="col-3 col-md-1" id="iconito"> */}
                                         <label htmlFor="name" id="iconito">
@@ -259,30 +265,31 @@ const Toast = Swal.mixin({
                                         {/* </div> */}
                                     </div>
                                 </div>
-                                <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    2 a 15 caracteres.<br />
-                                    Debe empezar y contener solo letras.<br />
-                                </p>
-                                <br />
+                                
+                               
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-
-                                            <input
-                                                className="form-control"
-                                                placeholder="Apellido"
-                                                type="text"
-                                                id="surname"
-                                                autoComplete="off"
-                                                onChange={(e) => setSurname(e.target.value)}
-                                                value={surname}
-                                                required
-                                                aria-invalid={validSurname ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setSurnameFocus(true)}
-                                                onBlur={() => setSurnameFocus(false)}
-                                            />
+                                            <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Apellido"
+                                                    type="text"
+                                                    id="surname"
+                                                    autoComplete="off"
+                                                    onChange={(e) => setSurname(e.target.value)}
+                                                    value={surname}
+                                                    required
+                                                    aria-invalid={validSurname ? "false" : "true"}
+                                                    aria-describedby="uidnote"
+                                                    onFocus={() => setSurnameFocus(true)}
+                                                    onBlur={() => setSurnameFocus(false)}
+                                                />
+                                            </InputGroup>
+                                            <p id="uidnote" className={surnameFocus && surname && !validSurname ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                            </p>
                                         </div>
                                         <label htmlFor="surname" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validSurname ? "valid" : "hide"} />
@@ -291,29 +298,30 @@ const Toast = Swal.mixin({
 
                                     </div>
                                 </div>
-                                <p id="uidnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    2 a 15 caracteres.<br />
-                                    Debe empezar y contener solo letras.<br />
-                                </p>
-                                <br />
+                                
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Correo Electrónico"
-                                                type="text"
-                                                id="mail"
-                                                autoComplete="off"
-                                                onChange={(e) => setMail(e.target.value)}
-                                                value={mail}
-                                                required
-                                                aria-invalid={validMail ? "false" : "true"}
-                                                aria-describedby="uidnote"
-                                                onFocus={() => setMailFocus(true)}
-                                                onBlur={() => setMailFocus(false)}
-                                            />
+                                            <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Correo Electrónico"
+                                                    type="text"
+                                                    id="mail"
+                                                    autoComplete="off"
+                                                    onChange={(e) => setMail(e.target.value)}
+                                                    value={mail}
+                                                    required
+                                                    aria-invalid={validMail ? "false" : "true"}
+                                                    aria-describedby="uidnote"
+                                                    onFocus={() => setMailFocus(true)}
+                                                    onBlur={() => setMailFocus(false)}
+                                                />
+                                            </InputGroup>
+                                            <p id="uidnote" className={mailFocus && mail && !validMail ? "validation" : "offscreen"}>
+                                                Ingrese un correo electrónico válido.<br />
+                                            </p>
                                         </div>
                                         <label htmlFor="mail" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validMail ? "valid" : "hide"} />
@@ -322,11 +330,8 @@ const Toast = Swal.mixin({
 
                                     </div>
                                 </div>
-                                <p id="uidnote" className={mailFocus && mail && !validMail ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    Ingrese un correo electrónico válido.<br />
-                                </p>
-                                <br />
+                               
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                             <div class="col-10 col-md-8" id="iconito2">
@@ -350,6 +355,11 @@ const Toast = Swal.mixin({
                                                     
                                                     </InputGroup.Text>
                                                 </InputGroup>
+                                                <p id="pwdnote" className={pwdFocus && !validPassword ? "validation" : "offscreen"}>
+                                                    8 a 24 caracteres.<br />
+                                                    Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
+                                                    Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                                                </p>
                                             </div>
                                         <label htmlFor="password" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} id="pass" className={validPassword ? "valid" : "hide"} />
@@ -357,29 +367,29 @@ const Toast = Swal.mixin({
                                         </label>
                                     </div>
                                 </div>
-                                <p id="pwdnote" className={pwdFocus && !validPassword ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    8 a 24 caracteres.<br />
-                                    Debe incluir mayúscula, minúscula, un número y un caracter especial.<br />
-                                    Caracteres especiales permitidos: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                                </p>
-                                <br />
+                                
+                                
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 col-md-8" id="iconito2">
-                                            <input
-                                                className="form-control"
-                                                placeholder="Confirmar contraseña"
-                                                type="password"
-                                                id="confirm_pwd"
-                                                onChange={(e) => setMatchPwd(e.target.value)}
-                                                value={matchPwd}
-                                                required
-                                                aria-invalid={validMatch ? "false" : "true"}
-                                                aria-describedby="confirmnote"
-                                                onFocus={() => setMatchFocus(true)}
-                                                onBlur={() => setMatchFocus(false)}
-                                            />
+                                            <InputGroup className="mb-3">
+                                                <input
+                                                    className="form-control"
+                                                    placeholder="Confirmar contraseña"
+                                                    type="password"
+                                                    id="confirm_pwd"
+                                                    onChange={(e) => setMatchPwd(e.target.value)}
+                                                    value={matchPwd}
+                                                    required
+                                                    aria-invalid={validMatch ? "false" : "true"}
+                                                    aria-describedby="confirmnote"
+                                                    onFocus={() => setMatchFocus(true)}
+                                                    onBlur={() => setMatchFocus(false)}
+                                                />
+                                            </InputGroup>
+                                            <p id="confirmnote" className={matchFocus && !validMatch ? "validation" : "offscreen"}>
+                                                La contraseña debe coincidir con el primer campo
+                                            </p>
                                         </div>
                                         <label htmlFor="confirm_pwd" id="iconito">
                                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
@@ -387,17 +397,17 @@ const Toast = Swal.mixin({
                                         </label>
                                     </div>
                                 </div>
-                                <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    La contraseña debe coincidir con el primer campo
-                                </p>
-
-                                <br />
-                                <label className="form__label" htmlFor="roles">
-                                    Voy a registrar:</label>
-                                {options}
+                               
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-10 col-md-8" id="iconito2">
+                                            <label className="form__label" htmlFor="roles">
+                                                Voy a registrar:</label>
+                                            {options}
+                                        </div>
+                                    </div>
+                                </div>
                                 
-
                                 {/* <Col>
                                     <br />
                                     <Button className="formSubmitButton" onClick={onSaveUserClicked} disabled={!validUsername || !validPassword || !validMatch ? true : false}>Registrar</Button>
