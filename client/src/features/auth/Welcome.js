@@ -50,9 +50,9 @@ const Welcome = () => {
                 <h2>Con nuestra aplicación podrás...</h2>
                     <div className="container">
                         <ul>
-                            <li>✔️ Contacto con la cooperativa.</li>
+                            <li>✔️ Ponerte en contacto con la cooperativa.</li>
                             <li>✔️ Registrar un punto de recolección.</li>
-                            
+                            <li>✔️ Editar la información del punto de recolección.</li>
                         </ul>
                     </div>
                 </section>
