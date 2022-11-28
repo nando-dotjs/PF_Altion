@@ -177,7 +177,9 @@ const InitRoute = () => {
     const tableContent = pointsList?.length && pointsList.map(p => <Point key={p.point} pointId={p.point} amount={p.amountCollected} pointState={pointState(p.point)} handlePoint={e => handlePoints(e)}/>)  
 
         const content = (
-            <Container>             
+            
+            <Container>         
+                <br/>    
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                     <Modal.Title>{selectedPoint.name}</Modal.Title>
@@ -210,6 +212,7 @@ const InitRoute = () => {
                     </Button>
                     </Modal.Footer>
                 </Modal>    
+                <div id="fondoTabla">
                 <Table striped bordered hover size="sm" className="table tableRoutes">
                     <thead className="tableThead">
                         <tr> 
@@ -222,6 +225,7 @@ const InitRoute = () => {
                         {tableContent}
                     </tbody>
                 </Table>
+                </div>
                 <div className={'row'}>
                     <div className={'col-md-3'}>
                         <Button variant="secondary" onClick={e => onBackClicked(e)}>
