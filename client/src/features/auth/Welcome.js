@@ -1,6 +1,8 @@
 import React from 'react'
 import '../users/register.css'
 import './index.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlay} from "@fortawesome/free-solid-svg-icons"
 const Welcome = () => {
 
     const content = (
@@ -27,18 +29,15 @@ const Welcome = () => {
                         <div className="programas">
                             <div className="carta">
                                 <h3>2013</h3><br></br><br></br>
-                                {/* <p>En un principio la recolección se realizaba a carro, en un circuito establecido por nosotros. La materia prima se vendía a granel.</p> */}
                                 <button className='buttonWelcome'>En un principio la recolección se realizaba a carro, en un circuito establecido por nosotros. La materia prima se vendía a granel.</button>
                             </div>
                             <div className="carta">
                                 <h3>2014</h3><br></br><br></br>
-                                {/* <p>Comenzamos a procesar y enfardar materia prima, vendiendo fardos de cartón y plástico (PET).</p> */}
                                 <button className='buttonWelcome'>Comenzamos a procesar y enfardar materia prima, vendiendo fardos de cartón y plástico (PET).</button>
                             </div>
                             
                             <div className="carta">
                                 <h3>2018</h3><br></br><br></br>
-                                {/* <p>Comenzamos a realizar la recolección de residuos reciclabes, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</p> */}
                                 <button className='buttonWelcome'>Comenzamos a realizar la recolección de residuos reciclabes, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</button>
                             </div>  
                         </div>
@@ -48,24 +47,22 @@ const Welcome = () => {
 
                 <section id="caracteristicas">
                 <h2>Con nuestra aplicación podrás...</h2>
+                    <button className='buttonLista'>✔️ Ponerte en contacto con la cooperativa.</button>
+                    <button className='buttonLista'>✔️ Registrar un punto de recolección.</button>
+                    <button className='buttonLista'>✔️ Editar la información del punto de recolección.</button>
                     <div className="container">
-                        <ul>
-                            <li>✔️ Ponerte en contacto con la cooperativa.</li>
-                            <li>✔️ Registrar un punto de recolección.</li>
-                            <li>✔️ Editar la información del punto de recolección.</li>
-                        </ul>
+                       
                     </div>
                 </section>
 
 
                 <section id="final">
                     <h2>¿Necesitas ayuda?</h2>
-                        <div className='videoContainer'>
-                        <iframe width="600" height="450" src="https://www.youtube.com/embed/CAyg1kcw58w"
-                         title="Tutorial Punto de recolección" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-                         gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-                        
-                        </div>
+
+                        <a href='https://www.youtube.com/embed/CAyg1kcw58w' target="_blank">
+                        <button className='buttonVideo'><FontAwesomeIcon icon={faCirclePlay} /> Tutorial: Cómo crear un punto de recolección</button>
+                        </a>
+                       
                         <h6>Por más información, contáctanos a cooperativaunidos@gmail.com</h6>
                 </section>
                 <footer>
