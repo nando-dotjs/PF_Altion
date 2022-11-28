@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown,faEye, faPenToSquare, faPersonWalkingWithCane, faToggleOn,faToggleOff,  faTrash} from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from 'react-router-dom'
+import { faEye, faPenToSquare, faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons"
 
-import { useSelector } from 'react-redux'
-import { selectZoneById } from './zonesApiSlice'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Swal from 'sweetalert2' //Instalar con npm install sweetalert2
+import { selectZoneById } from './zonesApiSlice'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useUpdateZoneStateMutation } from "./zonesApiSlice"
 
 const Toast = Swal.mixin({
@@ -17,7 +17,7 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 1500,
     timerProgressBar: true
-  })
+})
 
 
 
@@ -27,12 +27,7 @@ const Zone = ({ zoneId }) => {
 
     const navigate = useNavigate()
 
-    const [updateZoneState, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateZoneStateMutation()
+    const [updateZoneState] = useUpdateZoneStateMutation()
 
     if (zone) {
         
@@ -40,20 +35,20 @@ const Zone = ({ zoneId }) => {
         const handleView = () => navigate(`/dash/zone/${zoneId}`)
         const updateZoneByClick = async () => {
             await updateZoneState({ id: zoneId })
-              .then((response) => {
-                      if(response.error){
-                          Toast.fire({
-                              icon: 'error',
-                              title: response.error.data.message
-                 
-                            })
-                      } else{
-                          Toast.fire({
-                              icon: 'info',
-                              title: response.data.message
-                              })
-                      }
-              })
+                .then((response) => {
+                    if(response.error){
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.error.data.message
+                
+                        })
+                    } else{
+                        Toast.fire({
+                            icon: 'info',
+                            title: response.data.message
+                        })
+                    }
+                })
         }
         const cellStatus = zone.active ? '' : 'tableCell--inactive'
 
@@ -89,6 +84,7 @@ const Zone = ({ zoneId }) => {
             </tr>
         )
 
-    } else return null
+    } else return ''
 }
+
 export default Zone

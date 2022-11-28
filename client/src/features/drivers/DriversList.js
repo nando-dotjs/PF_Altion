@@ -4,11 +4,9 @@ import useTitle from "../../hooks/useTitle"
 import Table from 'react-bootstrap/Table';
 import Container from "react-bootstrap/esm/Container";
 import '../users/register.css'
-import Modal from 'react-bootstrap/Modal';
 import Pagination from 'react-bootstrap/Pagination';
 import { useNavigate } from "react-router-dom"
-import { useRef, useState, useEffect } from "react"
-import Button from 'react-bootstrap/Button';
+import { useState } from "react"
 import InputGroup from 'react-bootstrap/InputGroup';
 import Swal from "sweetalert2";
 import '../users/Table.css';
@@ -17,7 +15,6 @@ const DriversList = () => {
 
     const [filtroTexto, setTexto] = useState('');
     const [viewInactives,setViewInactives] = useState(false);
-    const [show, setShow] = useState(false);
     const [page, setPage] = useState(1)
     const navigate = useNavigate()
     useTitle('Lista de Choferes')
@@ -35,8 +32,6 @@ const DriversList = () => {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
-    const date = new Date()
-    const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
 
     let content
@@ -76,11 +71,6 @@ const DriversList = () => {
         }
 
         const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(driverId => <Driver key={driverId} driverId={driverId} />)
-
-        const handleClose = () => {
-            setShow(true)
-            navigate('/dash');
-        };
 
         let items = [];
 
@@ -151,13 +141,13 @@ const DriversList = () => {
             </Table>
             
         </div>
-        <Pagination>
-            <Pagination.First onClick={() => firstPage()} />
-            <Pagination.Prev onClick={() => prevPage()} />
-                {pagination}
-            <Pagination.Next onClick={() => nextPage()} />
-            <Pagination.Last onClick={() => lastPage()} />
-        </Pagination>
+            <Pagination>
+                <Pagination.First onClick={() => firstPage()} />
+                <Pagination.Prev onClick={() => prevPage()} />
+                    {pagination}
+                <Pagination.Next onClick={() => nextPage()} />
+                <Pagination.Last onClick={() => lastPage()} />
+            </Pagination>
         </Container>
        
             </>

@@ -1,23 +1,20 @@
-import { useGetUsersQuery } from "./usersApiSlice"
-import User from './User'
-import useTitle from "../../hooks/useTitle"
-import Table from 'react-bootstrap/Table';
-import Container from "react-bootstrap/esm/Container";
 import './register.css'
+import './Table.css';
+
+import { Container, InputGroup, Pagination, Table } from 'react-bootstrap'
+
+import Swal from "sweetalert2";
+import User from './User'
+import { useGetUsersQuery } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import InputGroup from 'react-bootstrap/InputGroup';
-import './Table.css';
-import Swal from "sweetalert2";
-
-
+import useTitle from "../../hooks/useTitle"
 
 const UsersList = () => {
 
     const [filtroTexto, setTexto] = useState('');
     const [viewInactives, setViewInactives] = useState(false);
-    const [query, setQuery] = useState('');
-    const [show, setShow] = useState(false);
+    const [page, setPage] = useState(1)
     const navigate = useNavigate()
     useTitle('Lista de Usuarios')
 
@@ -35,13 +32,11 @@ const UsersList = () => {
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
-    // const date = new Date()
-    // const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
     let content
 
     if (isLoading) content = (
-        <div class="loader"></div>
+        <div className="loader"></div>
     )
 
     if (isError) {
@@ -58,9 +53,7 @@ const UsersList = () => {
 
     if (isSuccess) {
 
-        const { ids, name, mail, role, entities } = users
-        // console.log(users)
-
+        const { ids, entities } = users
 
         let filteredIds
         if (viewInactives) {
@@ -75,37 +68,51 @@ const UsersList = () => {
             }
         }
 
+        const tableContent = ids?.length && filteredIds.slice(page*10-10, page*10).map(userId => <User key={userId} userId={userId} />)
 
-        const tableContent = ids?.length && filteredIds.map(userId => <User key={userId} userId={userId} />)
-        //    const search = (ids?.length) && (ids.map(userId => <User key={userId} userId={userId} />) 
-        // const search = (ids) => { return ids.filter(userId => userId.mail.toLowerCase().includes(query)) }
-        const handleClose = () => {
-            setShow(true)
-            navigate('/dash');
-        };
-        //temporal
-        console.log()
-        // const search = (tableContent)=>{return tableContent.filter(users=>users.mail.toLowerCase().includes(query))}
-        //temporal
-        // console.log(query)
+        let items = [];
 
-        // useEffect(() => {
+        const handlePage = (n) => {
+            setPage(n)
+            items = []
+        }
 
-        // })
+        const nextPage = () => {
+            if(items.length !== page){
+                setPage(page+1)
+            }
+        }
+
+        const lastPage = () => {
+            setPage(items.length)
+        }
+
+        const firstPage = () => {
+            setPage(1)
+        }
+
+        const prevPage = () => {
+            if(page !== 1){
+                setPage(page-1)
+            }
+        }
+
+        for (let number = 1; number < (filteredIds.length/10)+1; number++) {
+            items.push(number);
+        }
+
+        let pagination = items.map(number => <Pagination.Item key={number} active={number === page} onClick={() => handlePage(number)}>{number}</Pagination.Item>)
 
         content = (
             <>
-
                 <Container>
-
-
                     <br/>
                     <div id="fondoTablaFiltro">
                         <InputGroup.Text>
-                        &nbsp; &nbsp; <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
-                        &nbsp; &nbsp;
-                        <strong class="tituloCheck">Mostrar usuarios inactivos: </strong>
-
+                            &nbsp; &nbsp; 
+                            <input className="filtroFiltrar form-control" placeholder="Filtrar" value={filtroTexto} onChange={onChangeText} type="text"></input>
+                            &nbsp; &nbsp;
+                            <strong className="tituloCheck">Mostrar usuarios inactivos: </strong>
                             <InputGroup.Checkbox
                                 placeholder="Mostrar usuarios inactivos"
                                 className="filterActives"
@@ -115,12 +122,11 @@ const UsersList = () => {
                                 value={viewInactives}
                                 onChange={onActiveChanged}
 
-                            /></InputGroup.Text>     
+                            />
+                        </InputGroup.Text>     
                     </div>
                     <div id="fondoTabla">
-
                         <Table
-                            // data={search(tableContent)} 
                             striped bordered hover size="sm" className="table tableUsers">
                             <thead>
                                 <tr>
@@ -133,9 +139,14 @@ const UsersList = () => {
                                 {tableContent}
                             </tbody>
                         </Table>
-
                     </div>
-
+                    <Pagination>
+                        <Pagination.First onClick={() => firstPage()} />
+                        <Pagination.Prev onClick={() => prevPage()} />
+                            {pagination}
+                        <Pagination.Next onClick={() => nextPage()} />
+                        <Pagination.Last onClick={() => lastPage()} />
+                    </Pagination>
                 </Container>
 
             </>

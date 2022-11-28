@@ -1,14 +1,13 @@
-import { useRef, useState, useEffect } from "react"
-import { useUpdateZoneMutation } from "./zonesApiSlice"
-import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import '../users/register.css'
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+
+import {Button, InputGroup, Modal} from 'react-bootstrap';
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons"
+import { useEffect, useRef, useState } from "react"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Swal from 'sweetalert2'
-import Modal from 'react-bootstrap/Modal';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { useNavigate } from "react-router-dom"
+import { useUpdateZoneMutation } from "./zonesApiSlice"
 
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
@@ -16,34 +15,22 @@ const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
 const EditZoneForm = ({ zone }) => {
 
     const [updateZone, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
+        isSuccess
     }] = useUpdateZoneMutation()
-
-    // const [deleteZone, {
-    //     isSuccess: isDelSuccess,
-    //     isError: isDelError,
-    //     error: delerror
-    // }] = useDeleteZoneMutation()
 
     const navigate = useNavigate()
     const userRef = useRef();
+
     // eslint-disable-next-line
     const [errMsg, setErrMsg] = useState('');
-
 
     const [name, setName] = useState(zone.name)
     const [validName, setValidName] = useState(false)
     const [nameFocus, setNameFocus] = useState(false);
 
-
     const [details, setDetails] = useState(zone.details)
     const [validDetails, setValidSurname] = useState(false)
     const [detailsFocus, setDetailsFocus] = useState(false);
-
-    const [active, setActive] = useState(zone.active)
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -77,51 +64,36 @@ const EditZoneForm = ({ zone }) => {
     const onNameChanged = e => setName(e.target.value)
     const onDetailsChanged = e => setDetails(e.target.value)
 
-    const onActiveChanged = () => setActive(prev => !prev)
-
     const onSaveZoneClicked = async (e) => {
-        if (name == ""){
+        if (name === ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el nombre'
             })
-
-
-       }
-        await updateZone({ id: zone.id, name, details, active })
+        }
+        await updateZone({ id: zone.id, name, details, active: zone.active })
             .then((response) => {
                 if(response.error){
                     Toast.fire({
                         icon: 'error',
                         position: 'top',
                         title: response.error.data.message
-                        })
+                    })
                 }else{
                     Toast.fire({
                         icon: 'info',
                         title: response.data.message
-                        })
+                    })
                 }
             })
     }
-    
-
-    // const onDeleteZoneClicked = async () => {
-    //     await deleteZone({ id: zone.id })
-    // }
-
-    let canSave = [validName, validDetails].every(Boolean) && !isLoading
-
-    const errClass = (isError) ? "errmsg" : "offscreen"
-
-    // const errContent = (error?.data?.message) ?? ''
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
-    setShow(true)
-    navigate('/dash');
-};
+        setShow(true)
+        navigate('/dash');
+    };
 
     const Toast = Swal.mixin({
         toast: true,
@@ -133,113 +105,92 @@ const EditZoneForm = ({ zone }) => {
         showConfirmButton: false,
         timer: 1500,
         timerProgressBar: true
-      })
+    })
 
     const content = (
         <>
-         <Modal show={!show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title id="cabezal"><strong>Editar Zona</strong></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            {/* <div className="account-wall" align="center">
-
-                <Container fluid> */}
-                
+            <Modal show={!show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="cabezal"><strong>Editar Zona</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <main className='editZone'>
-
                         <form className="form" onSubmit={e => e.preventDefault()}>
-                            <div className="formTitleRow">
-                                <div className="formActionButtons"> 
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
+                                    <InputGroup className="mb-3">
+                                        <input
+                                            className="form-control"
+                                            placeholder="Nombre de la zona"
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            autoComplete="off"
+                                            value={name}
+                                            onChange={onNameChanged}
+                                            required
+                                            aria-invalid={validName ? "false" : "true"}
+                                            aria-describedby="uidnote"
+                                            onFocus={() => setNameFocus(true)}
+                                            onBlur={() => setNameFocus(false)}
+                                        />
+                                    </InputGroup>
+                                        <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Debe empezar y contener solo letras.<br />
+                                        </p>
+                                    </div>
+                                    <label htmlFor="name" id="iconito">
+                                        <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                        <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
+                                    </label>
                                 </div>
                             </div>
-                        <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
-                                <InputGroup className="mb-3">
-                                    <input
-                                        className="form-control"
-                                        placeholder="Nombre de la zona"
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        autoComplete="off"
-                                        value={name}
-                                        onChange={onNameChanged}
-                                        required
-                                        aria-invalid={validName ? "false" : "true"}
-                                        aria-describedby="uidnote"
-                                        onFocus={() => setNameFocus(true)}
-                                        onBlur={() => setNameFocus(false)}
-                                    />
-                                </InputGroup>
-                                    <p id="uidnote" className={nameFocus && name && !validName ? "validation" : "offscreen"}>
-                                        2 a 15 caracteres.<br />
-                                        Debe empezar y contener solo letras.<br />
-                                    </p>
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-10 col-md-8" id="iconito2">
+                                        <InputGroup className="mb-3">
+                                            <input
+                                                className="form-control"
+                                                placeholder="Detalles"
+                                                id="details"
+                                                name="details"
+                                                type="text"
+                                                autoComplete="off"
+                                                value={details}
+                                                onChange={onDetailsChanged}
+                                                aria-invalid={validDetails ? "false" : "true"}
+                                                aria-describedby="uidnote"
+                                                onFocus={() => setDetailsFocus(true)}
+                                                onBlur={() => setDetailsFocus(false)}
+                                            />
+                                        </InputGroup>
+                                        <p id="uidnote" className={detailsFocus && details && !validDetails ? "validation" : "offscreen"}>
+                                            2 a 15 caracteres.<br />
+                                            Puede contener números y letras.<br />
+                                        </p>
+                                    </div>
+                                    <label htmlFor="details" id="iconito">
+                                        <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
+                                        <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
+                                    </label>
                                 </div>
-                                <label htmlFor="name" id="iconito">
-                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
-                                </label>
                             </div>
-                        </div>
-                        
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
-                                <InputGroup className="mb-3">
-                                    <input
-                                        className="form-control"
-                                        placeholder="Detalles"
-                                        id="details"
-                                        name="details"
-                                        type="text"
-                                        autoComplete="off"
-                                        value={details}
-                                        onChange={onDetailsChanged}
-                                        aria-invalid={validDetails ? "false" : "true"}
-                                        aria-describedby="uidnote"
-                                        onFocus={() => setDetailsFocus(true)}
-                                        onBlur={() => setDetailsFocus(false)}
-                                    />
-                                </InputGroup>
-                                <p id="uidnote" className={detailsFocus && details && !validDetails ? "validation" : "offscreen"}>
-                                    2 a 15 caracteres.<br />
-                                    Puede contener números y letras.<br />
-                                </p>
-                        </div>
-                        <label htmlFor="details" id="iconito">
-                            <FontAwesomeIcon icon={faCheck} className={validDetails ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validDetails || !details ? "hide" : "invalid"} />
-                        </label>
-                        </div>
-                        </div>
-                       
-
-                        <br></br>
-
-                            {/* <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button> */}
-
                         </form>
                     </main>
-                    <br />
-                    {/* </Container>
-                    </div> */}
-                    </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-           Cancelar
-          </Button>
-          <Button variant="primary" onClick={onSaveZoneClicked} 
-        //   disabled={!validName ? true : false}
-          >Guardar cambios</Button>
-          
-        </Modal.Footer>
-      </Modal>
-                </>
-                )
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={onSaveZoneClicked}>
+                        Guardar cambios
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    )
 
                 return content
 }
