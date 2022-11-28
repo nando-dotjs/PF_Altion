@@ -1,14 +1,12 @@
-import { useRef, useState, useEffect } from "react"
-import { useUpdateZoneMutation,selectZoneById } from "./zonesApiSlice"
-import { useNavigate,useParams } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
-import '../users/register.css'
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Swal from 'sweetalert2'
-import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux'
+import '../users/register.css';
+
+import { Button, Modal } from 'react-bootstrap';
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { selectZoneById } from "./zonesApiSlice";
+import { useSelector } from 'react-redux';
+
 // eslint-disable-next-line
 const NAME_SURNAME_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ1-9\ ]{2,15}$/;
 
@@ -23,16 +21,10 @@ const ViewZoneForm = () => {
     const [errMsg, setErrMsg] = useState('');
 
 
-    const [name, setName] = useState(zone.name)
-    const [validName, setValidName] = useState(false)
-    const [nameFocus, setNameFocus] = useState(false);
+    const [name] = useState(zone.name)
 
 
-    const [details, setDetails] = useState(zone.details)
-    const [validDetails, setValidSurname] = useState(false)
-    const [detailsFocus, setDetailsFocus] = useState(false);
-
-    const [active, setActive] = useState(zone.active)
+    const [details] = useState(zone.details)
 
     useEffect(() => {
         userRef?.current?.focus();
@@ -43,81 +35,28 @@ const ViewZoneForm = () => {
     });
 
     useEffect(() => {
-        setValidName(NAME_SURNAME_REGEX.test(name));
-    }, [name])
-
-    useEffect(() => {
-        setValidSurname(NAME_SURNAME_REGEX.test(details));
-    }, [details])
-
-    useEffect(() => {
         setErrMsg('');
     }, [name, details])
 
-
-    // const onDeleteZoneClicked = async () => {
-    //     await deleteZone({ id: zone.id })
-    // }
-
-
-    // const errContent = (error?.data?.message) ?? ''
-
     const [show, setShow] = useState(false);
-    const handleClose = () => {
-    setShow(true)
-    navigate('/dash/zones');
-};
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-right',
-        iconColor: 'white',
-        customClass: {
-          popup: 'colored-toast'
-        },
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true
-      })
+    const handleClose = () => {
+        setShow(true)
+        navigate('/dash/zones');
+    };
 
     const content = (
         <>
-         <Modal show={!show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title id="cabezal"><strong>Ver Zona</strong></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            {/* <div className="account-wall" align="center">
-
-                <Container fluid> */}
-                
+            <Modal show={!show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title id="cabezal"><strong>Ver Zona</strong></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <main className='editZone'>
-
                         <form className="form" onSubmit={e => e.preventDefault()}>
-                            <div className="formTitleRow">
-                                {/* <h1 id="cabezal">Editar Zona</h1> */}
-                                <div className="formActionButtons">
-                                    {/* <button
-                                className="icon-button"
-                                title="Save"
-                                onClick={onSaveZoneClicked}
-                                disabled={!canSave}
-                            >
-                                <FontAwesomeIcon icon={faSave} />
-                            </button> */}
-                                    {/* <button
-                                className="icon-button"
-                                title="Delete"
-                                onClick={onDeleteZoneClicked}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button> */}
-                                </div>
-                            </div>
-                        
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Nombre</strong>
                                     <input
                                         disabled
@@ -129,18 +68,14 @@ const ViewZoneForm = () => {
                                         autoComplete="off"
                                         value={name}
                                         required
-                                        aria-invalid={validName ? "false" : "true"}
-                                        aria-describedby="uidnote"
-                                        onFocus={() => setNameFocus(true)}
-                                        onBlur={() => setNameFocus(false)}
                                     />
                                 </div>
                             </div>
                         </div>
                         <br/>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Detalle</strong>
                                     <input
                                         disabled
@@ -151,11 +86,6 @@ const ViewZoneForm = () => {
                                         type="text"
                                         autoComplete="off"
                                         value={details}
-
-                                        aria-invalid={validDetails ? "false" : "true"}
-                                        aria-describedby="uidnote"
-                                        onFocus={() => setDetailsFocus(true)}
-                                        onBlur={() => setDetailsFocus(false)}
                                     />
                                 </div>
 
@@ -164,23 +94,20 @@ const ViewZoneForm = () => {
 
                         <br></br>
 
-                            {/* <Button className="formSubmitButton" onClick={onSaveZoneClicked} disabled={!validName ? true : false}>Guardar cambios</Button> */}
-
                         </form>
                     </main>
-                    
-                    {/* </Container>
-                    </div> */}
-                    </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-           Cancelar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-                </>
-                )
 
-                return content
+                    </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                Cancelar
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    )
+
+    return content
 }
-                export default ViewZoneForm
+
+export default ViewZoneForm

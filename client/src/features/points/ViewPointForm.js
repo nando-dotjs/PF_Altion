@@ -254,9 +254,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Teléfono</strong>
                                     <input
                                         disabled
@@ -276,9 +276,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Calle</strong>
                                     <input
                                         disabled
@@ -297,9 +297,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Número</strong>
                                     <input
                                         disabled
@@ -318,9 +318,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Asignado a</strong>
                                     <input
                                         disabled
@@ -336,9 +336,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Zona</strong>
                                     <input
                                         disabled
@@ -354,9 +354,9 @@ const ViewPointForm = () => {
                             </div>
                         </div>
                         <br />
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10 col-md-8" id="iconito2">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-10 col-md-8" id="iconito2">
                                     <strong>Ubicación</strong>
                                     {map}
                                 </div>

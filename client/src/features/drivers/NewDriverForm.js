@@ -146,9 +146,9 @@ const NewDriverForm = () => {
                         </div>
                     </div>
                     <br/> 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-10 col-md-8" id="iconito2">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-10 col-md-8" id="iconito2">
                                 <InputGroup className="mb-3">
                                     <input
                                         className="form-control"
@@ -179,9 +179,9 @@ const NewDriverForm = () => {
                         </div>
                     </div>
                     
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-10 col-md-8" id="iconito2">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-10 col-md-8" id="iconito2">
                             <InputGroup className="mb-3"> 
                                 <input
                                     className="form-control"
