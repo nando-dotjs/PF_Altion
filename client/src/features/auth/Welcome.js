@@ -61,10 +61,10 @@ const Welcome = () => {
                 <section id="final">
                     <h2>¿Necesitas ayuda?</h2>
                         <div className='videoContainer'>
-                            <iframe className="video" width="600" height="450" src="https://www.youtube-nocookie.com/embed/vtgl7p5hHvw?start=41" 
-                            title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-                            gyroscope; picture-in-picture" allowFullScreen="">
-                            </iframe>
+                        <iframe width="600" height="450" src="https://www.youtube.com/embed/CAyg1kcw58w"
+                         title="Tutorial Punto de recolección" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+                         gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                        
                         </div>
                         <h6>Por más información, contáctanos a cooperativaunidos@gmail.com</h6>
                 </section>
