@@ -27,7 +27,7 @@ const DashHeader = () => {
 
     const content = (
         <>
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" sticky="top">
                 <Container>
                 <img id="header-img" src={require('../img/logoUC.PNG')} alt={"UPC"} />
                     <Navbar.Brand href="/dash"></Navbar.Brand>
