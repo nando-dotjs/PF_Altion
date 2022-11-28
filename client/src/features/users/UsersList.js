@@ -106,6 +106,7 @@ const UsersList = () => {
         content = (
             <>
                 <Container>
+                    <br/>
                     <div id="fondoTablaFiltro">
                         <InputGroup.Text>
                             &nbsp; &nbsp; 
