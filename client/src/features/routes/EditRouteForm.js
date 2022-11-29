@@ -1,24 +1,23 @@
-import { useState, useEffect } from "react"
-import { useUpdateRouteMutation, selectRouteById } from "./routesApiSlice"
-import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from "react-router-dom"
-import  useAuth  from '../../hooks/useAuth'
-import Select from "react-select";
-import {Container, Form, Modal, ProgressBar } from "react-bootstrap"
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from  "react-datepicker";
-import es from 'date-fns/locale/es';
-import useTitle from "../../hooks/useTitle"
-import { useGetZonesQuery } from "../zones/zonesApiSlice"
-import { useGetDriversQuery, selectDriverById } from "../drivers/driversApiSlice"
-import DragList from "./DragList";
-import {useGetPointsQuery, selectPointById} from '../points/pointsApiSlice'
-import RouteMapContainer from '../maps/RouteMapContainer'
-import Swal from 'sweetalert2'
-import {useGetUsersQuery} from '../users/usersApiSlice'
-import Button from 'react-bootstrap/Button';
 
+import {Button, Container, Form, Modal} from "react-bootstrap"
+import { selectDriverById, useGetDriversQuery } from "../drivers/driversApiSlice"
+import { selectRouteById, useUpdateRouteMutation } from "./routesApiSlice"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+
+import DatePicker from "react-datepicker";
+import DragList from "./DragList";
+import RouteMapContainer from '../maps/RouteMapContainer'
+import Select from "react-select";
+import Swal from 'sweetalert2'
+import es from 'date-fns/locale/es';
+import { registerLocale } from  "react-datepicker";
+import  useAuth  from '../../hooks/useAuth'
+import {useGetPointsQuery} from '../points/pointsApiSlice'
+import { useGetZonesQuery } from "../zones/zonesApiSlice"
+import { useSelector } from 'react-redux'
+import useTitle from "../../hooks/useTitle"
 
 const EditRouteForm = () => {
 
@@ -27,14 +26,9 @@ const EditRouteForm = () => {
     const route = useSelector(state => selectRouteById(state, id))
     const routeDriver = useSelector(state => selectDriverById(state, route.driver))
 
-    const { mail, isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
+    const { isAdmin, isCEV, isEmpresa, isRecolector } = useAuth()
 
-    const [updateRoute, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateRouteMutation()
+    const [updateRoute] = useUpdateRouteMutation()
 
     const navigate = useNavigate()
 
@@ -43,10 +37,7 @@ const EditRouteForm = () => {
 
     const {
         data: zones,
-        isLoading: zonesisLoading,
-        isSuccess: zonesisSuccess,
-        isError: zonesisError,
-        error: zoneserror
+        isSuccess: zonesisSuccess
     } = useGetZonesQuery('zonesList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
@@ -55,10 +46,7 @@ const EditRouteForm = () => {
 
     const {
         data: pointsList,
-        isLoading: pointsisLoading,
-        isSuccess: pointsisSuccess,
-        isError: pointsisError,
-        error: pointsserror
+        isSuccess: pointsisSuccess
     } = useGetPointsQuery('pointsList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
@@ -83,6 +71,7 @@ const EditRouteForm = () => {
         if(zonesisSuccess){
             setSelectedZones(getZones())
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [zonesisSuccess])
 
     const getPoints = () => {
@@ -103,6 +92,7 @@ const EditRouteForm = () => {
         if(pointsisSuccess){
             setSelectedPoints(getPoints())
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pointsisSuccess])
 
     const [startDate, setStartDate] = useState(new Date(Date.parse(route.date)));
@@ -112,14 +102,11 @@ const EditRouteForm = () => {
     const [selectedZones, setSelectedZones] = useState(getZones());
     const [selectedPoints, setSelectedPoints] = useState(getPoints());
     const [routeMap, setRouteMap] = useState('');
-    const [activeUser, setActiveUser] = useState('');
-    const [horas, setHoras] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
+    const [horas] = useState([{"name":'Mañana'}, {"name":'Tarde'}, {"name":'Noche'}])
 
     const onDriverChanged = e => setDriver(e)
     const onZoneChanged = e => setSelectedZones(e)
     const onTimeChanged = e => setTime(e)
-
-    const errClass = isError ? "errmsg" : "offscreen"
     
     const Toast = Swal.mixin({
     toast: true,
@@ -148,10 +135,7 @@ const EditRouteForm = () => {
     //Filtro de Choferes
     const {
         data: driversList,
-        isLoading: driversisLoading,
-        isSuccess: driversisSuccess,
-        isError: driversisError,
-        error: driverserror
+        isSuccess: driversisSuccess
     } = useGetDriversQuery('driversList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
@@ -163,8 +147,8 @@ const EditRouteForm = () => {
     if (driversisSuccess) {
         filteredDrivers = driversList.ids.filter(e => driversList.entities[e].active === true)
 
-        for(var d in filteredDrivers){
-            drivers.push(driversList.entities[filteredDrivers[d]]);
+        for(var k in filteredDrivers){
+            drivers.push(driversList.entities[filteredDrivers[k]]);
         }
     }
     
@@ -214,36 +198,6 @@ const EditRouteForm = () => {
         }
 	}, [selectedPoints]); 
 
-    // const prepareMap = (e) => {
-    //     setRouteMap(
-    //         <RouteMapContainer points={selectedPoints}/>
-    //     )
-    // }
-
-    const {
-        data: users,
-        isLoading: usersisLoading,
-        isSuccess: usersisSuccess,
-        isError: usersisError,
-        error: userserror
-    } = useGetUsersQuery('usersList', {
-        pollingInterval: 60000,
-        refetchOnFocus: true,
-        refetchOnMountOrArgChange: true
-    })
-
-    useEffect( () => {
-        if(users){
-            for(var u in users.entities) {
-                if (users.entities[u].mail === mail) {
-                    setActiveUser(users.entities[u])
-                }
-            }
-        }else{
-            setActiveUser('')
-        }
-	}, [selectedPoints]); 
-
     const onSaveRouteClicked = async (e) => {
         e.preventDefault()
 
@@ -260,18 +214,17 @@ const EditRouteForm = () => {
 
             await updateRoute({id, "date":startDate, "time":selectedTime, "zones":selectedZones, "points":pointlist, driver })
                 .then((response) => {
-                    console.log(response)
                     if(response.error){
                         Toast.fire({
                             icon: 'error',
                             title: response.error.data.message
-                          })
+                        })
                     }else{
                         Toast.fire({
                             icon: 'info',
                             title: response.data
-                          })
-                          navigate('/dash/routes');
+                        })
+                        navigate('/dash/routes');
                     }
                 })
         }
@@ -374,20 +327,17 @@ const EditRouteForm = () => {
                             </form>
                             {/* <div className="row">
                                 <div className="col"> */}
-                                <Modal.Footer>
+                            <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
                                     {/* <button className={'btn btn-light'} onClick={() => handleClose()}> */}
                                         Cancelar
                                     </Button>
                                 {/* </div> */}
                                 {/* <div className="col"> */}
-                                <Button variant="primary" onClick={onSaveRouteClicked}>
-                                    {/* <button className={'btn btn-success'} onClick={(e) => onSaveRouteClicked(e)}> */}
+                                    <Button variant="primary" onClick={onSaveRouteClicked}>
                                         Confirmar
                                     </Button>
-                                    </Modal.Footer>
-                                {/* </div> */}
-                            {/* </div> */}
+                            </Modal.Footer>
                         </Container>
                     </Container>
                 </Modal.Body>

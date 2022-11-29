@@ -1,20 +1,16 @@
-import { useRef, useState, useEffect } from "react"
-import { useUpdatePointMutation } from "./pointsApiSlice"
+import '../users/register.css'
+
+import {Button, Form, InputGroup, Modal} from 'react-bootstrap';
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons"
+import { useEffect, useRef, useState } from "react"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import MapContainer from '../maps/MapContainer'
+import Swal from "sweetalert2"
+import useAuth from '../../hooks/useAuth'
 import { useGetZonesQuery } from "../zones/zonesApiSlice"
 import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
-import MapContainer from '../maps/MapContainer'
-import useAuth from '../../hooks/useAuth'
-import Form from 'react-bootstrap/Form';
-import '../users/register.css'
-import InputGroup from 'react-bootstrap/InputGroup';
-
-import Modal from 'react-bootstrap/Modal';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-
-import Swal from "sweetalert2"
+import { useUpdatePointMutation } from "./pointsApiSlice"
 
 // eslint-disable-next-line
 const PHONENUMBER_REGEX = /^\d{8,9}$/;
@@ -27,20 +23,13 @@ const STREET_NUMBER_REGEX = /^[0-9]+$/;
 
 const EditPointForm = ({ point, users }) => {
 
-    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
+    const {isAdmin} = useAuth()
 
     const [updatePoint, {
         isLoading,
-        isSuccess,
-        isError,
-        error
+        isSuccess
     }] = useUpdatePointMutation()
 
-    // const [deleteCev, {
-    //     isSuccess: isDelSuccess,
-    //     isError: isDelError,
-    //     error: delerror
-    // }] = useDeleteCevMutation()
 
     const navigate = useNavigate()
 
@@ -67,14 +56,9 @@ const EditPointForm = ({ point, users }) => {
     const [completed, setCompleted] = useState(point.completed)
     const [userId, setUserId] = useState(point.user)
 
+    const [lat] = useState(+point.lat)
+    const [lng] = useState(+point.long)
 
-    const [lat, setLat] = useState(+point.lat)
-    const [validLatitude, setValidLatitude] = useState(false)
-    const [latitudeNumberFocus, setLatitudeNumberFocus] = useState(false);
-
-    const [lng, setLng] = useState(+point.long)
-    const [validLongitude, setValidLongitude] = useState(false)
-    const [longitudeNumberFocus, setLongitudeNumberFocus] = useState(false);
 
 
     useEffect(() => {
@@ -106,6 +90,7 @@ const EditPointForm = ({ point, users }) => {
         }
         setValues(zonesList)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [zones]);
 
     const optionsToChoose = values?.map((options, i) => ( options.active && <option key={i}> {options.name}</option>))
@@ -131,16 +116,6 @@ const EditPointForm = ({ point, users }) => {
     }, [name, phoneNumber, street, streetNumber, lat, lng])
 
     useEffect(() => {
-
-        // if (isSuccess || isDelSuccess) {
-        //     setIdFamily('')
-        //     setPhoneNumber('')
-        //     setName('')
-        //     setStreet('')
-        //     setStreetNumber('')
-        //     setUserId('')
-        //     navigate('/dash/cevs')
-        // }
         if (isSuccess) {
             setPhoneNumber('')
             setName('')
@@ -150,7 +125,6 @@ const EditPointForm = ({ point, users }) => {
             setOptions('')
             navigate('/dash/points')
         }
-        //    [isSuccess, isDelSuccess, navigate]
     }, [isSuccess, navigate])
 
     const onPhoneNumberChanged = e => setPhoneNumber(e.target.value)
@@ -167,25 +141,25 @@ const EditPointForm = ({ point, users }) => {
     const onSavePointClicked = async (e) => {
         console.log(completed)
         console.log(optionsZone)
-        if (name == ""){
+        if (name === ""){
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el nombre'
             })
-        } else if (phoneNumber == "") {
+        } else if (phoneNumber === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar el teléfono o celular'
             })
-        } else if (street == "") {
+        } else if (street === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
                 title: 'Debe completar calle'
             })
-        } else if (streetNumber == "") {
+        } else if (streetNumber === "") {
             Toast.fire({
                 icon: 'error',
                 position:"top",
@@ -239,13 +213,6 @@ const EditPointForm = ({ point, users }) => {
         )
     })
 
-    // const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-
-    // const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
-
-    const errContent = (error?.data?.message) ?? ''
-
-    // let deleteButton = null
     let selector = null
     let selectorZone = null
     let input = null
@@ -273,7 +240,6 @@ const EditPointForm = ({ point, users }) => {
         )
 
         selectorZone = (
-            // onChange={(e)=>setOptions(e.target.value)}
             <Form.Select
                 id="point-zone"
                 name="point-zone"
@@ -302,16 +268,6 @@ const EditPointForm = ({ point, users }) => {
             />
         )
     } 
-    // else if (isCEV || isEmpresa) {
-    //     input = <Form.Check readOnly
-    //         className={`formInput`}
-    //         id="idUser"
-    //         name="idUser"
-    //         type="text"
-    //         autoComplete="off"
-    //         value={username}
-    //     />
-    // }
 
     const [show, setShow] = useState(false);
     const handleClose = () => {

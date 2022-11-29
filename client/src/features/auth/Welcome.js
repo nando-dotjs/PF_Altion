@@ -16,9 +16,8 @@ const Welcome = () => {
                     <div className="container">
                         <div className="img-container"></div>
                         <div className="texto">
-
                             <h2><span className="color-acento">Quiénes somos</span></h2>
-                            <p>Somos una cooperativa social del departamento de Paysandú, formada el 2 de mayo del 2013, hoy conformada por 9 integrantes. </p>
+                            <p>Somos una cooperativa social del departamento de Paysandú, formada el 2 de mayo del 2013, hoy conformada por 5 integrantes. </p>
                         </div>
                     </div>
                 </section>
@@ -63,7 +62,7 @@ const Welcome = () => {
                         <button className='buttonVideo'><FontAwesomeIcon icon={faCirclePlay} /> Tutorial: Cómo crear un punto de recolección</button>
                         </a>
                        
-                        <h6>Por más información, contáctanos a cooperativaunidos@gmail.com</h6>
+                        <h6>Por más información, contáctanos a coopesocialunidos@gmail.com</h6>
                 </section>
                 <footer>
                     <div className="container">

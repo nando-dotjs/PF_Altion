@@ -1,4 +1,4 @@
-import { DirectionsRenderer, GoogleMap, MarkerF } from '@react-google-maps/api';
+import { DirectionsRenderer, GoogleMap } from '@react-google-maps/api';
 import React, { useState } from 'react';
 
 import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
@@ -7,7 +7,7 @@ import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
 
 const containerStyle = {
   width: '100%',
-  height: '40em',
+  height: '30em',
 };
 
 const position = {

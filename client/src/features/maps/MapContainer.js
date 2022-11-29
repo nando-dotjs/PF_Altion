@@ -1,18 +1,11 @@
-import React, { Component } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
-import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
-import Swal from "sweetalert2"
+import React, { Component } from 'react';
 
-let isDraggable = true;
+import LoadScriptOnlyIfNeeded from "./LoadScriptOnlyIfNeeded";
 
 const containerStyle = {
   width: '100%',
-  height: '40em',
-};
-
-let center = {
-  lat: -32.317109,
-  lng: -58.080587
+  height: '30em',
 };
 
 const onLoad = marker => {}
