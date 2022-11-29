@@ -1,19 +1,15 @@
-import React from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import useAuth from '../../hooks/useAuth'
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import {Row, Col, Table, Modal} from 'react-bootstrap';
-import { selectRouteById, useUpdatePointsMutation, useUpdateStateMutation } from './routesApiSlice'
-import Point from './Point'
 import './initRoute.css';
+
+import {Button, Container, Modal, Table} from 'react-bootstrap';
+import { selectRouteById, useUpdatePointsMutation, useUpdateStateMutation } from './routesApiSlice'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import Point from './Point'
+import React from 'react'
 import Swal from "sweetalert2"
+import { useSelector } from 'react-redux'
 
 const InitRoute = () => {
-
-    const { username, isAdmin, isCEV, isEmpresa } = useAuth()
 
     const { id } = useParams()
 
@@ -26,26 +22,13 @@ const InitRoute = () => {
     const [selectedPoint, setSelectedPoint] = React.useState('')
     const [pointDetails, setPointDetails] = React.useState('')
     const [amountCollected, setAmountCollected] = React.useState(0)
-    
-    const date = new Date()
-    const today = new Intl.DateTimeFormat('es-UY', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 
     const handleAmount = e => setAmountCollected(e.target.value)
 
-    const [updatePoints, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdatePointsMutation()
+    const [updatePoints] = useUpdatePointsMutation()
 
 
-    const [updateState, {
-        updStIsLoading,
-        updStIsSuccess,
-        updStIsError,
-        updStError
-    }] = useUpdateStateMutation()
+    const [updateState] = useUpdateStateMutation()
     
 
     const savePoints = () => {
@@ -94,6 +77,7 @@ const InitRoute = () => {
 
     React.useEffect(() => {
         onSavePointsClicked();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pointsList])
 
     React.useEffect(() => {
@@ -105,6 +89,7 @@ const InitRoute = () => {
                 pointsList[n].details ? setPointDetails(pointsList[n].details) : setPointDetails('')
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedPoint])
 
     const Toast = Swal.mixin({
@@ -120,21 +105,7 @@ const InitRoute = () => {
     })
 
     const onSavePointsClicked = async (e) => {
-            await updatePoints({ id, points: pointsList})
-                // .then((response) => {
-                //     if(response.error){
-                //         Toast.fire({
-                //             icon: 'error',
-                //             title: response.error.data.message
-                //         })
-                //     } else {
-                //         Toast.fire({
-                //             icon: 'info',
-                //             title: response.data.message
-                //           })
-                //     }
-                // })
-       
+            await updatePoints({ id, points: pointsList}) 
     }
 
     const onConfirmClicked = async (e) => {

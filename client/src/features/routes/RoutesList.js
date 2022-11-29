@@ -1,21 +1,21 @@
-import { useGetRoutesQuery } from "./routesApiSlice"
-import Route from './Route'
-//import useAuth from "../../hooks/useAuth"
-import useTitle from "../../hooks/useTitle"
-import {Table, Container} from 'react-bootstrap';
-import {useEffect, useState} from 'react';
 import "react-datepicker/dist/react-datepicker.css";
+
+import {Container, Table} from 'react-bootstrap';
+import {useEffect, useState} from 'react';
+
 import DatePicker from "react-datepicker";
-import { registerLocale } from  "react-datepicker";
-import es from 'date-fns/locale/es';
-import { useNavigate } from "react-router-dom"
 import InputGroup from 'react-bootstrap/InputGroup';
-import Swal from "sweetalert2";
 import Pagination from 'react-bootstrap/Pagination';
+import Route from './Route'
+import Swal from "sweetalert2";
+import es from 'date-fns/locale/es';
+import { registerLocale } from  "react-datepicker";
+import { useGetRoutesQuery } from "./routesApiSlice"
+import { useNavigate } from "react-router-dom"
+import useTitle from "../../hooks/useTitle"
 
 const RoutesList = () => {
 
- //   const { mail, isAdmin } = useAuth()
     registerLocale('es', es)
 
     const [viewCompleted, setViewCompleted] = useState(true)

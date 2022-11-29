@@ -36,7 +36,7 @@ const ViewRoute = () => {
 
     const navigate = useNavigate()
 
-    useTitle('Editar Recorrido')
+    useTitle('Ver Recorrido')
     registerLocale('es', es)
 
     const {

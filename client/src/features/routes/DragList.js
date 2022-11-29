@@ -1,11 +1,8 @@
-import React from 'react'
 import './DragList.css'
-import { Button } from 'react-bootstrap'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
-
-
-
 
 const DragList = (props) => {
 	
@@ -29,39 +26,31 @@ const DragList = (props) => {
 
 	React.useEffect( () => {
     	props.setSelectedPoints(points);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [points]); 
 
 
 	//const handle drag sorting
 	const handleSort = () => {
-		//duplicate items
+		//Duplicar items
 		let _points = [...points]
 
-		//remove and save the dragged item content
+		//Quitar el item arrastrado y guardarlo
 		const draggedItemContent = _points.splice(dragItem.current, 1)[0]
 
-		//switch the position
+		//Cambiar la posición
 		_points.splice(dragOverItem.current, 0, draggedItemContent)
 
-		//reset the position ref
+		//Limpiar variables
 		dragItem.current = null
 		dragOverItem.current = null
 
-		//update the actual array
+		//Actualizar el array
 		setPoints(_points)
 	}
 
-	// //handle new item addition
-	// const handleAddItem = () => {
-	// 	const _fruitItems = [...fruitItems]
-	// 	_fruitItems.push(newFruitItem)
-	// 	setFruitItems(_fruitItems)
-	// }
-
 	return (
 		<div className="app">
-
-			{/** List container //TODO break into component */}
 			<div className="list-container">
 					<h3>Lista de puntos</h3>
 				
@@ -73,13 +62,9 @@ const DragList = (props) => {
 						onDragEnter={(e) => (dragOverItem.current = index)}
 						onDragEnd={handleSort}
 						onDragOver={(e) => e.preventDefault()}>
-						{/* <ul> */}
 							<li><span>{index+1}</span>{`${item.name} - ${item.street} ${item.streetNumber}`}<button className={'deleteButton'} onClick={(e) => {e.preventDefault(); deletePoint(item)}}>
 							<FontAwesomeIcon icon={faTimes}/>
 						</button></li>
-						{/* </ul> */}
-						{/* <div className="index">{index+1}</div> */}
-						{/* <div className="name">{`${item.name} - ${item.street} ${item.streetNumber}`}</div> */}
 						
 					</div>
 				))}
