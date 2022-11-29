@@ -17,7 +17,7 @@ const Welcome = () => {
                         <div className="img-container"></div>
                         <div className="texto">
                             <h2><span className="color-acento">Quiénes somos</span></h2>
-                            <p>Somos una cooperativa social del departamento de Paysandú, formada el 2 de mayo del 2013, hoy conformada por 4 integrantes. </p>
+                            <p>Somos una cooperativa social del departamento de Paysandú, formada el 2 de mayo del 2013, hoy conformada por 5 integrantes. </p>
                         </div>
                     </div>
                 </section>
