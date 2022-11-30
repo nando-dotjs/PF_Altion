@@ -39,7 +39,7 @@ const Welcome = () => {
                             
                             <div className="carta">
                                 <h3>2018</h3><br></br><br></br>
-                                <button className='buttonWelcome'>Comenzamos a realizar la recolección de residuos reciclabes, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</button>
+                                <button className='buttonWelcome'>Comenzamos a realizar la recolección de residuos reciclables, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</button>
                             </div>  
                         </div>
                     </div>
