@@ -12,13 +12,9 @@ const Cookies = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(true)
-        navigate('/dash');
+        navigate(-1);
     };
-
-    function onClickVolver(){
-        navigate('/dash');
-    }
-
+    
     return (
         <Modal 
         show={!show} 
