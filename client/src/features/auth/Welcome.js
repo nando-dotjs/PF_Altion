@@ -3,6 +3,8 @@ import '../users/register.css'
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay} from "@fortawesome/free-solid-svg-icons"
+import Cookies from '../users/Cookies';
+
 const Welcome = () => {
 
     const content = (
@@ -66,10 +68,11 @@ const Welcome = () => {
                 </section>
                 <footer>
                     <div className="container">
-                        <p>&copy; Altion 2022</p>
+                       <p><a href="/dash/users/cookies">Cookies</a></p>
+                       <p><a href="/dash/users/privacy">Política de privacidad</a></p>
                     </div>
                 </footer>
-                
+            
             </body>
 
     )
