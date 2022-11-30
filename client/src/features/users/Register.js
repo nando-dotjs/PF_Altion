@@ -383,7 +383,7 @@ const Register = () => {
                                                     <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
                                                     <br/>
                                                     <br/>
-                                                    <cite title="Source Title">Haciendo click en Registrar, usted esta de acuerdo con nuestros <a href="/terms">terminos</a> , <a href="/privacy">políticas de privacidad</a> y <a href="/cookies">politicas de cookies.</a></cite>
+                                                    <cite title="Source Title">Haciendo click en Registrar, usted esta de acuerdo con nuestros <a href="/terms">Términos</a> , <a href="/privacy">políticas de privacidad</a> y <a href="/cookies">politicas de cookies.</a></cite>
        
                                                 </figcaption> 
                                             </div>

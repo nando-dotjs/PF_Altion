@@ -39,6 +39,7 @@ import ViewPointForm from './features/points/ViewPointForm';
 import MapContainer from './features/maps/MapContainer';
 import Cookies from './features/users/Cookies';
 import Privacy from './features/users/Privacy';
+import Terms from './features/users/Terms';
 
 function App() {
   useTitle('UPC')
@@ -52,6 +53,7 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="cookies" element={<Cookies />} />
         <Route path="privacy" element={<Privacy />} />
+        <Route path="terms" element={<Terms />} />
         {/* Protected Routes */ }
         <Route element={<PersistLogin />}>
         <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
