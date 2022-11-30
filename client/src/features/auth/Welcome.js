@@ -68,8 +68,8 @@ const Welcome = () => {
                 </section>
                 <footer>
                     <div className="container">
-                       <p><a href="/dash/users/cookies">Cookies</a></p>
-                       <p><a href="/dash/users/privacy">Política de privacidad</a></p>
+                       <p><a href="/cookies">Cookies</a></p>
+                       <p><a href="/privacy">Política de privacidad</a></p>
                     </div>
                 </footer>
             
