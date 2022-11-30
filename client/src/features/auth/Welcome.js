@@ -3,6 +3,8 @@ import '../users/register.css'
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay} from "@fortawesome/free-solid-svg-icons"
+import Cookies from '../users/Cookies';
+
 const Welcome = () => {
 
     const content = (
@@ -37,7 +39,7 @@ const Welcome = () => {
                             
                             <div className="carta">
                                 <h3>2018</h3><br></br><br></br>
-                                <button className='buttonWelcome'>Comenzamos a realizar la recolección de residuos reciclabes, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</button>
+                                <button className='buttonWelcome'>Comenzamos a realizar la recolección de residuos reciclables, como un servicio que le prestabamos a la intendencia de Paysandú, conocido como circuito limpio.</button>
                             </div>  
                         </div>
                     </div>
@@ -66,10 +68,11 @@ const Welcome = () => {
                 </section>
                 <footer>
                     <div className="container">
-                        <p>&copy; Altion 2022</p>
+                       <p><a href="/dash/users/cookies">Cookies</a></p>
+                       <p><a href="/dash/users/privacy">Política de privacidad</a></p>
                     </div>
                 </footer>
-                
+            
             </body>
 
     )
