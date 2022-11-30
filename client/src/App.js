@@ -37,6 +37,8 @@ import NewPoint from './features/points/NewPoint';
 import ViewPointForm from './features/points/ViewPointForm';
 
 import MapContainer from './features/maps/MapContainer';
+import Cookies from './features/users/Cookies';
+import Privacy from './features/users/Privacy';
 
 function App() {
   useTitle('UPC')
@@ -62,6 +64,8 @@ function App() {
               <Route index element={<UsersList />} />
               <Route path=":id" element={<EditUser />} />
               <Route path="new" element={<NewUserForm />} />
+              <Route path="cookies" element={<Cookies />} />
+              <Route path="privacy" element={<Privacy />} />
             </Route>
 
             <Route path="user" >
