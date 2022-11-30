@@ -66,13 +66,7 @@ const Welcome = () => {
                        
                         <h6>Por más información, contáctanos a coopesocialunidos@gmail.com</h6>
                 </section>
-                <footer>
-                    <div className="container">
-                       <p><a href="/cookies">Cookies</a></p>
-                       <p><a href="/privacy">Política de privacidad</a></p>
-                    </div>
-                </footer>
-            
+                
             </body>
 
     )
