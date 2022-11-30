@@ -373,7 +373,7 @@ const Register = () => {
                                     </div>
                                 </div>
                                 <br />
-
+                                <br/>
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-10 col-md-8" id="iconito2">  
@@ -381,8 +381,10 @@ const Register = () => {
                                                 <figcaption className="blockquote-footer">
                                                     <input className="form-check-input" type="checkbox"   name="userValidate" value=""  id="userValidate" onChange={onUserValidate} />
                                                     <cite title="Source Title">Acepto los términos según Ley 18.331 - "Protección de datos personales"</cite>
-                                                    <br></br>
-                                                    <a target="_blank" rel="noreferrer noopener" href="https://www.impo.com.uy/bases/leyes/18331-2008#:~:text=%2D%20Toda%20persona%20f%C3%ADsica%20o%20jur%C3%ADdica,de%20la%20que%20es%20titular.">Más información aquí</a>
+                                                    <br/>
+                                                    <br/>
+                                                    <cite title="Source Title">Haciendo click en Registrar, usted esta de acuerdo con nuestros <a href="/terms">Términos</a> , <a href="/privacy">políticas de privacidad</a> y <a href="/cookies">politicas de cookies.</a></cite>
+       
                                                 </figcaption> 
                                             </div>
                                         </div>
